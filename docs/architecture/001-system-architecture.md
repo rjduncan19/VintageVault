@@ -4,9 +4,42 @@
 **Date:** 2026-03-13
 **Decision Makers:** VintageVault Core Team
 
+## Mission
+
+VintageVault is a **cloud-to-cloud backup tool** designed to protect families, personal projects, and very small businesses against **accidental data corruption and ransomware attacks**.
+
+The core premise: users back up contents (or selective subsets) from one cloud drive (e.g., OneDrive) to another cloud account, potentially on a **different provider**. If one account is compromised — whether by ransomware encrypting files, accidental mass-deletion, or account takeover — the backup copy on the other provider survives.
+
+### Target Users
+
+Our users are **families, individuals, and very small businesses** who:
+- Have important files spread across cloud drives (family photos, tax documents, small business records)
+- Have **near-zero disaster recovery plans today**
+- Are not technical — they don't have IT staff, backup scripts, or sysadmins
+- Need something that "just works" after a simple setup
+
+**Simplicity is the product.** If setup takes more than 10 minutes or requires technical knowledge, these users won't adopt it.
+
+### Threat Model
+
+| Threat | How VintageVault Protects |
+|--------|--------------------------|
+| **Ransomware encrypts files on source drive** | Backup copy on different provider is unaffected. Retention policy preserves pre-encryption versions. |
+| **Accidental file deletion or corruption** | Point-in-time backup allows recovery of previous versions. |
+| **Source account compromised / taken over** | Cross-provider backup means attacker can't reach destination account. |
+| **Destination account compromised** | Source is the primary copy; user re-authorizes a new destination. |
+
+### Critical Design Implications from Threat Model
+
+1. **This is NOT sync — it is backup.** A naive bidirectional sync would propagate ransomware-encrypted files to the destination, destroying the backup. VintageVault must be **one-directional** with **retention/versioning** at the destination.
+2. **Destination immutability matters.** Ideally, the backup copy should not be overwritable by the source account or by a compromised VintageVault agent. Write-once or append-only semantics on the destination are the gold standard.
+3. **Retention windows are core, not a nice-to-have.** Users must be able to recover files from before a corruption event. This means keeping N days of history or N versions of each file on the destination.
+4. **Cross-provider is the key differentiator.** Same-provider backup (OneDrive → OneDrive) offers limited protection since a compromised Microsoft account could reach both. Cross-provider (OneDrive → Google Drive) provides true isolation.
+5. **Selective backup** must be supported — users should be able to choose specific folders or file types, not just full-drive mirrors.
+
 ## Context
 
-VintageVault is a cloud-to-cloud backup orchestrator. Users provide both a source and destination cloud storage account, and VintageVault orchestrates the transfer. VintageVault never stores user data — it is a **transfer orchestrator**, not a storage provider.
+Users provide both a source and destination cloud storage account, and VintageVault orchestrates the transfer. VintageVault never stores user data — it is a **transfer orchestrator**, not a storage provider.
 
 This single fact drives every architectural trade-off below.
 
@@ -278,6 +311,8 @@ A responsive web dashboard covers all mobile use cases.
 - OneDrive → Google Drive, one direction
 - OAuth2 via PKCE, tokens in OS secure storage
 - Full backup (enumerate + transfer), then add delta sync
+- **Selective backup** — user picks folders/paths to include or exclude
+- **Retention policy (basic)** — keep deleted/overwritten files for N days on destination, don't propagate deletions immediately (critical for ransomware protection)
 - Simple CLI or local web UI (localhost) for configuration
 - Windows-only
 
@@ -286,36 +321,40 @@ A responsive web dashboard covers all mobile use cases.
 - User accounts, backup job configuration, status monitoring
 - Agent phones home for config and reports status
 - Push notifications for backup success/failure
+- **Backup health alerts** — "last backup was N days ago," "X files failed"
 - Responsive design for mobile users
 
 ### Phase 3: Polish & Expand
 - macOS agent (same .NET code, different installer)
 - Google Drive → OneDrive (reverse direction)
 - Dropbox support
-- Client-side encryption
+- Client-side encryption (encrypt before writing to destination)
+- **Advanced retention** — N versions per file, configurable retention windows
+- **Restore workflow** — guided file/folder recovery from backup history
 - Freemium billing (Stripe integration)
-- Retention policies / versioning
 
 ---
 
 ## Open Questions
 
 ### Product
-1. **Minimum viable feature set?** Connect OneDrive + Google Drive, click "Back Up Now," files appear in destination. Everything else is v2+.
+1. **Minimum viable feature set?** Connect OneDrive + Google Drive, select folders, click "Back Up Now," files appear in destination with basic retention. Everything else is v2+.
 2. **Partial failure handling?** Resumability is critical — track per-file progress and resume from where you left off.
 3. **Format incompatibilities?** Google Docs are native objects with no file. Policy needed: skip or export as .docx?
-4. **Restore story?** Reverse the backup direction? Manual download?
+4. **Restore story?** Guided restore from backup history? Reverse the backup direction? Manual download from destination?
+5. **Ransomware detection?** Should the agent detect suspicious mass-encryption (e.g., sudden change in file entropy across many files) and pause backup to avoid propagating damage?
 
 ### Technical
-5. **Cloud API quotas** — Google Drive: 12,000 req/min default. Microsoft Graph has per-app throttling. Plan for quota increases and per-user rate limiting.
-6. **OAuth app verification** — Both Google and Microsoft require app review before public use. Google's review for drive scopes can take weeks.
-7. **Shared drives / family libraries** — OneDrive Family and Google Shared Drives have different API models.
-8. **Versioning & retention** — If a file is deleted or encrypted by ransomware on source and synced, the backup is destroyed. Need retention policies.
+6. **Cloud API quotas** — Google Drive: 12,000 req/min default. Microsoft Graph has per-app throttling. Plan for quota increases and per-user rate limiting.
+7. **OAuth app verification** — Both Google and Microsoft require app review before public use. Google's review for drive scopes can take weeks.
+8. **Shared drives / family libraries** — OneDrive Family and Google Shared Drives have different API models.
+9. **Retention implementation** — How to implement versioning on the destination? Timestamped folders? Cloud provider versioning APIs? Separate metadata DB tracking file versions?
+10. **Destination immutability** — Can we leverage cloud provider features (e.g., Google Drive version history, Azure Blob immutability) to prevent backup tampering?
 
 ### Business
-9. **Competitive landscape** — MultCloud, CloudHQ exist. Differentiation: privacy-first, simpler UX, lower price.
-10. **Beta/launch strategy** — Friends/family → small community → public?
-11. **Support burden** — Non-technical family users will need help at scale.
+11. **Competitive landscape** — MultCloud, CloudHQ exist. Differentiation: privacy-first (data never touches our servers), ransomware protection with retention, dead-simple UX for non-technical users.
+12. **Beta/launch strategy** — Friends/family → small community → public?
+13. **Support burden** — Non-technical family users will need help at scale. In-app guidance and self-service must be excellent.
 
 ---
 
