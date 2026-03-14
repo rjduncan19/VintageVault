@@ -167,6 +167,19 @@ A running record of all user prompts across sessions and machines. This helps tr
 
 ---
 
+### Prompt 5: Architecture Model Reassessment
+**Time:** 2026-03-14T03:13:58Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> I see a lot of places in the planning docs where our assumptions are not necessarily true - should we consider changes to our model? There seems to be a conflict between ease of use (we do it on our servers, but that costs $$$), vs. it being free to the users (they do it on their devices, but have to keep them running). Is there a model where we do both, or should we shift hard in one direction or the other? Which will be more successful?
+
+**Key finding:** The $16-24k/month cost figure in ADR-002 was based on monthly full backups — contradicting our own backup fundamentals doc. With incremental backups, server-side relay costs $0.32-0.74/user/month for OneDrive routes, and ~$0.02/user/month for Google→Google (share-then-copy). At $5/month pricing, that's 85-94% gross margin — the server model is viable.
+
+**Response artifacts:**
+- `docs/planning/architecture-reassessment.md` — Full analysis of three strategic options (desktop agent, cloud relay, or both). Recommends Option C: cloud-first with optional desktop agent. Includes corrected cost numbers, friction analysis, and revised revenue projections.
+
+---
+
 ## How to Use This Log
 
 Each session is documented with:

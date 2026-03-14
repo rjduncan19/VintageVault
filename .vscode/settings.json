@@ -16,5 +16,8 @@
   "files.associations": {
     "*.md": "markdown"
   },
-  "extensions.autoUpdate": true
+  "extensions.autoUpdate": true,
+  "workbench.editorAssociations": {
+    "*.md": "vscode.markdown.preview.editor"
+  }
 }
