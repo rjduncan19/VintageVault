@@ -8,6 +8,7 @@ A running record of all user prompts across sessions and machines. This helps tr
 
 ### Prompt 1: Gap Analysis & Cost Clarification
 **Time:** 2026-03-13T23:19:36Z  
+**Model:** Claude Opus (likely 4-1)  
 **Context:** Continuing early planning discussion
 
 > Let's continue our early planning discussion. Are there major gaps we could address with this product, which may further inform architecture? Also, with the architecture, I'm confused by the data movement costs. Is it seriously cheaper to download from cloud to device, then back up to another cloud than to transfer directly from cloud to cloud? That seems really weird. Make sure you save all progress in the docs, and create new docs as needed for different planning and design stages.
@@ -19,7 +20,8 @@ A running record of all user prompts across sessions and machines. This helps tr
 ---
 
 ### Prompt 2: Backup Fundamentals & 2026 Landscape Analysis
-**Time:** 2026-03-13T23:25:10Z
+**Time:** 2026-03-13T23:25:10Z  
+**Model:** Claude Opus (likely 4-1)
 
 > There have been backup solutions for decades, with good patterns and algorithms for full vs incremental backups, metaphors to help users understand, etc. Please provide an introduction to backups in the planning folder to capture thoughts here. I don't want to reinvent the wheel. Make sure you analyze to ensure that the assumptions of these technologies are still applicable to this new product and what the general computing ecosystem looks like in 2026, with ubiquity, storage costs, always connected, maturation of threat actors, quantum, etc. Save all these in markdown in the docs directory.
 
@@ -30,12 +32,26 @@ A running record of all user prompts across sessions and machines. This helps tr
 ---
 
 ### Prompt 3: Create Prompt History Log
-**Time:** 2026-03-14T00:18:26Z
+**Time:** 2026-03-14T00:18:26Z  
+**Model:** Claude Haiku 4.5
 
 > Additionally, part of this exercise is for me to learn copilot and test how this goes. Please keep a running record of my prompts in docs/prompts, and also check this in. I want you to keep doing this both for my early prompts, as well as to consistently record all prompts going forward, across all sessions, across all machines.
 
 **Response artifacts:**
-- `docs/prompts/README.md` (this file) — Cumulative prompt history
+- `docs/DEVELOPMENT_PROCESS.md` — Workflow for consistent prompt logging
+- `docs/prompts/README.md` (this file) — Updated with logging strategy
+
+---
+
+### Prompt 5: Model Tracking in Prompts
+**Time:** 2026-03-14T00:29:54Z  
+**Model:** Claude Haiku 4.5
+
+> it looks like the model has changed, some of the earlier prompts were run with Opus. We should keep track of this in the prompts log. Please teach yourself to do this consistently and make sure it is checked in.
+
+**Response artifacts:**
+- `docs/prompts/README.md` (this file) — Added model field to all prompts
+- `docs/DEVELOPMENT_PROCESS.md` — Updated schema and workflow to track model
 
 ---
 
@@ -44,9 +60,14 @@ A running record of all user prompts across sessions and machines. This helps tr
 Each session is documented with:
 - **Session ID** — for cross-referencing with git commits and session state
 - **Timestamp** — when the prompt was issued
+- **Model** — which Claude model generated the response (Opus, Haiku, etc.)
 - **Prompt text** — the exact user request
 - **Context** — what was being worked on
 - **Response artifacts** — key files created/modified in response
+
+The **Model field is crucial** for understanding response quality and capabilities:
+- Claude Opus (4-1): Superior reasoning, code generation, analysis depth
+- Claude Haiku 4.5: Faster, lighter, good for routine tasks and summaries
 
 Over time, this becomes a searchable record of:
 - What problems were prioritized and when

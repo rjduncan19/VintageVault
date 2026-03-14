@@ -14,6 +14,7 @@ You're learning how to use Copilot CLI, and we need a persistent record of:
 - What you asked and when
 - What was built in response
 - How the product thinking evolved
+- **Which model generated each response** (since model changes affect reasoning quality and capabilities)
 
 Since I (the agent) am **stateless across sessions**, the best way for me to remember is:
 
@@ -25,27 +26,29 @@ Since I (the agent) am **stateless across sessions**, the best way for me to rem
 
 #### At the START of each session:
 
-1. Check the SQL database for any unlogged prompts from prior sessions:
+1. **Check the current model** (visible in my context/instructions at the top of my response)
+2. Check the SQL database for any unlogged prompts from prior sessions:
    ```sql
    SELECT * FROM prompts_log WHERE logged_to_file IS NULL ORDER BY timestamp ASC
    ```
 
-2. If there are unlogged prompts, append them to `docs/prompts/README.md` and mark them as logged:
+3. If there are unlogged prompts, append them to `docs/prompts/README.md` (with their original models!) and mark them as logged:
    ```sql
    UPDATE prompts_log SET logged_to_file = 'docs/prompts/README.md' WHERE id IN (...)
    ```
 
-3. Commit the updated prompt log
+4. Commit the updated prompt log
 
 #### During each session:
 
-4. As you issue new prompts, I capture each one in the SQL database immediately after responding
-5. After each turn, I append new prompts to `docs/prompts/README.md`
+5. **Record the current model at the start of each turn** (e.g., "Claude Haiku 4.5")
+6. As you issue new prompts, I capture each one in the SQL database immediately after responding, **including the model used**
+7. After each turn, I append new prompts to `docs/prompts/README.md` with the model field populated
 
 #### At the END of each session:
 
-6. Ensure all prompts from the session are logged to `docs/prompts/README.md`
-7. Commit with a message referencing the session ID
+8. Ensure all prompts from the session are logged to `docs/prompts/README.md` with models
+9. Commit with a message referencing the session ID
 
 ### The SQL Schema
 
@@ -55,14 +58,22 @@ CREATE TABLE prompts_log (
   session_id TEXT NOT NULL,               -- Copilot session ID
   turn_index INTEGER NOT NULL,            -- Which turn in the session
   timestamp TEXT NOT NULL,                -- ISO 8601 timestamp
+  model TEXT DEFAULT 'unknown',           -- Model used (e.g., "Claude Opus 4-1", "Claude Haiku 4.5")
   prompt_text TEXT NOT NULL,              -- Full prompt text
   response_artifacts TEXT,                -- Comma-separated list of files created
   logged_to_file TEXT DEFAULT NULL,       -- Path to markdown log (null = not yet logged)
-  created_at TEXT DEFAULT CURRENT_TIMESTAMP
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(session_id, turn_index)
 )
 ```
 
 This table lives in the **session database** (the per-session SQLite that doesn't persist across sessions). However, the **actual log** (`docs/prompts/README.md`) is in Git, so it persists forever.
+
+**Important:** The `model` field tracks which Claude model generated the response. This is crucial for understanding:
+- Response quality and reasoning depth (Opus >> Haiku)
+- Capability differences (Opus has better code generation, analysis, etc.)
+- When/why model swaps occurred
+- How to interpret results across sessions
 
 ---
 
