@@ -1,5 +1,9 @@
 # VintageVault — The Pitch
 
+<p align="center">
+  <img src="../branding/logo.svg" alt="VintageVault" width="120">
+</p>
+
 _Last updated: 2026-03-14 | Model: Claude Opus 4.6_
 
 ---

@@ -1,5 +1,9 @@
 # VintageVault Mission
 
+<p align="center">
+  <img src="docs/branding/logo.svg" alt="VintageVault" width="140">
+</p>
+
 ## Why We Exist
 
 **Ransomware is an epidemic.** In 2026, attacks are up 34% year-over-year. Hospitals lose patient records. Schools lose years of student work. Families lose every photo they've ever taken. Small businesses close permanently.

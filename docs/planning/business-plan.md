@@ -1,5 +1,9 @@
 # VintageVault — Business Plan
 
+<p align="center">
+  <img src="../branding/logo.svg" alt="VintageVault" width="120">
+</p>
+
 _Prepared: March 2026 | For internal review_
 
 ---

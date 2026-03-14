@@ -1,5 +1,9 @@
 # VintageVault POC — Requirements & Design
 
+<p align="center">
+  <img src="docs/branding/logo.svg" alt="VintageVault" width="120">
+</p>
+
 _Created: 2026-03-14 | Status: Draft — awaiting review before implementation_
 
 ---
@@ -209,10 +213,15 @@ A command-line tool to run backup operations manually.
 ```
 Commands:
 
-  vintagevault auth          # Start OAuth flow (opens browser)
-  vintagevault backup        # Run a backup cycle (full if first, incremental otherwise)
-  vintagevault status        # Show last backup info from manifest.json
-  vintagevault snapshots     # List all snapshots with dates and sizes
+  vintagevault auth                         # Start OAuth flow (opens browser)
+  vintagevault backup                       # Run a backup cycle (full or incremental)
+  vintagevault status                       # Show last backup info
+  vintagevault snapshots                    # List all snapshots
+  vintagevault include /Documents /Photos   # Set include-only filter
+  vintagevault exclude /Videos/Raw          # Add exclusion rule
+  vintagevault exclude --pattern "*.iso"    # Exclude by pattern
+  vintagevault filters                      # Show current filter rules
+  vintagevault filters --clear              # Reset to back up everything
 ```
 
 No web UI, no scheduler, no dashboard for POC. Just a CLI that proves the engine works.
@@ -257,6 +266,51 @@ For each file in the backup:
 ```
 
 **Acceptance criteria:** Every file in every snapshot includes source hashes. Post-copy verification confirms hash match. Mismatches are logged and flagged.
+
+### R8: Include/Exclude File Filtering
+
+Users can specify which folders/files to back up or skip. Essential for users with very large files (VMs, ISOs, video projects) that would consume excessive quota.
+
+**CLI interface:**
+
+```
+Commands:
+
+  vintagevault include /Documents /Photos   # Only back up these folders
+  vintagevault exclude /Videos/Raw          # Skip this folder
+  vintagevault exclude --pattern "*.iso"    # Skip files matching pattern
+  vintagevault filters                      # Show current include/exclude rules
+  vintagevault filters --clear              # Reset to "back up everything"
+```
+
+**Default behavior:** Back up everything (no filters). This is the simplest and safest default.
+
+**Filter rules (stored in `~/.vintagevault/config.json`):**
+
+```json
+{
+  "filters": {
+    "mode": "exclude",
+    "rules": [
+      { "type": "folder", "path": "/Videos/Raw" },
+      { "type": "pattern", "pattern": "*.iso" },
+      { "type": "pattern", "pattern": "*.vmdk" }
+    ]
+  }
+}
+```
+
+**Two modes:**
+- **`exclude` mode (default):** Back up everything EXCEPT listed paths/patterns
+- **`include` mode:** Back up ONLY listed paths (everything else skipped)
+
+**Filter application:** During delta processing, check each changed file against filter rules before copying. Filtered files are recorded in `_snapshot.json` as `"action": "skipped"` with reason, so the manifest is honest about what's not backed up.
+
+**Built-in exclusions (always skipped):**
+- `/VintageVault-Backup/` (prevent infinite recursion)
+- `.tmp` files, `~$` lock files (Office temp files)
+
+**Acceptance criteria:** Excluded files are not copied. Included-only mode restricts to specified paths. `vintagevault filters` shows current rules. Skipped files are recorded in snapshot metadata.
 
 ---
 
@@ -602,6 +656,153 @@ Earliest recovery point: 2026-03-14
 
 ---
 
+## Development & Validation Flow
+
+### Test Account Setup
+
+**Do NOT test against your real OneDrive.** The POC will create folders and copy files — use a separate test account.
+
+**Option A: New personal Microsoft account (recommended for POC)**
+1. Create a free Microsoft account at outlook.com (e.g., `vintagevault-test@outlook.com`)
+2. Sign in to OneDrive (free 5 GB)
+3. Populate with test data (see below)
+4. Register a Microsoft Entra app registration for the POC
+
+**Option B: Microsoft 365 Developer Program**
+1. Join at [developer.microsoft.com/microsoft-365/dev-program](https://developer.microsoft.com/en-us/microsoft-365/dev-program)
+2. Get a free E5 sandbox with 25 user licenses and 1 TB OneDrive per user
+3. Better for testing at scale, but heavier setup
+
+**Recommended for POC:** Option A. Quick, free, sufficient for validating the architecture.
+
+### App Registration (Microsoft Entra ID)
+
+Required before any Graph API calls work:
+
+1. Go to [portal.azure.com](https://portal.azure.com) → Azure Active Directory → App registrations → New
+2. Name: `VintageVault POC`
+3. Supported account types: "Personal Microsoft accounts only" (for POC)
+4. Redirect URI: `http://localhost:3000/callback` (Web)
+5. Under API permissions, add: `Microsoft Graph` → `Files.ReadWrite` (delegated)
+6. Under Authentication, enable "Allow public client flows" (for device code flow fallback)
+7. Record the **Application (client) ID** — needed in config
+8. No client secret needed (public client with PKCE)
+
+### Test Data
+
+Populate the test OneDrive with representative data:
+
+```
+Test OneDrive structure:
+├── Documents/
+│   ├── Work/
+│   │   ├── report.docx          (50 KB)
+│   │   ├── spreadsheet.xlsx     (120 KB)
+│   │   └── presentation.pptx   (2 MB)
+│   ├── Personal/
+│   │   ├── tax-return-2025.pdf  (500 KB)
+│   │   └── notes.txt            (1 KB)
+│   └── big-file.zip             (100 MB — test large file handling)
+├── Photos/
+│   ├── Vacation/
+│   │   ├── photo001.jpg         (3 MB)
+│   │   ├── photo002.jpg         (4 MB)
+│   │   └── photo003.jpg         (3.5 MB)
+│   └── Family/
+│       └── portrait.png         (8 MB)
+└── Videos/
+    └── birthday.mp4             (500 MB — test exclusion filter)
+```
+
+Total: ~15-20 files, ~600 MB. Small enough to run quickly, varied enough to test folder structures, file types, and size ranges.
+
+### Validation Script (Manual Test Checklist)
+
+```
+PHASE 1: AUTH
+  [ ] Run `vintagevault auth`
+  [ ] Browser opens, sign in with test account
+  [ ] CLI shows "Authenticated as ..."
+  [ ] Config file created at ~/.vintagevault/config.json
+
+PHASE 2: FILTERS
+  [ ] Run `vintagevault exclude /Videos`
+  [ ] Run `vintagevault filters` — shows exclusion rule
+  [ ] Verify Videos folder will be skipped
+
+PHASE 3: FULL SNAPSHOT
+  [ ] Run `vintagevault backup`
+  [ ] CLI shows "Creating initial full snapshot..."
+  [ ] Progress bar advances, all files copied
+  [ ] Check OneDrive: /VintageVault-Backup/{date}-full/ exists
+  [ ] Folder structure matches source (minus excluded /Videos)
+  [ ] _snapshot.json exists with correct file inventory
+  [ ] manifest.json exists at backup root
+  [ ] Checksum verification: all files show copyVerified: true
+
+PHASE 4: INCREMENTAL SNAPSHOT
+  [ ] Modify Documents/Work/report.docx (change content)
+  [ ] Add a new file: Documents/new-file.txt
+  [ ] Delete Photos/Vacation/photo003.jpg
+  [ ] Wait a few minutes (for OneDrive to sync changes)
+  [ ] Run `vintagevault backup`
+  [ ] CLI shows "incremental" with correct change count (3)
+  [ ] Check OneDrive: new snapshot folder with only changed/added files
+  [ ] Deleted file recorded in _snapshot.json
+  [ ] Previous full snapshot is UNTOUCHED (verify timestamps)
+
+PHASE 5: ANOMALY DETECTION
+  [ ] Rename many files to .locked extension (or create a script to do this)
+  [ ] Run `vintagevault backup`
+  [ ] CLI shows anomaly warning with change count and patterns
+  [ ] _warning.json written in snapshot folder
+
+PHASE 6: STATUS COMMANDS
+  [ ] Run `vintagevault status` — shows all snapshots
+  [ ] Run `vintagevault snapshots` — shows table with sizes and status
+  [ ] Anomaly snapshot shows warning indicator
+
+PHASE 7: IMMUTABILITY VERIFICATION
+  [ ] Run backup 3+ times with changes between each
+  [ ] Verify EVERY previous snapshot folder has unchanged timestamps
+  [ ] Verify no files were added/modified/deleted in old snapshots
+```
+
+### Development Workflow
+
+```
+1. SETUP
+   - Create test Microsoft account + OneDrive
+   - Register Entra app
+   - Install .NET 8 SDK (if not present)
+   - `dotnet new sln -n VintageVault`
+   - `dotnet new console -n VintageVault.Cli`
+   - Add NuGet packages: Microsoft.Graph, Azure.Identity,
+     Microsoft.Identity.Client, System.CommandLine
+
+2. BUILD ITERATIVELY
+   - R1 (Auth) first — get a working Graph client
+   - R8 (Filters) — simple config, needed before first backup
+   - R2 (Full snapshot) — the core operation
+   - R7 (Checksums) — integrate into the copy loop
+   - R4 (Metadata) — write manifests
+   - R3 (Incremental) — add delta API support
+   - R5 (Anomaly detection) — analyze delta results
+   - R6 (CLI polish) — wire up all commands
+
+3. TEST EACH REQUIREMENT
+   - Run against test OneDrive after each R is implemented
+   - Verify results by browsing OneDrive web UI
+   - Check manifests are parseable and accurate
+
+4. VALIDATE END-TO-END
+   - Run full validation checklist above
+   - Document any open questions resolved
+   - Note API quirks discovered
+```
+
+---
+
 ## Success Criteria
 
 The POC is successful if:
@@ -614,3 +815,5 @@ The POC is successful if:
 6. ✅ Anomaly detection correctly flags simulated ransomware patterns
 7. ✅ Total process works with $0 bandwidth (all `driveItem: copy`, no file downloads)
 8. ✅ Backup of 500+ files completes in under 10 minutes
+9. ✅ Include/exclude filters correctly skip specified files
+10. ✅ Skipped files are recorded in snapshot metadata
