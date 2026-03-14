@@ -2,6 +2,8 @@
 
 _Created: 2026-03-14 | Model: Claude Opus 4.6_
 
+> **⚠️ Historical analysis document.** This analysis explored whether a cloud relay could replace the desktop agent. The conclusion (Option C: cloud-first) was correct but was subsequently superseded by an even simpler approach: **same-account OneDrive backup via server-side API calls** — no relay needed, no agent needed. See [Same-Account Pivot](same-account-pivot.md) for the current POR.
+
 ## The Core Tension
 
 ADR-001 chose the desktop agent (Proposal D) primarily because server-side backup was assumed to cost **$16,000-24,000/month** for 1,000 users. But that number was based on **monthly full backups** — which nobody actually does. The backup fundamentals doc (written in the same planning session) recommends incremental backup after the initial full.
@@ -252,7 +254,7 @@ The cloud relay has real per-user costs, so the free tier needs boundaries:
 
 **Why 15 GB free limit:** Prevents abuse of the relay. At $0.087/GB egress, a 15 GB initial backup costs us ~$1.30 per free user one-time, then ~$0.02-0.07/month ongoing. Affordable as a growth investment.
 
-**Price increase from $3.99 to $4.99/mo:** Accounts for relay costs while maintaining competitive positioning. Still well below MultCloud ($9.99) and CloudHQ ($9.90).
+**Price increase from $3.99 to $4.99/mo (Pro) and $7.99 to $9.99/mo (Family):** Accounts for relay costs while maintaining competitive positioning. Still well below MultCloud ($9.99) and CloudHQ ($9.90).
 
 ### Revenue Projection (Revised)
 

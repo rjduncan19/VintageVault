@@ -106,7 +106,7 @@ How should VintageVault make money, given that:
 ┌─────────────────────────────────────────────────────────────────────┐
 │                                                                     │
 │   FREE                    PRO                    FAMILY             │
-│   $0/forever              $3.99/mo ($39/yr)      $7.99/mo ($79/yr) │
+│   $0/forever              $4.99/mo ($49/yr)      $9.99/mo ($99/yr) │
 │                                                                     │
 │   ✓ 1 backup pair         ✓ Unlimited pairs      ✓ Everything in   │
 │   ✓ Weekly schedule       ✓ Daily schedule          Pro             │
@@ -141,14 +141,14 @@ How should VintageVault make money, given that:
 - Parents set it up for the whole family
 - Shared dashboard ("Dad, is my Google Drive backed up?" → "Let me check the family dashboard")
 - 365-day retention for irreplaceable family memories
-- At $7.99/mo for 5 users, it's $1.60/person/month — cheaper than any competitor
+- At $9.99/mo for 5 users, it's $2.00/person/month — cheaper than any competitor
 
 ### Why Not $1.99? Why Not $9.99?
 
 | Price point | Problem |
 |-------------|---------|
 | **$1.99/mo** | Too low to fund development; signals "toy product"; annual revenue per user ($24) barely covers payment processing overhead |
-| **$3.99/mo** | Sweet spot: affordable impulse purchase, meaningful annual revenue ($48/user), competitive vs. MultCloud ($9.99) and Backblaze ($7/mo) |
+| **$4.99/mo** | Sweet spot: affordable impulse purchase, meaningful annual revenue ($60/user), competitive vs. MultCloud ($9.99) and Backblaze ($7/mo) |
 | **$9.99/mo** | Too close to MultCloud; hard to justify for a background utility; may trigger subscription fatigue |
 
 ---
@@ -166,8 +166,8 @@ How should VintageVault make money, given that:
 |--------|-------|
 | Free users | 100,000 |
 | Paid users | 4,000 |
-| Pro users (70%) | 2,800 × $39/yr = $109,200/yr |
-| Family users (30%) | 1,200 × $79/yr = $94,800/yr |
+| Pro users (70%) | 2,800 × $49/yr = $137,200/yr |
+| Family users (30%) | 1,200 × $99/yr = $118,800/yr |
 | **Total ARR** | **$204,000/yr** |
 
 ### Cost Structure
@@ -215,13 +215,13 @@ Beyond core subscription, these could supplement revenue in Phase 3+:
 | **Subscription fatigue** | Offer meaningful annual discount (17% savings); emphasize "insurance" value |
 | **Users churn after initial setup** | Monthly health emails ("12,847 files protected"); make backup status visible |
 | **rclone is free** | Compete on UX, not features. rclone users are not our target market |
-| **Price-sensitive audience** | $3.99/mo is less than a coffee. Frame as insurance, not software |
+| **Price-sensitive audience** | $4.99/mo is less than a coffee. Frame as insurance, not software |
 
 ---
 
 ## Decision
 
-**Model: Freemium subscription with three tiers (Free / Pro $3.99/mo / Family $7.99/mo)**
+**Model: Freemium subscription with three tiers (Free / Pro $4.99/mo / Family $9.99/mo)**
 
 **Rationale:**
 1. Near-zero marginal cost makes freemium sustainable (free users aren't a burden)

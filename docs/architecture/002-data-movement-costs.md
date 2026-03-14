@@ -1,8 +1,10 @@
 # ADR-002: Data Movement Costs — Why Cloud-to-Cloud Transfer Requires an Intermediary
 
-**Status:** Accepted
-**Date:** 2026-03-13
+**Status:** Partially Superseded
+**Date:** 2026-03-13 (updated 2026-03-14)
 **Decision Makers:** VintageVault Core Team
+
+> **⚠️ Context note:** This ADR's cost analysis remains valid for cross-account/cross-provider backup (Pro tier, Phase 2+). However, the Phase 1 MVP uses **same-account OneDrive backup via server-side `driveItem: copy`** — which requires no intermediary at all and costs $0 in bandwidth. The desktop agent vs. relay server debate documented here applies only to future cross-account features. See [Same-Account Pivot](../planning/same-account-pivot.md) for current Phase 1 architecture.
 
 ## The Question
 

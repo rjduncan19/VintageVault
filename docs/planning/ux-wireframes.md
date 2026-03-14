@@ -13,12 +13,12 @@ This document describes VintageVault's user experience across four key screens, 
 **Purpose:** First impression. Convert visitors to sign-ups.
 
 **Key sections:**
-1. **Hero** — "Your cloud's backup plan" headline with clear value proposition and two CTAs (primary: "Start Free Backup", secondary: "See How It Works")
-2. **How It Works** — Three-box flow diagram: Source Cloud → Your Computer → Backup Cloud, with privacy badge ("Your data never touches our servers")
-3. **Threat Cards** — Four threats with protection explanations: ransomware, accidental deletion, account compromise, provider outage
-4. **Features** — Six cards: Set & Forget, Ransomware Detection, Monthly Health Reports, Privacy First, Time Travel Restore, Family Dashboard
-5. **Pricing** — Three-tier comparison: Free / Pro $3.99/mo / Family $7.99/mo
-6. **Final CTA** — "Your files deserve a backup plan"
+1. **Hero** — "Your files deserve a safety net" headline with clear value proposition and two CTAs (primary: "Protect My Files", secondary: "See How It Works")
+2. **How It Works** — Three-box flow diagram: Your OneDrive → VintageVault Cloud API → VintageVault-Backup Folder, with transparency badge ("Your backup is plain folders you can browse, download, or share")
+3. **Threat Cards** — Four threats with honest Free/Pro split: accidental deletion and overwrite (Free), ransomware and account compromise (Pro upsell)
+4. **Features** — Six cards: Set & Forget, Ransomware Detection (Pro), Monthly Health Reports, Radical Transparency, Time Travel Restore, Family Dashboard
+5. **Pricing** — Three-tier comparison: Free / Pro $4.99/mo / Family $9.99/mo
+6. **Final CTA** — "Everyone deserves a backup plan."
 
 **Design notes:**
 - Dark hero section (trust, security feel) → light content sections → dark CTA
@@ -34,38 +34,34 @@ This document describes VintageVault's user experience across four key screens, 
 **Flow:**
 
 ```
-Step 1: Choose Source     Step 2: Choose Destination     Step 3: Confirm     Success!
-┌─────────────────┐     ┌──────────────────────┐     ┌──────────────┐     ┌──────────┐
-│ Where are your  │     │ Where should we      │     │ Review your  │     │ You're   │
-│ files?          │────►│ back up to?          │────►│ backup plan  │────►│ protected│
-│                 │     │                      │     │              │     │ 🎉       │
-│ [OneDrive] ●    │     │ [OneDrive] (source)  │     │ OneDrive →   │     │          │
-│ [Google Drive]  │     │ [Google Drive] ●     │     │ Google Drive │     │ Backup   │
-│ [Dropbox] soon  │     │ [Dropbox] soon       │     │ Weekly sched │     │ running! │
-│ [iCloud] soon   │     │ [iCloud] soon        │     │ ~4,200 files │     │          │
-└─────────────────┘     └──────────────────────┘     └──────────────┘     └──────────┘
+Step 1: Connect OneDrive       Step 2: Confirm               Success!
+┌─────────────────┐         ┌──────────────┐             ┌──────────┐
+│ Connect your    │         │ Review your  │             │ You're   │
+│ OneDrive        │────────►│ backup plan  │────────────►│ protected│
+│                 │         │              │             │ 🎉       │
+│ [OneDrive] ●    │         │ OneDrive →   │             │          │
+│ [Google] soon   │         │ VintageVault │             │ Snapshot │
+│ [Dropbox] soon  │         │   -Backup/   │             │ running! │
+│ [iCloud] soon   │         │ Weekly sched │             │          │
+└─────────────────┘         └──────────────┘             └──────────┘
 ```
 
-**Step 1 — Source selection:**
-- Provider grid with clear icons (OneDrive, Google Drive active; Dropbox, iCloud grayed with "Coming soon")
+**Step 1 — Connect OneDrive:**
+- OneDrive is the only active option; Google/Dropbox/iCloud grayed with "Coming soon"
 - OAuth button shows connected state with email and green check
-- Single selection — one source per pair
+- Single provider for MVP
 
-**Step 2 — Destination selection:**
-- Source provider is grayed out ("Already your source") to prevent same-account backup
-- OAuth button for destination with connected state
-- Shows destination path: `Google Drive / VintageVault / OneDrive /`
-
-**Step 3 — Confirmation:**
-- Visual flow: Source → Your PC → Destination
-- Summary table: accounts, what to back up ("Everything"), schedule, retention, estimated time
-- Tip card about first backup duration
+**Step 2 — Confirmation:**
+- Visual flow: Your OneDrive → Cloud API → VintageVault-Backup folder
+- Summary table: account, what to back up ("Everything"), backup location (OneDrive/VintageVault-Backup/), schedule, retention
+- Transparency card: "Your backup is just folders — browse, download, or share anytime"
+- Honest warning: "Same-account backup protects against accidental deletion but not ransomware. Upgrade to Pro for cross-account protection."
 - "Start My Backup" button (green, feels different from navigation blue)
 
 **Success screen:**
 - Celebration emoji (🎉) and "You're protected!" message
-- Three status indicators: backup in progress, notifications on, system tray active
-- "You can close this window" reassurance
+- Three status indicators: snapshot in progress, email notification on, "browse your backup anytime"
+- "No install needed. No app to run. Snapshots happen automatically in the cloud."
 - Link to open full dashboard
 
 **UX principles applied:**
@@ -83,7 +79,7 @@ Step 1: Choose Source     Step 2: Choose Destination     Step 3: Confirm     Suc
 **Layout:** Sidebar navigation + main content area
 
 **Sidebar:**
-- Logo, navigation links (Dashboard, Backup Pairs, Restore, Activity Log)
+- Logo, navigation links (Dashboard, Snapshots, Restore, Activity Log)
 - Settings section (Preferences, Account, Family)
 - User avatar with plan indicator ("Free Plan")
 
@@ -92,32 +88,34 @@ Step 1: Choose Source     Step 2: Choose Destination     Step 3: Confirm     Suc
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │  HEALTH BANNER                                               │
-│  [95 Health Score ●] Everything looks great! 🎉              │
+│  [95 Health Score ●] Your snapshots are up to date! 🎉      │
 │  12,847 files · 38.4 GB · 99.8% success                    │
 ├─────────────────────────────────────────────────────────────┤
-│  STATS:  Files Protected │ Total Backed Up │ Last │ Next    │
-│          12,847          │ 38.4 GB         │ 2h   │ Sun 3am │
+│  STATS:  Files Protected │ Total Backed Up │ Last     │Next │
+│          12,847          │ 38.4 GB         │ Snapshot │ Sun │
 ├───────────────────────────────────┬──────────────────────────┤
-│  BACKUP PAIRS                    │  SCHEDULE                │
-│  ● OneDrive → Google Drive       │  Every Sunday 3:00 AM    │
+│  BACKUP STATUS                   │  SCHEDULE                │
+│  ● OneDrive → VintageVault-Backup│  Every Sunday 3:00 AM    │
 │    ✓ Healthy                     │  [Upgrade for daily]     │
-│  + Add pair (Pro)                ├──────────────────────────┤
+│  + Cross-account (Pro)           ├──────────────────────────┤
 │                                  │  QUICK ACTIONS           │
-│  RECENT ACTIVITY                 │  [Run Backup Now]        │
-│  ✅ Backup completed (2h ago)    │  [Restore Files]         │
+│  RECENT ACTIVITY                 │  [Run Snapshot Now]      │
+│  ✅ Snapshot completed (2h ago)  │  [Restore Files]         │
 │  📋 Verification passed          │  [View Full Log]         │
-│  ✅ Backup completed (Mar 9)     ├──────────────────────────┤
-│  📧 Monthly report sent          │  SYSTEM TRAY PREVIEW     │
-│  ⚠️ PC sleep interrupted (Feb 23)│  🔒 Protected            │
-└───────────────────────────────────┴──────────────────────────┘
+│  ✅ Snapshot completed (Mar 9)   ├──────────────────────────┤
+│  📧 Monthly report sent          │  HOW IT WORKS            │
+│  ⚠️ 0 changes detected (Feb 23) │  Browse your backup at   │
+└───────────────────────────────────┤  OneDrive/VintageVault-  │
+                                    │  Backup/ anytime         │
+                                    └──────────────────────────┘
 ```
 
 **Key design decisions:**
 - Health score is the dominant visual — green/circular badge makes status instantly clear
-- Stats cards show the numbers users care about
+- Stats cards show the numbers users care about, using "snapshot" terminology
 - Activity feed shows human-readable events, not technical logs
 - "Upgrade" prompts are subtle (amber text, not blocking)
-- System tray preview shows what the desktop agent looks like
+- Transparency panel replaces system tray preview — links to backup folder and DIY instructions
 
 ---
 

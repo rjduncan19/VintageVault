@@ -166,10 +166,14 @@ VintageVault/
 │   │   ├── ux-wireframes.md
 │   │   ├── architecture-reassessment.md
 │   │   ├── open-core-strategy.md
+│   │   ├── same-account-pivot.md
+│   │   ├── radical-transparency.md
+│   │   ├── devils-advocate.md
 │   │   └── business-plan.md
 │   └── architecture/               # Architecture decision records (ADRs)
-│       ├── 001-system-architecture.md
-│       └── 002-data-movement-costs.md
+│       ├── 001-system-architecture.md   # SUPERSEDED — original desktop agent proposal
+│       ├── 002-data-movement-costs.md   # Partially superseded — applies to Pro tier
+│       └── 003-backup-storage-format.md # CURRENT — immutable incremental snapshots
 └── .gitignore                      # Git ignore rules
 ```
 

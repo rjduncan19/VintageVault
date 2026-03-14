@@ -38,23 +38,23 @@ Enterprise IT departments know this. They spend billions on cloud backup solutio
 **VintageVault automatically backs up your cloud to a second cloud. Set it once. Sleep easier.**
 
 ```
-┌──────────────┐                              ┌──────────────┐
-│              │         Your PC              │              │
-│   OneDrive   │───────► (running  ──────────►│ Google Drive  │
-│   (source)   │         VintageVault)        │  (backup)    │
-│              │                              │              │
-└──────────────┘                              └──────────────┘
+┌──────────────┐         ┌──────────────┐         ┌─────────────────────────┐
+│              │         │              │         │                         │
+│  Your        │────────►│ VintageVault │────────►│  VintageVault-Backup/   │
+│  OneDrive    │         │ (cloud API)  │         │  (in YOUR OneDrive)     │
+│              │         │              │         │                         │
+└──────────────┘         └──────────────┘         └─────────────────────────┘
 
-                     Your data never
-                     touches our servers.
+               No install. No desktop app. No data on our servers.
+               Backup is plain folders you can browse anytime.
 ```
 
 **How it works:**
-1. **Connect** your source cloud (e.g., OneDrive) and destination cloud (e.g., Google Drive)
-2. VintageVault's lightweight desktop agent **automatically copies** your files on a schedule
-3. If something goes wrong, **browse your backup** and restore any file from the past 30-365 days
+1. **Connect** your OneDrive account on our website (2-minute signup)
+2. VintageVault's cloud service **automatically creates snapshots** of your files on a schedule
+3. If something goes wrong, **browse your backup folder** and restore any file from the past 30-365 days
 
-**That's it.** No servers to manage. No external drives to buy. No technical knowledge required.
+**That's it.** No app to install. No desktop agent to keep running. Your backup is plain folders in your own OneDrive — browse them in File Explorer anytime.
 
 ---
 
@@ -133,23 +133,24 @@ Consumer cloud backup market: ≈ $0
 
 This **800× cost advantage** enables:
 - A genuinely useful **free tier** (free users cost us nothing)
-- **$3.99/mo Pro** pricing that undercuts every competitor
+- **$4.99/mo Pro** pricing that undercuts every competitor
 - **~95% gross margins** on paid subscriptions
 
 ### Pricing
 
-| Free | Pro ($3.99/mo) | Family ($7.99/mo) |
+| Free ($0) | Pro ($4.99/mo) | Family ($9.99/mo) |
 |------|----------------|-------------------|
-| 1 backup pair | Unlimited pairs | Everything in Pro |
-| Weekly schedule | Daily/hourly | Up to 5 family members |
-| 30-day retention | 90-day retention | 365-day retention |
+| 1 OneDrive snapshot | Everything in Free | Everything in Pro |
+| Weekly schedule | Daily/hourly snapshots | Up to 5 family members |
+| 30-day retention | Cross-account backup (ransomware-safe) | 365-day retention |
 | Basic alerts | Anomaly detection | Family dashboard |
-| | Encryption | Shared management |
+| | 90-day retention | Shared management |
 
 ### Revenue model
 
-At **100,000 free users** with **4% paid conversion:**
-- **$204,000 ARR** with ~95% gross margin
+At **100,000 free users** with **8% paid conversion** (SaaS median):
+- **~$400,000 ARR** with ~90% gross margin
+- Free tier infrastructure: ~$5-20/month (Azure Functions)
 - Scales linearly — infrastructure costs grow minimally
 
 ---
@@ -158,67 +159,72 @@ At **100,000 free users** with **4% paid conversion:**
 
 | Component | Technology | Purpose |
 |-----------|-----------|---------|
-| **Desktop agent** | .NET 8 background service | Runs backups locally; manages OAuth; system tray |
-| **Web dashboard** | ASP.NET Core + Blazor + MudBlazor | User accounts, backup config, status monitoring |
-| **Cloud APIs** | Microsoft Graph + Google Drive API | Delta sync, file transfer, change detection |
-| **Security** | OAuth2 PKCE, OS secure credential storage | Tokens never leave user's device |
+| **Backup engine** | .NET 8 library (open source) | Delta sync, snapshot management, change detection |
+| **Web app** | ASP.NET Core + Blazor + MudBlazor | User accounts, backup config, status, restore UI |
+| **Backup orchestration** | Azure Functions (timer trigger) | Scheduled snapshot execution |
+| **Cloud APIs** | Microsoft Graph (OneDrive) | Delta queries, server-side `driveItem: copy` |
+| **Security** | OAuth2 PKCE, Azure Key Vault | Secure token management |
 
 ### Architecture
 
 ```
-┌─────────────────────────────┐     ┌──────────────────────────────┐
-│     Web Dashboard           │     │     Desktop Agent             │
-│     (ASP.NET Core + Blazor) │     │     (.NET 8 Background Svc)  │
-│                             │     │                              │
-│  • User accounts            │◄───►│  • Pulls config from web     │
-│  • Backup configuration     │     │  • Executes backups locally  │
-│  • Status monitoring        │     │  • Reports status to web     │
-│  • Push notifications       │     │  • OAuth in OS secure storage│
-│  • NO data transfer         │     │  • System tray presence      │
-│                             │     │  • Anomaly detection         │
-│  Hosting: ~$20-50/mo total  │     │  Per-user cost: ~$0          │
-└─────────────────────────────┘     └──────────────────────────────┘
+┌──────────────────────────────┐     ┌──────────────────────────────┐
+│  VintageVault Web App        │     │  Azure Functions              │
+│  (ASP.NET Core + Blazor)     │     │  (Consumption Plan)           │
+│                              │     │                              │
+│  • User signup + OAuth       │────►│  • Timer trigger (weekly)     │
+│  • Backup configuration      │     │  • Graph delta API            │
+│  • Status dashboard          │     │  • driveItem: copy/move       │
+│  • Restore file browser      │     │  • Immutable snapshot mgmt    │
+│  • Stripe billing            │     │  • Anomaly detection (Pro)    │
+│                              │     │                              │
+│  Hosting: ~$0-10/month       │     │  Cost: ~$0-5/month           │
+└──────────────────────────────┘     └──────────────────────────────┘
+
+  All operations are server-side OneDrive API calls.
+  No desktop agent. No relay server. $0 bandwidth.
+  Backup is plain folders in user's own OneDrive.
 ```
 
 ---
 
 ## Roadmap
 
-### Phase 1 — MVP (Desktop Agent)
-- Windows desktop agent
-- OneDrive → Google Drive backup
-- Full + incremental sync via delta APIs
-- Selective folder backup
-- Basic retention policy
-- Local configuration (CLI or localhost UI)
+### Phase 1 — MVP (Same-Account OneDrive Snapshots)
+- Web signup + OneDrive OAuth
+- Same-account immutable incremental snapshots via Graph API
+- Weekly schedule, 30-day retention
+- Browsable backup (plain folders in user's OneDrive)
+- Email status notifications
+- Open source engine on GitHub
 
-### Phase 2 — Web Dashboard
-- User accounts and authentication
-- Remote backup configuration and monitoring
-- Push notifications (success/failure/anomaly)
-- Responsive design for mobile monitoring
-- Pro tier billing (Stripe)
+### Phase 2 — Pro Tier + Cross-Account
+- Cross-account backup (separate OneDrive or Google Drive) for ransomware protection
+- Daily/hourly schedules
+- Anomaly detection
+- Stripe billing
+- 90-day retention
 
 ### Phase 3 — Growth
-- macOS agent
-- Additional providers (Dropbox, iCloud)
-- Reverse direction (Google Drive → OneDrive)
-- Client-side encryption (E2EE)
+- Google Drive support (pending OAuth assessment)
 - Family tier with shared dashboard
-- Restore workflow ("Time Machine for your cloud")
+- Additional providers (Dropbox)
+- Desktop agent as optional "privacy mode"
+- Client-side encryption (E2EE)
+- Restore workflow UX
 
 ---
 
 ## The Ask
 
-VintageVault is currently in the planning and architecture phase, with comprehensive documentation covering product strategy, gap analysis, competitive landscape, monetization model, and technical architecture.
+VintageVault is a mission-driven project in the planning and architecture phase.
 
 **What's next:**
-1. Build the Phase 1 MVP (desktop agent, OneDrive → Google Drive)
-2. Private beta with 50-100 families
-3. Iterate based on feedback
+1. Build the Phase 1 MVP (same-account OneDrive snapshots, web-only)
+2. Open source the backup engine on GitHub
+3. Private beta with 50-100 families
 4. Launch free tier publicly
-5. Introduce Pro tier with web dashboard
+5. Introduce Pro tier with cross-account backup
 
 ---
 

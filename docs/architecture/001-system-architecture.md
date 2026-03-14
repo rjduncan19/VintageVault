@@ -1,8 +1,15 @@
 # ADR-001: System Architecture
 
-**Status:** Accepted
+**Status:** Superseded
 **Date:** 2026-03-13
 **Decision Makers:** VintageVault Core Team
+**Superseded by:** [Same-Account Pivot](../planning/same-account-pivot.md), [ADR-003: Backup Storage Format](003-backup-storage-format.md)
+
+> **⚠️ This ADR is retained as historical context.** It documents the original architecture analysis (five proposals evaluated) and the initial decision to pursue a desktop agent + web dashboard hybrid. Subsequent analysis revealed that same-account backup via cloud APIs is simpler, cheaper, and eliminates the desktop agent entirely for Phase 1. See the documents linked above for the current Plan of Record.
+>
+> **Current POR (Phase 1):** Same-account OneDrive backup via Azure Functions. No desktop agent. No relay server. OneDrive-only (Google deferred). Immutable incremental snapshots (ADR-003).
+>
+> **What's still valid in this ADR:** The mission statement, threat model, security comparison, and analysis of proposals A-E remain useful context. The decision to choose Proposal D has been superseded.
 
 ## Mission
 

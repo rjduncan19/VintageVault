@@ -35,18 +35,22 @@ Your cloud drive is not a backup. It's the thing that needs backing up.
 
 ## The Solution
 
-**Simple version:** VintageVault automatically copies your Google Drive to a second Google account (or OneDrive, etc.) on a schedule. If something goes wrong, browse your backup and restore.
+**Simple version:** VintageVault automatically creates immutable snapshots of your OneDrive files on a schedule. If something goes wrong, browse your backup folder and restore.
 
 **How it works:**
 
 ```
-PRIMARY EXPERIENCE (SaaS — web-only, no install):
-  User signs up → authorizes source + destination → backup runs on our server
-  2-minute setup. Works 24/7. Data streams through, never stored.
+PRIMARY EXPERIENCE (Web-only, no install):
+  User signs up → authorizes OneDrive → snapshots run automatically via cloud API
+  2-minute setup. No app to install. Backup is plain folders in your own OneDrive.
 
-SECONDARY EXPERIENCE (Open Source Agent — optional):
-  User downloads desktop app → authorizes accounts → backup runs on their PC
-  Maximum privacy. Free forever. Earns trust and reviews.
+PHASE 2 ADD-ON (Cross-account, Pro tier):
+  Backup to a SEPARATE account for ransomware protection.
+  Requires relay server or optional desktop agent.
+
+PHASE 2 ADD-ON (Open Source Agent — optional):
+  User downloads desktop app → runs backups locally → maximum privacy
+  Free forever. Apache 2.0 license.
 ```
 
 ---

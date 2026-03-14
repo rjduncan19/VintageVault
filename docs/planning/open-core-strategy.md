@@ -206,27 +206,30 @@ SHARED FOUNDATION:             VintageVault Engine — open source .NET library
 
 ### Build Order
 
-```
-Phase 1: Engine + Agent (open source)
-  • Build the core engine as a .NET library
-  • Wrap in desktop agent with CLI
-  • Google → Google (share-then-copy) first
-  • Ship on GitHub, start earning trust and reviews
-  • Costs: $0 infrastructure, just development time
+> **⚠️ Updated for same-account pivot.** Original phasing proposed Engine+Agent first. Current POR starts with web-only same-account backup, with agent as a later add-on.
 
-Phase 2: Web dashboard + cloud relay (SaaS)
-  • Build web app consuming the same Engine
-  • Streaming relay for OneDrive routes
-  • User accounts, billing (Stripe)
-  • Launch paid tiers
+```
+Phase 1: Engine + Web App (same-account OneDrive backup)
+  • Build the core engine as a .NET library (open source)
+  • Web app with OneDrive OAuth + Azure Functions orchestration
+  • Same-account immutable snapshots via Graph API
+  • OneDrive-only (Google deferred due to OAuth cost)
+  • Ship engine on GitHub, web app as SaaS
+  • Costs: ~$0-10/month infrastructure
+
+Phase 2: Pro tier + Agent (cross-account + open source agent)
+  • Add cross-account backup (ransomware protection, Pro $4.99/mo)
+  • Build and open-source the desktop agent (for privacy-conscious users)
+  • Stripe billing
+  • Google Drive support (pending OAuth assessment funding)
 
 Phase 3: Grow
   • More providers, family features, anomaly detection
   • Community contributes provider adapters
-  • Engine improvements benefit both products
+  • Engine improvements benefit both web app and agent
 ```
 
-**Phase 1 costs nothing to operate** and starts building the trust flywheel immediately. Phase 2 is where revenue begins.
+**Phase 1 validates demand** with a genuinely useful free product. Phase 2 introduces revenue and the open source agent.
 
 ---
 
