@@ -119,14 +119,24 @@ Each snapshot includes machine-readable metadata.
       "action": "modified",
       "size": 245760,
       "itemId": "abc123",
-      "lastModified": "2026-03-20T14:30:00Z"
+      "lastModified": "2026-03-20T14:30:00Z",
+      "hashes": {
+        "sha1": "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3",
+        "quickXorHash": "base64encodedvalue=="
+      },
+      "copyVerified": true
     },
     {
       "path": "/Documents/New Project.docx",
       "action": "added",
       "size": 278528,
       "itemId": "def456",
-      "lastModified": "2026-03-19T09:15:00Z"
+      "lastModified": "2026-03-19T09:15:00Z",
+      "hashes": {
+        "sha1": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c",
+        "quickXorHash": "anotherbase64value=="
+      },
+      "copyVerified": true
     },
     {
       "path": "/Photos/Vacation/photo002.jpg",
@@ -209,6 +219,45 @@ No web UI, no scheduler, no dashboard for POC. Just a CLI that proves the engine
 
 **Acceptance criteria:** All four commands work correctly against a real OneDrive account.
 
+### R7: Checksum Integrity Verification
+
+Record and verify file integrity using checksums provided by the OneDrive API — no file downloads needed.
+
+**How it works:** OneDrive returns SHA-1 hash and QuickXorHash in the `file.hashes` property of every `driveItem`. This is free metadata — we don't need to download files to get it.
+
+```
+For each file in the backup:
+  1. Read source file's hashes from delta API response (file.hashes.sha1Hash, file.hashes.quickXorHash)
+  2. Record in _snapshot.json alongside the file entry
+  3. After driveItem: copy completes, read the COPY's hashes from the copied driveItem
+  4. Compare: source hash == copy hash → verified ✅
+  5. If mismatch: log error, flag in _snapshot.json → integrity failure ❌
+```
+
+**What this catches:**
+- Silent corruption during copy (rare but possible)
+- Truncated transfers
+- API bugs that produce incomplete copies
+- Bit rot in older snapshots (via periodic spot-check verification in future phases)
+
+**Snapshot metadata with checksums:**
+```json
+{
+  "path": "/Documents/Family Budget.xlsx",
+  "action": "modified",
+  "size": 245760,
+  "itemId": "abc123",
+  "lastModified": "2026-03-20T14:30:00Z",
+  "hashes": {
+    "sha1": "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3",
+    "quickXorHash": "base64encodedvalue=="
+  },
+  "copyVerified": true
+}
+```
+
+**Acceptance criteria:** Every file in every snapshot includes source hashes. Post-copy verification confirms hash match. Mismatches are logged and flagged.
+
 ---
 
 ## What the POC Does NOT Include
@@ -233,48 +282,53 @@ No web UI, no scheduler, no dashboard for POC. Just a CLI that proves the engine
 
 | Component | Choice | Rationale |
 |-----------|--------|-----------|
-| **Language** | TypeScript | Fastest to prototype, largest open-source community, same language front-to-back |
-| **Runtime** | Node.js 20+ | LTS, excellent Graph SDK support |
-| **Graph SDK** | `@microsoft/microsoft-graph-client` + `@azure/msal-node` | Official Microsoft libraries |
-| **Auth** | MSAL (Microsoft Authentication Library) for Node.js | Handles OAuth2, PKCE, token refresh |
-| **CLI framework** | `commander` or simple `process.argv` parsing | Lightweight, no unnecessary dependencies |
-| **Config storage** | Local JSON file (`~/.vintagevault/config.json`) | Simple, portable, encrypted in production |
-| **Package manager** | npm | Standard |
-| **Testing** | Vitest | Fast, TypeScript-native |
-| **Linting** | ESLint + Prettier | Standard TypeScript toolchain |
+| **Language** | C# / .NET 8 | Best Graph SDK, best Azure integration, strongly typed, single-binary publishing, already configured in devcontainer |
+| **Runtime** | .NET 8 (LTS) | Cross-platform (Windows, macOS, Linux), self-contained publish option |
+| **Graph SDK** | `Microsoft.Graph` + `Azure.Identity` | Official Microsoft SDK, strongly typed, excellent async/batch support |
+| **Auth** | MSAL (`Microsoft.Identity.Client`) | Handles OAuth2, PKCE, token refresh, device code flow |
+| **CLI framework** | `System.CommandLine` | Official .NET CLI framework, subcommand routing, help generation |
+| **Config storage** | Local JSON file (`~/.vintagevault/config.json`) | Simple, portable; encrypted in production |
+| **Testing** | xUnit + Moq | .NET standard, strong async test support |
+| **Linting** | `dotnet format` + .editorconfig | Built-in, zero additional tooling |
+| **Publishing** | `dotnet publish --self-contained` | Single native binary, no runtime dependency for users |
 
 ### Project Structure
 
 ```
 vintagevault/
 ├── src/
-│   ├── cli.ts                # CLI entry point (auth, backup, status, snapshots)
-│   ├── engine/
-│   │   ├── backup.ts         # Core backup orchestration
-│   │   ├── delta.ts          # Delta API change detection
-│   │   ├── snapshot.ts       # Snapshot folder creation + file copying
-│   │   ├── manifest.ts       # Read/write manifest.json and _snapshot.json
-│   │   └── detection.ts      # Anomaly detection from metadata
-│   ├── graph/
-│   │   ├── auth.ts           # MSAL auth, token management
-│   │   ├── client.ts         # Graph API client wrapper
-│   │   └── operations.ts     # driveItem: copy, create folder, write file
-│   └── config/
-│       └── store.ts          # Local config read/write (~/.vintagevault/)
+│   └── VintageVault.Cli/            # CLI application
+│       ├── Program.cs                # Entry point + command routing
+│       ├── Commands/
+│       │   ├── AuthCommand.cs        # OAuth flow
+│       │   ├── BackupCommand.cs      # Run backup cycle
+│       │   ├── StatusCommand.cs      # Show backup status
+│       │   └── SnapshotsCommand.cs   # List snapshots
+│       ├── Engine/
+│       │   ├── BackupOrchestrator.cs # Core backup flow coordination
+│       │   ├── DeltaTracker.cs       # Delta API change detection
+│       │   ├── SnapshotWriter.cs     # Create snapshot folders + copy files
+│       │   ├── ManifestManager.cs    # Read/write manifest.json + _snapshot.json
+│       │   ├── IntegrityChecker.cs   # Checksum verification (see R7)
+│       │   └── AnomalyDetector.cs    # Metadata-based anomaly detection
+│       ├── Graph/
+│       │   ├── GraphClientFactory.cs # Authenticated Graph client setup
+│       │   └── DriveOperations.cs    # Copy, create folder, write file, read hashes
+│       └── Config/
+│           └── ConfigStore.cs        # Local config read/write
 ├── tests/
-│   ├── engine/
-│   │   ├── backup.test.ts
-│   │   ├── delta.test.ts
-│   │   ├── snapshot.test.ts
-│   │   └── detection.test.ts
-│   └── graph/
-│       └── operations.test.ts
-├── package.json
-├── tsconfig.json
-├── .eslintrc.json
-├── .prettierrc
-├── README.md                  # Open source README
-└── LICENSE                    # Apache 2.0
+│   └── VintageVault.Tests/
+│       ├── Engine/
+│       │   ├── BackupOrchestratorTests.cs
+│       │   ├── DeltaTrackerTests.cs
+│       │   ├── IntegrityCheckerTests.cs
+│       │   └── AnomalyDetectorTests.cs
+│       └── Graph/
+│           └── DriveOperationsTests.cs
+├── VintageVault.sln
+├── README.md                         # Open source README
+├── LICENSE                           # Apache 2.0
+└── .editorconfig
 ```
 
 ### Backup Flow (Sequence)
@@ -556,6 +610,7 @@ The POC is successful if:
 2. ✅ Incremental snapshot captures only changes (verified by modifying/adding/deleting files between runs)
 3. ✅ Previous snapshots are never modified by new runs
 4. ✅ Metadata manifests are accurate and parseable
-5. ✅ Anomaly detection correctly flags simulated ransomware patterns
-6. ✅ Total process works with $0 bandwidth (all `driveItem: copy`, no file downloads)
-7. ✅ Backup of 500+ files completes in under 10 minutes
+5. ✅ File checksums are recorded from source and verified against copies
+6. ✅ Anomaly detection correctly flags simulated ransomware patterns
+7. ✅ Total process works with $0 bandwidth (all `driveItem: copy`, no file downloads)
+8. ✅ Backup of 500+ files completes in under 10 minutes
