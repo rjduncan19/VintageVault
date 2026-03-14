@@ -95,10 +95,9 @@
 <div class="mockup-banner">📐 MOCKUP — Setup wizard wireframe · Click tabs to see each step</div>
 
 <div class="tab-bar">
-  <div class="tab active" onclick="showScreen('step1')">Step 1: Source</div>
-  <div class="tab" onclick="showScreen('step2')">Step 2: Destination</div>
-  <div class="tab" onclick="showScreen('step3')">Step 3: Confirm</div>
-  <div class="tab" onclick="showScreen('step4')">✓ Success</div>
+  <div class="tab active" onclick="showScreen('step1')">Step 1: Connect</div>
+  <div class="tab" onclick="showScreen('step2')">Step 2: Confirm</div>
+  <div class="tab" onclick="showScreen('step3')">✓ Success</div>
 </div>
 
 <!-- STEP 1: Choose source -->
@@ -106,52 +105,33 @@
   <div class="wizard">
     <div class="wizard-header">
       <div class="logo">Vintage<span>Vault</span></div>
-      <h1>Where are your files?</h1>
-      <p>Choose the cloud account you want to protect</p>
+      <h1>Connect your OneDrive</h1>
+      <p>We'll create a VintageVault-Backup folder with weekly snapshots of your files</p>
     </div>
 
     <div class="progress">
       <div class="step-indicator">
         <div class="step-circle active">1</div>
-        <div class="step-label active">Source</div>
+        <div class="step-label active">Connect</div>
       </div>
       <div class="step-line"></div>
       <div class="step-indicator">
         <div class="step-circle">2</div>
-        <div class="step-label">Destination</div>
-      </div>
-      <div class="step-line"></div>
-      <div class="step-indicator">
-        <div class="step-circle">3</div>
         <div class="step-label">Confirm</div>
       </div>
     </div>
 
     <div class="card">
-      <h2>Select your source cloud</h2>
-      <p>This is the cloud account with files you want to back up.</p>
-      <div class="provider-options">
-        <div class="provider selected" onclick="selectProvider(this)">
+      <h2>Sign in with Microsoft</h2>
+      <p>We'll request read/write access to create a backup folder in your OneDrive. We never access files outside your account.</p>
+      <div class="provider-options" style="grid-template-columns: 1fr;">
+        <div class="provider selected">
           <div class="p-icon">📁</div>
           <div class="p-name">OneDrive</div>
           <div class="p-desc">Microsoft account</div>
         </div>
-        <div class="provider" onclick="selectProvider(this)">
-          <div class="p-icon">📂</div>
-          <div class="p-name">Google Drive</div>
-          <div class="p-desc">Google account</div>
-        </div>
-        <div class="provider disabled">
-          <div class="p-icon">📦</div>
-          <div class="p-name">Dropbox</div>
-          <div class="coming-soon">Coming soon</div>
-        </div>
-        <div class="provider disabled">
-          <div class="p-icon">☁️</div>
-          <div class="p-name">iCloud</div>
-          <div class="coming-soon">Coming soon</div>
-        </div>
       </div>
+      <p style="margin-top: 1rem; font-size: 0.85rem; color: #64748b;">Google Drive, Dropbox, and iCloud — coming soon.</p>
     </div>
 
     <div class="card">
@@ -166,104 +146,28 @@
 
     <div class="actions">
       <div></div>
-      <button class="btn btn-primary" onclick="showScreen('step2')">Next: Choose Destination →</button>
+      <button class="btn btn-primary" onclick="showScreen('step2')">Connect &amp; Continue →</button>
     </div>
   </div>
 </div>
 
-<!-- STEP 2: Choose destination -->
+<!-- STEP 2: Confirm -->
 <div id="step2" class="screen">
   <div class="wizard">
     <div class="wizard-header">
       <div class="logo">Vintage<span>Vault</span></div>
-      <h1>Where should we back up to?</h1>
-      <p>Choose a different cloud as your safety backup</p>
+      <h1>Review your backup plan</h1>
+      <p>Everything look right? You can change settings anytime.</p>
     </div>
 
     <div class="progress">
       <div class="step-indicator">
         <div class="step-circle done">✓</div>
-        <div class="step-label done">Source</div>
+        <div class="step-label done">Connect</div>
       </div>
       <div class="step-line done"></div>
       <div class="step-indicator">
         <div class="step-circle active">2</div>
-        <div class="step-label active">Destination</div>
-      </div>
-      <div class="step-line"></div>
-      <div class="step-indicator">
-        <div class="step-circle">3</div>
-        <div class="step-label">Confirm</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Select your backup destination</h2>
-      <p>Your files will be copied here. We recommend using a different provider than your source for maximum protection.</p>
-      <div class="provider-options">
-        <div class="provider" style="opacity: 0.4; cursor: not-allowed;">
-          <div class="p-icon">📁</div>
-          <div class="p-name">OneDrive</div>
-          <div class="p-desc" style="color: #ef4444;">Already your source</div>
-        </div>
-        <div class="provider selected">
-          <div class="p-icon">📂</div>
-          <div class="p-name">Google Drive</div>
-          <div class="p-desc">Different provider ✓</div>
-        </div>
-        <div class="provider disabled">
-          <div class="p-icon">📦</div>
-          <div class="p-name">Dropbox</div>
-          <div class="coming-soon">Coming soon</div>
-        </div>
-        <div class="provider disabled">
-          <div class="p-icon">☁️</div>
-          <div class="p-name">iCloud</div>
-          <div class="coming-soon">Coming soon</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Connect your Google Drive</h2>
-      <p>Click below to sign in with Google. We'll request write access to create a VintageVault backup folder.</p>
-      <button class="oauth-btn connected">
-        <span class="o-icon">📂</span>
-        <span>Connected as richard.family@gmail.com</span>
-        <span class="o-check">✓</span>
-      </button>
-      <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0;">Backups will be stored in: <strong>Google Drive / VintageVault / OneDrive /</strong></p>
-    </div>
-
-    <div class="actions">
-      <button class="btn btn-secondary" onclick="showScreen('step1')">← Back</button>
-      <button class="btn btn-primary" onclick="showScreen('step3')">Next: Review & Confirm →</button>
-    </div>
-  </div>
-</div>
-
-<!-- STEP 3: Confirm -->
-<div id="step3" class="screen">
-  <div class="wizard">
-    <div class="wizard-header">
-      <div class="logo">Vintage<span>Vault</span></div>
-      <h1>Review your backup plan</h1>
-      <p>Everything look right? You can change these settings anytime.</p>
-    </div>
-
-    <div class="progress">
-      <div class="step-indicator">
-        <div class="step-circle done">✓</div>
-        <div class="step-label done">Source</div>
-      </div>
-      <div class="step-line done"></div>
-      <div class="step-indicator">
-        <div class="step-circle done">✓</div>
-        <div class="step-label done">Destination</div>
-      </div>
-      <div class="step-line done"></div>
-      <div class="step-indicator">
-        <div class="step-circle active">3</div>
         <div class="step-label active">Confirm</div>
       </div>
     </div>
@@ -273,25 +177,25 @@
 
       <div class="summary-flow">
         <div class="flow-visual">
-          <span class="flow-item">📁 OneDrive</span>
+          <span class="flow-item">📁 Your OneDrive</span>
           <span>→</span>
-          <span class="flow-item">🖥️ Your PC</span>
+          <span class="flow-item">☁️ VintageVault API</span>
           <span>→</span>
-          <span class="flow-item">📂 Google Drive</span>
+          <span class="flow-item">🗂️ OneDrive / VintageVault-Backup /</span>
         </div>
       </div>
 
       <div class="summary-row">
-        <span class="summary-label">Source</span>
-        <span class="summary-value">OneDrive (richard@example.com)</span>
-      </div>
-      <div class="summary-row">
-        <span class="summary-label">Destination</span>
-        <span class="summary-value">Google Drive (richard.family@gmail.com)</span>
+        <span class="summary-label">Account</span>
+        <span class="summary-value">richard@example.com</span>
       </div>
       <div class="summary-row">
         <span class="summary-label">What to back up</span>
         <span class="summary-value">Everything</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Backup location</span>
+        <span class="summary-value">OneDrive / VintageVault-Backup /</span>
       </div>
       <div class="summary-row">
         <span class="summary-label">Schedule</span>
@@ -302,26 +206,32 @@
         <span class="summary-value">30 days (Free plan)</span>
       </div>
       <div class="summary-row">
-        <span class="summary-label">Estimated first backup</span>
-        <span class="summary-value">~4,200 files · ~12 GB · ~3 hours</span>
+        <span class="summary-label">Estimated first snapshot</span>
+        <span class="summary-value">~4,200 files · ~12 GB</span>
       </div>
     </div>
 
     <div class="card" style="background: #eff6ff; border-color: #bfdbfe;">
       <p style="margin-bottom: 0; color: #1e40af; font-size: 0.95rem;">
-        💡 <strong>Tip:</strong> Your first backup may take a few hours depending on your internet speed. After that, only changed files are backed up — usually taking just minutes.
+        💡 <strong>Your backup is just folders.</strong> You can browse, download, or share your VintageVault-Backup folder anytime — no special tools needed. <a href="#" style="color: #2563eb;">How to do this yourself →</a>
+      </p>
+    </div>
+
+    <div class="card" style="background: #fffbeb; border-color: #fde68a;">
+      <p style="margin-bottom: 0; color: #92400e; font-size: 0.95rem;">
+        ⚠️ <strong>Same-account backup protects against accidental deletion</strong> but not ransomware (which could encrypt your backup folder too). <a href="#" style="color: #92400e;">Upgrade to Pro</a> for cross-account ransomware protection.
       </p>
     </div>
 
     <div class="actions">
-      <button class="btn btn-secondary" onclick="showScreen('step2')">← Back</button>
-      <button class="btn btn-success" onclick="showScreen('step4')">✓ Start My Backup</button>
+      <button class="btn btn-secondary" onclick="showScreen('step1')">← Back</button>
+      <button class="btn btn-success" onclick="showScreen('step3')">✓ Start My Backup</button>
     </div>
   </div>
 </div>
 
-<!-- STEP 4: Success -->
-<div id="step4" class="screen">
+<!-- STEP 3: Success -->
+<div id="step3" class="screen">
   <div class="wizard">
     <div class="wizard-header">
       <div class="logo">Vintage<span>Vault</span></div>
@@ -330,19 +240,19 @@
     <div class="card" style="text-align: center;">
       <div class="success-icon">🎉</div>
       <div class="success-title">You're protected!</div>
-      <p class="success-desc">Your first backup is running now. VintageVault will quietly keep your files safe in the background. We'll email you when the first backup completes.</p>
+      <p class="success-desc">Your first snapshot is being created now. VintageVault will automatically create weekly snapshots of your OneDrive files. We'll email you when the first snapshot is ready.</p>
 
       <div class="success-stat">
         <span class="s-icon">📊</span>
-        <span class="s-text"><strong>Backup in progress</strong><span>4,200 files · 0% complete · Estimated: 3 hours</span></span>
+        <span class="s-text"><strong>Snapshot in progress</strong><span>4,200 files · Copying to VintageVault-Backup folder</span></span>
       </div>
       <div class="success-stat">
         <span class="s-icon">🔔</span>
-        <span class="s-text"><strong>Notifications on</strong><span>We'll email you at richard@example.com when complete</span></span>
+        <span class="s-text"><strong>Email notification on</strong><span>We'll email richard@example.com when complete</span></span>
       </div>
       <div class="success-stat">
-        <span class="s-icon">🖥️</span>
-        <span class="s-text"><strong>System tray active</strong><span>VintageVault is running in your system tray — look for the 🔒 icon</span></span>
+        <span class="s-icon">🗂️</span>
+        <span class="s-text"><strong>Browse your backup anytime</strong><span>Open OneDrive → VintageVault-Backup → see your files</span></span>
       </div>
 
       <div style="margin-top: 2rem;">
@@ -350,7 +260,7 @@
       </div>
 
       <p style="margin-top: 1.5rem; font-size: 0.85rem; color: #64748b;">
-        You can close this window. VintageVault continues running in the background.
+        No install needed. No app to run. Snapshots happen automatically in the cloud.
       </p>
     </div>
   </div>
@@ -362,7 +272,7 @@ function showScreen(id) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   const tabs = document.querySelectorAll('.tab');
-  const index = ['step1','step2','step3','step4'].indexOf(id);
+  const index = ['step1','step2','step3'].indexOf(id);
   if (index >= 0) tabs[index].classList.add('active');
 }
 function selectProvider(el) {

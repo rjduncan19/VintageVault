@@ -153,8 +153,8 @@
         </div>
       </div>
       <div class="health-details">
-        <h2>Everything looks great! 🎉</h2>
-        <p>Your files are protected. Last backup completed successfully 2 hours ago.</p>
+        <h2>Your OneDrive snapshots are up to date! 🎉</h2>
+        <p>You can restore deleted or overwritten files from the last 30 days.</p>
         <div class="health-stats">
           <div class="health-stat"><strong>12,847</strong> files protected</div>
           <div class="health-stat"><strong>38.4 GB</strong> backed up</div>
@@ -176,12 +176,12 @@
         <div class="change">↑ 0.8 GB this week</div>
       </div>
       <div class="stat-card">
-        <div class="label">Last Backup</div>
+        <div class="label">Last Snapshot</div>
         <div class="value">2h ago</div>
         <div class="change">Completed successfully</div>
       </div>
       <div class="stat-card">
-        <div class="label">Next Backup</div>
+        <div class="label">Next Snapshot</div>
         <div class="value">Sun 3am</div>
         <div class="change warn">Weekly schedule (Free)</div>
       </div>
@@ -198,16 +198,16 @@
           <div class="backup-pair">
             <div class="bp-status healthy"></div>
             <div class="bp-flow">
-              <div class="route">📁 OneDrive → 📂 Google Drive</div>
-              <div class="meta">richard@example.com → richard.family@gmail.com</div>
+              <div class="route">📁 OneDrive → 🗂️ VintageVault-Backup</div>
+              <div class="meta">richard@example.com · Same-account snapshots</div>
             </div>
             <div class="bp-badge success">✓ Healthy</div>
           </div>
           <div class="backup-pair" style="opacity: 0.5;">
             <div class="bp-status" style="background: #e2e8f0;"></div>
             <div class="bp-flow">
-              <div class="route" style="color: #94a3b8;">+ Add another backup pair</div>
-              <div class="meta">Upgrade to Pro for unlimited pairs</div>
+              <div class="route" style="color: #94a3b8;">+ Cross-account backup (ransomware protection)</div>
+              <div class="meta">Upgrade to Pro to back up to a separate account</div>
             </div>
             <div class="bp-badge" style="background: #f1f5f9; color: #94a3b8;">Pro</div>
           </div>
@@ -288,20 +288,16 @@
           </div>
         </div>
 
-        <!-- System tray preview -->
-        <div class="tray-preview">
-          <div class="tray-title">System Tray Preview</div>
-          <div class="tray-mockup">
-            <div class="tray-item"><div class="dot green"></div> 🔒 VintageVault — Protected</div>
-            <div class="tray-divider"></div>
-            <div class="tray-item dim">Last backup: 2 hours ago</div>
-            <div class="tray-item dim">Next backup: Sun 3:00 AM</div>
-            <div class="tray-item dim">12,847 files protected</div>
-            <div class="tray-divider"></div>
-            <div class="tray-item dim">Run Backup Now</div>
-            <div class="tray-item dim">Open Dashboard</div>
-            <div class="tray-item dim">Pause Backups</div>
-            <div class="tray-item dim">Quit</div>
+        <!-- Transparency panel -->
+        <div style="background: #0f172a; border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem;">
+          <div style="color: #94a3b8; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">How It Works</div>
+          <div style="background: #1e293b; border-radius: 8px; padding: 1rem; color: #e2e8f0; font-size: 0.85rem; line-height: 1.8;">
+            <div>🗂️ Your backup is in <strong>OneDrive / VintageVault-Backup</strong></div>
+            <div style="border-top: 1px solid #334155; margin: 0.5rem 0;"></div>
+            <div style="color: #94a3b8;">You can browse, download, or share your backup folder anytime — it's just regular folders and files.</div>
+            <div style="border-top: 1px solid #334155; margin: 0.5rem 0;"></div>
+            <div style="color: #94a3b8;"><a href="#" style="color: #60a5fa; text-decoration: none;">How to do this yourself →</a></div>
+            <div style="color: #94a3b8;"><a href="#" style="color: #60a5fa; text-decoration: none;">Open backup folder in OneDrive →</a></div>
           </div>
         </div>
       </div>
