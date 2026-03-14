@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{08E34757-75D3-4A1D-861C-46AE726C61D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VintageVault.Cli", "src\VintageVault.Cli\VintageVault.Cli.csproj", "{6A940C17-D78B-4CE6-9A9E-94FB4FF95F38}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{88CAE183-F543-4CA8-8E16-08BE5816B308}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VintageVault.Tests", "tests\VintageVault.Tests\VintageVault.Tests.csproj", "{7E789829-0946-40BD-948F-EA5A6F7A1B12}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6A940C17-D78B-4CE6-9A9E-94FB4FF95F38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A940C17-D78B-4CE6-9A9E-94FB4FF95F38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A940C17-D78B-4CE6-9A9E-94FB4FF95F38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A940C17-D78B-4CE6-9A9E-94FB4FF95F38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E789829-0946-40BD-948F-EA5A6F7A1B12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E789829-0946-40BD-948F-EA5A6F7A1B12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E789829-0946-40BD-948F-EA5A6F7A1B12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E789829-0946-40BD-948F-EA5A6F7A1B12}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6A940C17-D78B-4CE6-9A9E-94FB4FF95F38} = {08E34757-75D3-4A1D-861C-46AE726C61D9}
+		{7E789829-0946-40BD-948F-EA5A6F7A1B12} = {88CAE183-F543-4CA8-8E16-08BE5816B308}
+	EndGlobalSection
+EndGlobal

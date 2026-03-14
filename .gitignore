@@ -6,3 +6,20 @@
 
 # Devcontainer cache
 .devcontainer/.dockerignore
+
+# .NET build artifacts
+**/bin/
+**/obj/
+*.user
+*.suo
+*.DotSettings.user
+
+# NuGet
+**/packages/
+
+# Test results
+**/TestResults/
+
+# OS files
+Thumbs.db
+.DS_Store
