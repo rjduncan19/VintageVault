@@ -251,6 +251,22 @@ A running record of all user prompts across sessions and machines. This helps tr
 
 ---
 
+### Prompt 11: DIY-First Model & Cross-Account Sharing
+**Time:** 2026-03-14T04:50:00Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> Given that we shifted to be mission based, if we store our backup as a single file (maybe a ZIP???), it would be easy for users to back up themselves if they want to do it for free, either to download to media, share then copy on google, etc. We could offer an upsell service to do this for people, but be transparent in what we are doing, with clear pricing, aligning to mission. Actually - if OneDrive Account A shares EVERYTHING with Onedrive Account B, can Onedrive Account B use cloud APIs to make their own copy of all this shared data?
+
+**Key findings:**
+- OneDrive `/sharedWithMe` API is DEPRECATED — being killed November 2026. Already broken. The share-then-copy approach for OneDrive cross-account is a dead end.
+- Plain folder copies beat ZIP: browsable, restorable per-file, incremental-friendly, no proprietary format, zero lock-in.
+- Radical transparency model: VintageVault creates plain folder snapshots in user's own OneDrive. No proprietary format. Users can browse, download, share, or copy their backup without our tool. Includes DIY instructions. Paid features are transparently justified by real costs.
+
+**Response artifacts:**
+- `docs/planning/radical-transparency.md` — DIY-first backup model, why not ZIP, cross-account API findings, Patagonia-style transparency including cost publishing, revised messaging.
+
+---
+
 ## How to Use This Log
 
 Each session is documented with:
