@@ -1,0 +1,20 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.wordWrap": "on"
+  },
+  "markdown.preview.fontSize": 14,
+  "markdown.preview.lineHeight": 1.6,
+  "markdown.preview.markEditorSelection": true,
+  "markdown.preview.scrollEditorWithPreview": true,
+  "markdown.preview.scrollPreviewWithEditor": true,
+  "[markdown][markdown] (plaintext)": {
+    "editor.unicodeHighlight.invisibleCharacters": false
+  },
+  "files.associations": {
+    "*.md": "markdown"
+  },
+  "extensions.autoUpdate": true
+}

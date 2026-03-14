@@ -1,0 +1,33 @@
+{
+  "name": "VintageVault",
+  "image": "mcr.microsoft.com/devcontainers/universal:latest",
+  "features": {
+    "ghcr.io/devcontainers/features/dotnet:1": {
+      "version": "8.0"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "markdown-all-in-one",
+        "esbenp.prettier-vscode",
+        "yzhang.markdown-all-in-one",
+        "bierner.markdown-preview-github-styles"
+      ],
+      "settings": {
+        "[markdown]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.formatOnSave": true,
+          "editor.wordWrap": "on"
+        },
+        "markdown.preview.fontSize": 14,
+        "markdown.preview.lineHeight": 1.6,
+        "markdown.preview.markEditorSelection": true,
+        "markdown.preview.scrollEditorWithPreview": true,
+        "markdown.preview.scrollPreviewWithEditor": true
+      }
+    }
+  },
+  "postCreateCommand": "echo 'VintageVault dev environment ready'",
+  "remoteUser": "root"
+}
