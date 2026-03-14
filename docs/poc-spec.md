@@ -152,11 +152,10 @@ Each snapshot includes machine-readable metadata.
 }
 ```
 
-**`manifest.json` (master index at backup root):**
+**`manifest.json` (master index at backup root — NO PII):**
 ```json
 {
   "version": 1,
-  "accountId": "user@example.com",
   "backupRoot": "/VintageVault-Backup",
   "snapshots": [
     {
@@ -475,8 +474,9 @@ VintageVault handles OAuth tokens that grant access to users' entire cloud stora
 | **Refresh token** | 🔴 Critical — grants ongoing OneDrive access | MSAL encrypted cache (DPAPI/Keychain/libsecret) |
 | **Access token** | 🔴 High — grants temporary OneDrive access | MSAL in-memory cache (never written to disk) |
 | **Client ID** | 🟢 Public — not a secret | Hardcoded in app (standard for public clients) |
+| **User email** | 🟡 PII — stored locally only | `config.json` (user's own machine; not written to OneDrive manifests) |
+| **File paths** | 🟡 Sensitive — reveal folder structure | `_snapshot.json` on user's own OneDrive (see metadata policy below) |
 | **Delta token** | 🟢 Not sensitive — opaque pagination cursor | `config.json` (plaintext OK) |
-| **User email** | 🟡 PII but not a secret | `config.json` |
 | **Filter rules** | 🟢 Not sensitive | `config.json` |
 | **Detection baseline** | 🟢 Not sensitive | `config.json` |
 
@@ -505,10 +505,39 @@ MSAL handles ALL token lifecycle:
 ```
 
 **We never:**
-- Store tokens in our config.json
-- Log tokens to console or files
-- Transmit tokens to any server
+- Store tokens in our config.json or any file
+- Log tokens, auth headers, or correlation IDs to console or files
+- Transmit tokens to any server (public client — no backend)
 - Store client secrets (public client — there is no secret)
+- Include raw exception messages in console output (may contain tokens/headers)
+
+#### Metadata privacy policy (files written to OneDrive)
+
+`_snapshot.json` and `manifest.json` are written to the user's own OneDrive. These contain file paths that reveal folder structure (e.g., `/Documents/Tax Returns/2025.pdf`). Key decisions:
+
+- **No PII in OneDrive manifests** — `accountId` is NOT written to `manifest.json` or `_snapshot.json`. Only stored locally in `config.json`.
+- **File paths are inherently visible** — anyone who can read the VintageVault-Backup folder can also read the original files. The metadata doesn't reveal anything beyond what's already accessible.
+- **Deleted file paths are an exception** — snapshots record paths of files that no longer exist in the source. This reveals that a file once existed. Accepted risk for POC; encrypt in production.
+- **VintageVault-Backup folder should be private** — POC documentation will instruct users to keep this folder unshared. Production will set permissions programmatically.
+
+#### Input validation (filter paths)
+
+All user-provided paths must be validated:
+- Must start with `/`
+- Must not contain `..` (path traversal)
+- Must not contain null bytes
+- Glob patterns restricted to `*` and `?` wildcards only (no regex, no shell expansion)
+- Paths are normalized before comparison
+
+#### Error handling policy
+
+| Error Type | Console Output | What's NEVER shown |
+|-----------|---------------|-------------------|
+| Auth failure | `"Authentication expired. Run: vintagevault auth"` | Token values, error descriptions from identity provider |
+| API error | `"API error (HTTP {status}). Retrying..."` | Request/response headers, correlation IDs, request bodies |
+| File copy failure | `"Failed to copy {count} files. See _snapshot.json."` | Full file paths on console (written to manifest only) |
+| Config error | `"Config file missing or corrupted. Run: vintagevault auth"` | File contents, JSON parse errors |
+| Unexpected error | `"Unexpected error. Please report at github.com/..."` | Exception messages, stack traces (log to debug file only) |
 
 #### What `~/.vintagevault/config.json` contains (NO secrets)
 
@@ -534,19 +563,29 @@ MSAL handles ALL token lifecycle:
 
 Nothing in this file grants access to the user's account. If an attacker reads it, they learn the user's email and backup preferences — not useful without the encrypted token cache.
 
-#### SDL checklist for POC
+#### SDL checklist
 
-| SDL Practice | How we comply |
-|-------------|---------------|
-| **No plaintext secrets** | Tokens in MSAL encrypted cache; config.json has zero secrets |
-| **Least privilege** | `Files.ReadWrite` scope only — no mail, contacts, or admin access |
-| **No client secret** | Public client application; PKCE for code exchange |
-| **Token rotation** | MSAL handles refresh automatically; tokens have short lifetimes |
-| **User revocation** | Standard Microsoft consent page; app respects revocation |
-| **No secret logging** | Tokens never logged to console, files, or telemetry |
-| **Transport security** | All Graph API calls over HTTPS (TLS 1.2+) |
-| **Dependency security** | NuGet packages from official Microsoft feeds; `dotnet audit` for vulnerabilities |
-| **Open source review** | Engine is Apache 2.0 — anyone can audit the security model |
+| SDL Practice | POC Status | Production Backlog |
+|-------------|-----------|-------------------|
+| **No plaintext secrets** | ✅ Tokens in MSAL encrypted cache | — |
+| **Least privilege** | ✅ `Files.ReadWrite` scope only | — |
+| **No client secret** | ✅ Public client with PKCE | — |
+| **Token rotation** | ✅ MSAL handles refresh | — |
+| **User revocation** | ✅ Standard Microsoft consent page | — |
+| **No secret logging** | ✅ Error handling policy defined above | — |
+| **Transport security** | ✅ All Graph API calls over HTTPS (TLS 1.2+) | — |
+| **Input validation** | ✅ Path sanitization for filter rules | — |
+| **Safe error messages** | ✅ Policy defined above, no raw exceptions | — |
+| **Dependency security** | ✅ Official Microsoft NuGet packages; `dotnet audit` before each release | Add to CI/CD pipeline |
+| **No PII in cloud manifests** | ✅ Email stored locally only, not in OneDrive metadata | — |
+| **Metadata encryption** | ⏳ Deferred — manifests are plaintext on user's own drive | Encrypt `_snapshot.json` before writing |
+| **Manifest integrity** | ⏳ Deferred — no tamper detection | Add HMAC chain to manifest |
+| **Threat model (STRIDE)** | ⏳ Deferred | Complete before production |
+| **Code review policy** | ⏳ Deferred (single developer) | Require 2 approvals before merge |
+| **Penetration testing** | ⏳ Deferred | Before production launch |
+| **SBOM** | ⏳ Deferred | Generate with each release |
+
+**⏳ items are documented as the production security backlog.** They're not blockers for a POC running against a test account, but must be resolved before any real user data is handled.
 
 **Delta API pagination:** The delta response may be paginated (multiple pages of changes). Must follow `@odata.nextLink` until we get a `@odata.deltaLink` (which contains the token for next run).
 
