@@ -10,7 +10,8 @@
 
   /* Nav */
   nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: #fff; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 100; }
-  .logo { font-size: 1.4rem; font-weight: 700; color: #0f172a; }
+  .logo { font-size: 1.4rem; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 0.5rem; }
+  .logo img { height: 36px; width: 36px; }
   .logo span { color: #2563eb; }
   nav ul { display: flex; gap: 2rem; list-style: none; }
   nav a { text-decoration: none; color: #475569; font-weight: 500; font-size: 0.95rem; }
@@ -101,7 +102,7 @@
 <div class="mockup-banner">📐 MOCKUP — This is a design wireframe, not a live page</div>
 
 <nav>
-  <div class="logo">Vintage<span>Vault</span></div>
+  <div class="logo"><img src="../branding/logo.svg" alt="VV">Vintage<span>Vault</span></div>
   <ul>
     <li><a href="#how">How It Works</a></li>
     <li><a href="#features">Features</a></li>

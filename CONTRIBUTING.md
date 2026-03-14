@@ -146,11 +146,27 @@ VintageVault/
 │   ├── DEVELOPMENT_PROCESS.md      # How Copilot remembers across sessions
 │   ├── DEVELOPMENT_SETUP.md        # This file (dev environment guide)
 │   ├── prompts/README.md           # Complete prompt history & decision log
+│   ├── branding/                   # Logo and brand assets
+│   │   ├── logo.svg                # Official logo (VV nested monogram)
+│   │   └── BRAND-GUIDE.md          # Colors, typography, usage rules
+│   ├── mockups/                    # Interactive HTML wireframes
+│   │   ├── index.html              # Mockup navigation page
+│   │   ├── 01-landing-page.html
+│   │   ├── 02-setup-wizard.html
+│   │   ├── 03-dashboard.html
+│   │   └── 04-restore.html
 │   ├── planning/                   # Product planning docs
 │   │   ├── product-strategy.md
 │   │   ├── gap-analysis.md
 │   │   ├── backup-fundamentals.md
-│   │   └── landscape-2026.md
+│   │   ├── landscape-2026.md
+│   │   ├── competitive-analysis.md
+│   │   ├── monetization-strategy.md
+│   │   ├── pitch.md
+│   │   ├── ux-wireframes.md
+│   │   ├── architecture-reassessment.md
+│   │   ├── open-core-strategy.md
+│   │   └── business-plan.md
 │   └── architecture/               # Architecture decision records (ADRs)
 │       ├── 001-system-architecture.md
 │       └── 002-data-movement-costs.md

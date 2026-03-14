@@ -1,6 +1,23 @@
 # VintageVault
 
-Cloud-to-cloud backup for families, freelancers, and small businesses. Protect your files from ransomware, accidental deletion, and account compromise by backing up to a second cloud provider.
+<p align="center">
+  <img src="docs/branding/logo.svg" alt="VintageVault Logo" width="200">
+</p>
+
+<p align="center">
+  <strong>Your cloud's backup plan.</strong><br>
+  Cloud-to-cloud backup for families, freelancers, and small businesses.
+</p>
+
+---
+
+Protect your files from ransomware, accidental deletion, and account compromise by automatically backing up to a second cloud account. Set it once. Sleep easier.
+
+- 🔒 **Privacy-first** — your data never touches our servers (or use our cloud relay for convenience)
+- ⚡ **2-minute setup** — connect source, connect destination, done
+- 🛡️ **Ransomware detection** — pauses backup if mass changes detected
+- 👨‍👩‍👧‍👦 **Built for families** — not IT departments
+- 🔓 **Open source engine** — audit the code that accesses your cloud
 
 ---
 
