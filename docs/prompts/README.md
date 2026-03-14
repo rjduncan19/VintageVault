@@ -4,7 +4,67 @@ A running record of all user prompts across sessions and machines. This helps tr
 
 ---
 
-## Session 1: 2026-03-13 (ebb1038b-6bc4)
+## Session 0: 2026-03-13 (codespaces-prev) — Codespaces Persistence Concerns
+
+**Context:** Earlier session exploring Codespaces reliability and session persistence. These prompts led to the decision to use desktop development and git-based session tracking.
+
+### Prompt 1: Codespaces Infrastructure
+**Time:** 2026-03-14T00:41:00Z  
+**Model:** unknown  
+
+> are the codespaces run in a container on my local machine, or are they run in the cloud?
+
+**Response artifacts:** None (exploratory question)
+
+---
+
+### Prompt 2: Session Loss Report
+**Time:** 2026-03-14T00:43:00Z  
+**Model:** unknown
+
+> why are they suspending and losing context? I had a great prompt session going in a codespace. The session disconnected, and it was gone,
+
+**Response artifacts:** None (issue report)
+
+**Note:** This was the critical failure point that exposed Codespaces as unsuitable for long-form AI development sessions.
+
+---
+
+### Prompt 3: GitHub Recommendation Conflict
+**Time:** 2026-03-14T00:45:00Z  
+**Model:** unknown
+
+> this seems to be a HUGE shortfall of codespace. I specifically asked how to create my app in github, and it recommended to run the copilot CLI in the codespace. That interface is ephemeral and not very useful...
+
+**Response artifacts:** None (product feedback)
+
+**Note:** GitHub's own documentation recommended Copilot CLI in Codespaces, but that proved unreliable for session persistence.
+
+---
+
+### Prompt 4: Alternative Approaches
+**Time:** 2026-03-14T00:48:00Z  
+**Model:** unknown
+
+> browser copilot is not nearly as powerful as the CLI. Can I run a command prompt process directly in the codespace VM?
+
+**Response artifacts:** None (exploratory)
+
+---
+
+### Prompt 5: Prompt Logging Request
+**Time:** 2026-03-14T00:51:00Z  
+**Model:** unknown
+
+> I'm having my repo record all prompts as a log of the development process… Please print out my prompts with the persistence concern here, with timing…
+
+**Response artifacts:** This prompt log document
+
+**Note:** This prompted the creation of the prompt tracking system across all future sessions.
+
+---
+
+## Session 1: 2026-03-13 (ebb1038b-6bc4) — Planning & Architecture Deep-Dive
 
 ### Prompt 1: Gap Analysis & Cost Clarification
 **Time:** 2026-03-13T23:19:36Z  
@@ -68,6 +128,9 @@ Each session is documented with:
 The **Model field is crucial** for understanding response quality and capabilities:
 - Claude Opus (4-1): Superior reasoning, code generation, analysis depth
 - Claude Haiku 4.5: Faster, lighter, good for routine tasks and summaries
+- **unknown**: Pre-session-0 history or incomplete records (should be updated if source is identified)
+
+**Note on Session 0:** The early Codespaces persistence prompts (Session 0) don't have model information because they occurred before systematic model tracking was implemented. If you recall which model was used, update those entries.
 
 Over time, this becomes a searchable record of:
 - What problems were prioritized and when
