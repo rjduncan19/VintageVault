@@ -5,19 +5,28 @@
 </p>
 
 <p align="center">
-  <strong>Your cloud's backup plan.</strong><br>
-  Cloud-to-cloud backup for families, freelancers, and small businesses.
+  <strong>Protecting everyone's digital life from ransomware and data loss.</strong><br>
+  Open-source cloud-to-cloud backup for families, freelancers, and small businesses.
+</p>
+
+<p align="center">
+  <a href="MISSION.md">Our Mission</a> · <a href="docs/planning/pitch.md">The Pitch</a> · <a href="docs/mockups/index.html">UX Mockups</a> · <a href="CONTRIBUTING.md">Contributing</a>
 </p>
 
 ---
 
-Protect your files from ransomware, accidental deletion, and account compromise by automatically backing up to a second cloud account. Set it once. Sleep easier.
+Ransomware attacks are up 34% year over year. Families lose every photo they've ever taken. Small businesses close permanently. Enterprise IT has backup solutions — everyone else has nothing.
 
+**VintageVault exists to change that.**
+
+We're not building a unicorn. We're building the backup tool that regular people deserve — one that's simple enough for a grandparent, transparent enough to trust, and sustainable enough to be there when disaster strikes.
+
+- 🔓 **Open source engine** — audit the code that accesses your cloud ([Apache 2.0](LICENSE))
 - 🔒 **Privacy-first** — your data never touches our servers (or use our cloud relay for convenience)
 - ⚡ **2-minute setup** — connect source, connect destination, done
 - 🛡️ **Ransomware detection** — pauses backup if mass changes detected
 - 👨‍👩‍👧‍👦 **Built for families** — not IT departments
-- 🔓 **Open source engine** — audit the code that accesses your cloud
+- 💚 **Mission-driven** — revenue sustains the work, not the other way around
 
 ---
 

@@ -4,6 +4,16 @@ _Last updated: 2026-03-14 | Model: Claude Opus 4.6_
 
 ---
 
+## The Mission
+
+**We're in business to protect everyone's digital life.**
+
+Not to build a unicorn. Not to maximize shareholder value. To make sure that when ransomware hits — and it will — regular people have a backup they didn't have to think about.
+
+See [MISSION.md](../../MISSION.md) for our full principles.
+
+---
+
 ## The Problem
 
 **2.3 billion people store their most important files in the cloud — and none of them have a backup.**
@@ -217,8 +227,10 @@ VintageVault is currently in the planning and architecture phase, with comprehen
 > **Every family deserves a backup plan they don't have to think about.**
 >
 > Cloud storage changed how we store files. VintageVault changes how we protect them.
-> One-directional. Privacy-first. Set it once. Sleep easier.
+> Open source. Mission-driven. Sustainable, not growth-at-all-costs.
+>
+> We'd rather protect 100,000 people for free than sell 1,000 subscriptions.
 
 ---
 
-_"Your cloud's backup plan."_
+_"We're in business to protect everyone's digital life."_

@@ -6,13 +6,15 @@ _Prepared: March 2026 | For internal review_
 
 ## Executive Summary
 
-VintageVault is a cloud-to-cloud backup service that protects families, freelancers, and small businesses against ransomware, accidental deletion, and account compromise by automatically copying files from one cloud provider to another.
+VintageVault is a mission-driven, open-source cloud-to-cloud backup service that protects families, freelancers, and small businesses against ransomware, accidental deletion, and account compromise by automatically copying files from one cloud account to another.
 
-**The opportunity:** 2.3 billion people store irreplaceable files in the cloud. Zero consumer-grade backup solutions exist. Enterprise tools (Veeam, Spanning) cost $48+/user/year and require IT expertise. VintageVault fills this gap at $4.99/month with a 2-minute setup.
+**The mission:** Ransomware attacks are up 34% year-over-year. Enterprise IT has solutions. Everyone else has nothing. VintageVault exists to change that — not to build a unicorn, but to make the world's digital life safer.
 
-**The model:** Open core. An open-source backup engine builds trust and earns influencer reviews. A proprietary SaaS web app generates subscription revenue. One shared codebase, two deployment modes.
+**The model:** Open core. An open-source backup engine (Apache 2.0) anyone can use for free. A sustainable SaaS web app for people who want convenience. Revenue exists to sustain the mission, not the other way around. Think Patagonia, not Uber.
 
 **The ask:** ~$2,000-4,000 startup costs, 10-15 hours/week of evening/weekend development, with AI (GitHub Copilot) handling the bulk of code generation. Break-even at ~50 paid subscribers.
+
+**What success looks like:** People protected, not revenue maximized. If the free open-source agent protects 10,000 families and the SaaS breaks even, that's a win.
 
 ---
 
@@ -369,13 +371,17 @@ Copilot generates code; the developer reviews, tests, and maintains it. The open
 
 ### "What's the endgame?"
 
-**Option A: Lifestyle business** — $5,000-15,000/month passive income with 1,000-3,000 subscribers. Minimal time investment after initial build. Most likely and most aligned with side project.
+**This is not a startup. It's a sustainable mission.**
 
-**Option B: Growth business** — If demand is strong, invest more time (or raise a small friends/family round) to accelerate. Target 10,000+ users, potential acquisition target for a cloud storage company.
+Inspired by Patagonia's model: the mission is protecting people's digital lives. Revenue sustains the work. We're not optimizing for an exit.
 
-**Option C: Acqui-hire / IP sale** — The open source engine + established user base has value even if the SaaS doesn't scale. Cloud companies might acquire for the technology or user base.
+**Option A: Sustainable mission (primary goal)** — Break-even or modest income ($3-5K/month). Open source engine protects thousands for free. SaaS sustains development. 1% of revenue goes to digital safety organizations. The project is alive, useful, and self-sustaining.
 
-**Option D: Shut it down** — If demand doesn't materialize within 6-12 months, total financial loss is $2,000-4,000. Educational value is retained.
+**Option B: Growing impact** — If demand is strong, invest more to reach more people. Not for shareholder return — because more people protected is better.
+
+**Option C: Acqui-hire / IP donation** — If the project can't sustain itself, open-source everything and donate the IP to a digital safety nonprofit. The code lives on even if the business doesn't.
+
+**Option D: Shut it down gracefully** — If demand doesn't materialize within 6-12 months, total financial loss is $2,000-4,000. The code remains open source. Educational value is retained.
 
 ### "What's the maximum you could lose?"
 
@@ -432,13 +438,15 @@ PHASE 3: Google assessment?            NO → Stay OneDrive-only.
 | | |
 |---|---|
 | **What** | Cloud-to-cloud backup for families |
+| **Mission** | Protect everyone's digital life from ransomware |
 | **Why now** | 2.3B cloud users, zero consumer backup products, APIs are mature |
-| **Model** | Open core: free agent (trust) + paid SaaS (revenue) |
+| **Model** | Open core: free agent (mission) + paid SaaS (sustainability) |
 | **Price** | Free / $4.99 / $9.99 per month |
 | **Cost to start** | $500-2,000 (no Google assessment) |
 | **Break-even** | ~50 paid subscribers (~$250/month revenue) |
 | **Dev approach** | Solo + GitHub Copilot, evenings/weekends, 10-15 hrs/week |
 | **Timeline to revenue** | 6-8 months |
 | **Max downside** | $2,000-4,000 if killed before Google assessment |
+| **Success metric** | People protected, not revenue maximized |
 | **Biggest risk** | Nobody wants this (mitigated by free open source validation) |
-| **Endgame** | Lifestyle business ($5-15K/month) or acquisition |
+| **Endgame** | Sustainable mission, not exit |
