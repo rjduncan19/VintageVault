@@ -75,6 +75,26 @@ As revenue allows, VintageVault will contribute to the broader mission of digita
 2. **Free backup for nonprofits** — schools, community organizations, charities
 3. **Open-source contributions** — improvements to rclone, cloud API documentation, security research
 4. **Educational content** — free guides on protecting your digital life, aimed at non-technical audiences
+5. **Advocacy** — actively encourage Google, Microsoft, and other providers to build native backup features for their users (see below)
+
+---
+
+## If We Succeed, We Disappear
+
+The ultimate success for VintageVault is a world where we're unnecessary.
+
+If Microsoft adds "back up to a second account" as a OneDrive feature, that protects hundreds of millions of people overnight — far more than we could ever reach as a third-party tool. If Google adds the same, billions more. **We should want this to happen.**
+
+VintageVault exists because the major cloud providers haven't solved this problem for their users. We fill the gap. But we also advocate loudly for them to fill it themselves:
+
+- Publish research on the consumer backup gap
+- File feature requests with Google and Microsoft
+- Make our solution so visible that it embarrasses them into acting
+- Celebrate publicly when they do
+
+**If every major provider ships native consumer backup and VintageVault becomes obsolete, our mission is complete.** We shut down, open-source everything, and call it a win. The world is safer. That's the point.
+
+This isn't a theoretical stance — it's a strategic reality. The `/sharedWithMe` API deprecation, OAuth verification costs, and API rate limits all remind us that building on platforms we don't control is inherently fragile. Rather than fight that fragility, we embrace it: **we're a bridge, not a destination.**
 
 ---
 
