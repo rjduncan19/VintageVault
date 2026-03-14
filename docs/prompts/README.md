@@ -234,6 +234,23 @@ A running record of all user prompts across sessions and machines. This helps tr
 
 ---
 
+### Prompt 10: Same-Account Backup Pivot
+**Time:** 2026-03-14T04:43:19Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> what about a big pivot to storing within the same cloud identity? It isn't nearly as secure against ransomeware, but provides some value, and may be able to operate entirely on cloud apis. Maybe ransomeware protection could be the upsell, and this could be just for accidental deletion/corruption?
+
+**Key findings:**
+- OneDrive `driveItem: copy` works server-side within same account. Zero bandwidth, free OAuth, no security assessment. Could run on Azure Functions for ~$0-10/month total.
+- Google Drive `files.copy` works same-account too, BUT still requires restricted `drive` scope → $15-75K assessment.
+- This creates a natural product ladder: Free (same-account, deletion protection) → Pro (cross-account, ransomware protection).
+- MVP drops from 200-280 hours to 40-60 hours. Infrastructure from $200-500/month to ~$0-10/month.
+
+**Response artifacts:**
+- `docs/planning/same-account-pivot.md` — Full analysis of same-account backup architecture, API feasibility, product ladder, and revised technical architecture.
+
+---
+
 ## How to Use This Log
 
 Each session is documented with:
