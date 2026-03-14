@@ -208,6 +208,21 @@ A running record of all user prompts across sessions and machines. This helps tr
 
 ---
 
+### Prompt 8: Logo Design
+**Time:** 2026-03-14T03:39:46Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> we need an awesome logo
+
+**Response artifacts:**
+- `docs/branding/logo-shield-cloud.svg` — Concept A: Shield with cloud + lock
+- `docs/branding/logo-vault-door.svg` — Concept B: Bank vault door with cloud + checkmark
+- `docs/branding/logo-cloud-sync.svg` — Concept C: App-icon style cloud with sync arrows + shield badge
+- `docs/branding/logo-v-monogram.svg` — Concept D: Stylized V chevron with cloud + lock, split wordmark
+- `docs/branding/logo-concepts.html` — Comparison page showing all concepts at multiple sizes
+
+---
+
 ## How to Use This Log
 
 Each session is documented with:

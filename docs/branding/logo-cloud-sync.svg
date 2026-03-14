@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb"/>
+      <stop offset="100%" style="stop-color:#1e40af"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square background -->
+  <rect x="32" y="32" width="448" height="448" rx="80" fill="url(#bgGrad)"/>
+  <!-- Cloud shape -->
+  <g transform="translate(256, 225)">
+    <ellipse cx="0" cy="22" rx="120" ry="62" fill="#ffffff" opacity="0.95"/>
+    <circle cx="-60" cy="-2" r="58" fill="#ffffff" opacity="0.95"/>
+    <circle cx="35" cy="-18" r="70" fill="#ffffff" opacity="0.95"/>
+    <circle cx="-12" cy="-38" r="50" fill="#ffffff" opacity="0.95"/>
+  </g>
+  <!-- Arrow loop (backup cycle) inside cloud -->
+  <g transform="translate(256, 222)">
+    <!-- Circular arrow - top arc -->
+    <path d="M-25,-22 A 30,30 0 1,1 25,18" fill="none" stroke="#2563eb" stroke-width="7" stroke-linecap="round"/>
+    <!-- Arrow head on top arc -->
+    <polygon points="25,18 35,8 18,10" fill="#2563eb"/>
+    <!-- Circular arrow - bottom arc -->
+    <path d="M25,22 A 30,30 0 1,1 -25,-18" fill="none" stroke="#1e40af" stroke-width="7" stroke-linecap="round"/>
+    <!-- Arrow head on bottom arc -->
+    <polygon points="-25,-18 -35,-8 -18,-10" fill="#1e40af"/>
+  </g>
+  <!-- Shield badge at bottom right of cloud -->
+  <g transform="translate(330, 280)">
+    <path d="M0 -28 L24 -18 C24 -18 26 8 0 28 C-26 8 -24 -18 -24 -18 Z" fill="#059669"/>
+    <polyline points="-8,-2 -3,5 10,-8" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <!-- "VV" subtle text mark -->
+  <text x="256" y="420" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="800" fill="#ffffff" letter-spacing="6" opacity="0.9">VINTAGEVAULT</text>
+</svg>
