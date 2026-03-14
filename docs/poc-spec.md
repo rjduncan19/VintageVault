@@ -20,10 +20,11 @@ Prove that same-account immutable incremental snapshots work end-to-end via OneD
 
 The user authenticates with their Microsoft account and grants VintageVault access to their OneDrive.
 
-- OAuth2 Authorization Code flow with PKCE
+- OAuth2 Authorization Code flow with PKCE (public client — **no client secret**)
 - Scope: `Files.ReadWrite` (delegated, standard — no security assessment required)
-- Store refresh token securely (local config file for POC; Azure Key Vault for production)
-- Token refresh on expiry (Graph SDK handles this)
+- Tokens managed entirely by MSAL — **never stored by our code**
+- Token cache encrypted by OS: DPAPI (Windows), Keychain (macOS), libsecret (Linux)
+- Fallback: Device Code flow for environments without browser access
 
 **Acceptance criteria:** User can authorize, and VintageVault can call Graph API on their behalf.
 
@@ -339,9 +340,10 @@ Commands:
 | **Language** | C# / .NET 8 | Best Graph SDK, best Azure integration, strongly typed, single-binary publishing, already configured in devcontainer |
 | **Runtime** | .NET 8 (LTS) | Cross-platform (Windows, macOS, Linux), self-contained publish option |
 | **Graph SDK** | `Microsoft.Graph` + `Azure.Identity` | Official Microsoft SDK, strongly typed, excellent async/batch support |
-| **Auth** | MSAL (`Microsoft.Identity.Client`) | Handles OAuth2, PKCE, token refresh, device code flow |
+| **Auth** | MSAL (`Microsoft.Identity.Client`) + `Microsoft.Identity.Client.Extensions.Msal` | Handles OAuth2, PKCE, device code flow, **encrypted token cache** |
 | **CLI framework** | `System.CommandLine` | Official .NET CLI framework, subcommand routing, help generation |
-| **Config storage** | Local JSON file (`~/.vintagevault/config.json`) | Simple, portable; encrypted in production |
+| **Config storage** | Local JSON file (`~/.vintagevault/config.json`) for non-secret settings only | Filters, delta tokens, baseline stats — **no secrets** |
+| **Token storage** | MSAL `MsalCacheHelper` (OS-encrypted) | Windows: DPAPI, macOS: Keychain, Linux: libsecret |
 | **Testing** | xUnit + Moq | .NET standard, strong async test support |
 | **Linting** | `dotnet format` + .editorconfig | Built-in, zero additional tooling |
 | **Publishing** | `dotnet publish --self-contained` | Single native binary, no runtime dependency for users |
@@ -459,6 +461,92 @@ vintagevault backup
 **Folder structure in snapshots:** Snapshots must preserve the user's folder hierarchy. If the user has `/Documents/Work/report.docx`, the snapshot should contain `/{date}/Documents/Work/report.docx`. The `driveItem: copy` API requires creating parent folders first, then copying files into them.
 
 **Async copy operations:** `driveItem: copy` returns `202 Accepted` with a monitor URL. We must poll this URL to confirm completion. For many files, batch copies and poll in parallel with reasonable concurrency (e.g., 10 concurrent copies).
+
+### Security Model (SDL Compliance)
+
+VintageVault handles OAuth tokens that grant access to users' entire cloud storage. Security is non-negotiable, even for a POC.
+
+**Principle: We store zero secrets ourselves. MSAL and the OS handle all sensitive material.**
+
+#### What is sensitive
+
+| Item | Sensitivity | Where stored |
+|------|-----------|-------------|
+| **Refresh token** | 🔴 Critical — grants ongoing OneDrive access | MSAL encrypted cache (DPAPI/Keychain/libsecret) |
+| **Access token** | 🔴 High — grants temporary OneDrive access | MSAL in-memory cache (never written to disk) |
+| **Client ID** | 🟢 Public — not a secret | Hardcoded in app (standard for public clients) |
+| **Delta token** | 🟢 Not sensitive — opaque pagination cursor | `config.json` (plaintext OK) |
+| **User email** | 🟡 PII but not a secret | `config.json` |
+| **Filter rules** | 🟢 Not sensitive | `config.json` |
+| **Detection baseline** | 🟢 Not sensitive | `config.json` |
+
+#### Token management
+
+```
+MSAL handles ALL token lifecycle:
+
+1. AUTH: User signs in via browser (Authorization Code + PKCE)
+        MSAL receives tokens, stores in encrypted OS cache
+        We NEVER see or handle the raw tokens ourselves
+
+2. API CALL: We call AcquireTokenSilent()
+             MSAL returns a valid access token from cache
+             If expired, MSAL auto-refreshes using encrypted refresh token
+             We use the token for Graph API calls, then discard it
+
+3. STORAGE: MsalCacheHelper encrypts the token cache:
+            Windows: DPAPI (user-scoped, OS-managed encryption key)
+            macOS:   Keychain (OS-managed)
+            Linux:   libsecret → encrypted file fallback
+
+4. REVOCATION: User can revoke access anytime at
+               https://account.microsoft.com/privacy/app-access
+               Next AcquireTokenSilent() will fail → we prompt re-auth
+```
+
+**We never:**
+- Store tokens in our config.json
+- Log tokens to console or files
+- Transmit tokens to any server
+- Store client secrets (public client — there is no secret)
+
+#### What `~/.vintagevault/config.json` contains (NO secrets)
+
+```json
+{
+  "accountId": "richard@example.com",
+  "driveId": "b!abc123...",
+  "backupRoot": "/VintageVault-Backup",
+  "lastDeltaToken": "opaque_pagination_cursor...",
+  "lastBackupTimestamp": "2026-03-14T03:00:00Z",
+  "filters": {
+    "mode": "exclude",
+    "rules": [
+      { "type": "folder", "path": "/Videos/Raw" }
+    ]
+  },
+  "detectionBaseline": {
+    "avgChangesPerCycle": 47,
+    "avgDeletionsPerCycle": 3
+  }
+}
+```
+
+Nothing in this file grants access to the user's account. If an attacker reads it, they learn the user's email and backup preferences — not useful without the encrypted token cache.
+
+#### SDL checklist for POC
+
+| SDL Practice | How we comply |
+|-------------|---------------|
+| **No plaintext secrets** | Tokens in MSAL encrypted cache; config.json has zero secrets |
+| **Least privilege** | `Files.ReadWrite` scope only — no mail, contacts, or admin access |
+| **No client secret** | Public client application; PKCE for code exchange |
+| **Token rotation** | MSAL handles refresh automatically; tokens have short lifetimes |
+| **User revocation** | Standard Microsoft consent page; app respects revocation |
+| **No secret logging** | Tokens never logged to console, files, or telemetry |
+| **Transport security** | All Graph API calls over HTTPS (TLS 1.2+) |
+| **Dependency security** | NuGet packages from official Microsoft feeds; `dotnet audit` for vulnerabilities |
+| **Open source review** | Engine is Apache 2.0 — anyone can audit the security model |
 
 **Delta API pagination:** The delta response may be paginated (multiple pages of changes). Must follow `@odata.nextLink` until we get a `@odata.deltaLink` (which contains the token for next run).
 
