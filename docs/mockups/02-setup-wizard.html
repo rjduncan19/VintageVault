@@ -94,6 +94,11 @@
 
 <div class="mockup-banner">📐 MOCKUP — Setup wizard wireframe · Click tabs to see each step</div>
 
+<div style="background:#e2e8f0;padding:4px 12px;font-size:12px;color:#64748b;display:flex;align-items:center;gap:8px;">
+  <span style="display:flex;gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:#ef4444;display:inline-block;"></span><span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;display:inline-block;"></span><span style="width:10px;height:10px;border-radius:50%;background:#22c55e;display:inline-block;"></span></span>
+  <span style="flex:1;background:#fff;border-radius:4px;padding:2px 8px;border:1px solid #cbd5e1;">🔒 app.vintagevault.com/setup</span>
+</div>
+
 <div class="tab-bar">
   <div class="tab active" onclick="showScreen('step1')">Step 1: Connect</div>
   <div class="tab" onclick="showScreen('step2')">Step 2: Confirm</div>
@@ -105,7 +110,7 @@
   <div class="wizard">
     <div class="wizard-header">
       <div class="logo">Vintage<span>Vault</span></div>
-      <h1>Connect your OneDrive</h1>
+      <h1>Connect your cloud account</h1>
       <p>We'll create a VintageVault-Backup folder with weekly snapshots of your files</p>
     </div>
 
@@ -131,7 +136,7 @@
           <div class="p-desc">Microsoft account</div>
         </div>
       </div>
-      <p style="margin-top: 1rem; font-size: 0.85rem; color: #64748b;">Google Drive, Dropbox, and iCloud — coming soon.</p>
+      <p style="margin-top: 1rem; font-size: 0.85rem; color: #64748b;">Google Drive coming soon. Dropbox and iCloud planned.</p>
     </div>
 
     <div class="card">
@@ -177,11 +182,11 @@
 
       <div class="summary-flow">
         <div class="flow-visual">
-          <span class="flow-item">📁 Your OneDrive</span>
+          <span class="flow-item">📁 Your Cloud</span>
           <span>→</span>
           <span class="flow-item">☁️ VintageVault API</span>
           <span>→</span>
-          <span class="flow-item">🗂️ OneDrive / VintageVault-Backup /</span>
+          <span class="flow-item">🗂️ VintageVault-Backup /</span>
         </div>
       </div>
 
@@ -195,7 +200,7 @@
       </div>
       <div class="summary-row">
         <span class="summary-label">Backup location</span>
-        <span class="summary-value">OneDrive / VintageVault-Backup /</span>
+        <span class="summary-value">VintageVault-Backup/ (in your cloud)</span>
       </div>
       <div class="summary-row">
         <span class="summary-label">Schedule</span>
@@ -252,7 +257,7 @@
       </div>
       <div class="success-stat">
         <span class="s-icon">🗂️</span>
-        <span class="s-text"><strong>Browse your backup anytime</strong><span>Open OneDrive → VintageVault-Backup → see your files</span></span>
+        <span class="s-text"><strong>Browse your backup anytime</strong><span>Open your cloud storage → VintageVault-Backup → see your files</span></span>
       </div>
 
       <div style="margin-top: 2rem;">

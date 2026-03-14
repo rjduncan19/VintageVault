@@ -16,7 +16,7 @@ This document describes VintageVault's user experience across four key screens, 
 1. **Hero** — "Your files deserve a safety net" headline with clear value proposition and two CTAs (primary: "Protect My Files", secondary: "See How It Works")
 2. **How It Works** — Three-box flow diagram: Your OneDrive → VintageVault Cloud API → VintageVault-Backup Folder, with transparency badge ("Your backup is plain folders you can browse, download, or share")
 3. **Threat Cards** — Four threats with honest Free/Pro split: accidental deletion and overwrite (Free), ransomware and account compromise (Pro upsell)
-4. **Features** — Six cards: Set & Forget, Ransomware Detection (Pro), Monthly Health Reports, Radical Transparency, Time Travel Restore, Family Dashboard
+4. **Features** — Six cards: Set & Forget, Ransomware Detection (Pro), Monthly Health Reports, Radical Transparency, Rewind & Restore, Family Dashboard
 5. **Pricing** — Three-tier comparison: Free / Pro $4.99/mo / Family $9.99/mo
 6. **Final CTA** — "Everyone deserves a backup plan."
 
@@ -137,7 +137,7 @@ Browse & Select    →    Confirm Restore    →    Restoring...    →    Compl
 ```
 
 **Browse & Select:**
-- **Time Travel slider** — scrub through backup history (30 days for Free, 365 for Family). Shows selected date prominently.
+- **Rewind slider** — scrub through backup history (30 days for Free, 365 for Family). Shows selected date prominently.
 - **Breadcrumb navigation** — familiar folder browsing experience
 - **File browser** with status indicators:
   - ✓ Current (green) — file is unchanged
@@ -164,7 +164,7 @@ Browse & Select    →    Confirm Restore    →    Restoring...    →    Compl
 - Options to browse more files or return to dashboard
 
 **UX principles applied:**
-- Time Travel metaphor inspired by Apple Time Machine
+- Rewind metaphor (browse snapshots by date)
 - Deleted files highlighted prominently (the most common restore scenario)
 - Multiple restore destination options reduce decision anxiety
 - Progress screen is informative but not overwhelming
