@@ -123,16 +123,19 @@ This is worth exploring. Many users have two Google accounts or two Microsoft ac
 
 The Microsoft Graph `driveItem: copy` API copies files within the same drive or tenant context. It does **not** support direct server-side copy between different users' OneDrive accounts — even within the same Microsoft tenant.
 
+**What about share-then-copy (like Google)?** OneDrive's web UI has an "Add to my OneDrive" button for shared files, but this is **not exposed via the Graph API**. There is no programmatic equivalent. The `sharedWithMe` endpoint lets you list shared items, but provides no copy-to-my-drive operation. This has been a requested feature in Microsoft's developer community for years, but as of 2026, it remains unavailable in the API.
+
 **What you must do instead:** Download from source account, upload to destination account — the exact same flow as cross-provider backup.
 
 ```
 OneDrive (Account A) ──download──► User's PC ──upload──► OneDrive (Account B)
                                       │
                         Same data flow as cross-provider.
-                        No shortcut exists.
+                        No shortcut exists. Share-then-copy
+                        is NOT available via Graph API.
 ```
 
-**Implication:** For OneDrive, same-provider backup has zero technical advantage over cross-provider. The data still flows through the user's device.
+**Implication:** For OneDrive, same-provider backup has zero bandwidth advantage over cross-provider. The data still flows through the user's device regardless of whether the destination is another OneDrive or a Google Drive.
 
 #### Google Drive → Google Drive (different accounts): ⚠️ Partial shortcut exists
 
@@ -178,7 +181,9 @@ Google Drive (Account A) ──share──► Google Drive (Account B) ──cop
 
 ### Revised Phase 1 Recommendation
 
-Same-provider backup is a viable P0 — especially for Google Drive where the share-then-copy shortcut avoids all bandwidth costs. The MVP could be:
+Same-provider backup is a viable P0 — especially for Google Drive where the share-then-copy shortcut avoids all bandwidth costs. For OneDrive, there's no equivalent shortcut (share-then-copy is UI-only, not in the Graph API), so the data flow is identical to cross-provider.
+
+Given that provider outage and provider ban are acceptable risks for this stage, the MVP could be:
 
 ```
 PHASE 1a (Simplest MVP):

@@ -156,6 +156,17 @@ A running record of all user prompts across sessions and machines. This helps tr
 
 ---
 
+### Prompt 4: OneDrive Share-then-Copy Research
+**Time:** 2026-03-14T03:05:06Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> does onedrive also have the "share then copy" option? I'm not as concerned about provider outage/ban
+
+**Response artifacts:**
+- `docs/architecture/002-data-movement-costs.md` — Clarified that OneDrive's "Add to my OneDrive" exists in the UI but is NOT exposed via the Graph API. No share-then-copy workaround for OneDrive. Google Drive's share-then-copy advantage is unique.
+
+---
+
 ## How to Use This Log
 
 Each session is documented with:
