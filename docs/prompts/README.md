@@ -180,6 +180,17 @@ A running record of all user prompts across sessions and machines. This helps tr
 
 ---
 
+### Prompt 6: Open Core & Dual Product Strategy
+**Time:** 2026-03-14T03:29:14Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> For the primary product it seems like option C is most viable. However, there may be some advantage with the ecosystem to also implement ADR-001. This is free, has the highest privacy and control, and may win us some influencers who may give us some good reviews. I'm also concerned about transparency, perhaps this should be an open source project so people can see the code. Implementing two products seems far more complicated, though. I
+
+**Response artifacts:**
+- `docs/planning/open-core-strategy.md` — Open core strategy (Bitwarden model): one shared engine, two deployment modes. Open source engine + agent (Apache 2.0) builds trust and earns influencer reviews; proprietary SaaS dashboard generates revenue. Not two products — ~15-20% extra effort over SaaS-only. Build order: Engine+Agent first (free), then SaaS (revenue).
+
+---
+
 ## How to Use This Log
 
 Each session is documented with:
