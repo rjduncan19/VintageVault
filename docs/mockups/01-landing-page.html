@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VintageVault — Landing Page Mockup</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; }
+
+  /* Nav */
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: #fff; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 100; }
+  .logo { font-size: 1.4rem; font-weight: 700; color: #0f172a; }
+  .logo span { color: #2563eb; }
+  nav ul { display: flex; gap: 2rem; list-style: none; }
+  nav a { text-decoration: none; color: #475569; font-weight: 500; font-size: 0.95rem; }
+  nav a:hover { color: #2563eb; }
+  .nav-cta { background: #2563eb; color: #fff !important; padding: 0.5rem 1.25rem; border-radius: 8px; }
+  .nav-cta:hover { background: #1d4ed8; }
+
+  /* Hero */
+  .hero { background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%); color: #fff; padding: 6rem 3rem 5rem; text-align: center; }
+  .hero h1 { font-size: 3.2rem; max-width: 700px; margin: 0 auto 1.5rem; line-height: 1.2; }
+  .hero h1 em { font-style: normal; color: #60a5fa; }
+  .hero p { font-size: 1.25rem; color: #94a3b8; max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.6; }
+  .hero-cta { display: inline-block; background: #2563eb; color: #fff; padding: 1rem 2.5rem; border-radius: 10px; font-size: 1.1rem; font-weight: 600; text-decoration: none; margin-right: 1rem; }
+  .hero-cta:hover { background: #1d4ed8; }
+  .hero-secondary { display: inline-block; color: #94a3b8; padding: 1rem 2rem; font-size: 1rem; text-decoration: none; border: 1px solid #334155; border-radius: 10px; }
+  .hero-secondary:hover { border-color: #60a5fa; color: #60a5fa; }
+  .hero-note { margin-top: 2rem; font-size: 0.9rem; color: #64748b; }
+
+  /* Flow diagram */
+  .flow { background: #f8fafc; padding: 5rem 3rem; text-align: center; }
+  .flow h2 { font-size: 2rem; margin-bottom: 1rem; }
+  .flow .sub { color: #64748b; margin-bottom: 3rem; font-size: 1.05rem; }
+  .flow-diagram { display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; max-width: 800px; margin: 0 auto; }
+  .flow-box { background: #fff; border: 2px solid #e2e8f0; border-radius: 12px; padding: 1.5rem 2rem; min-width: 180px; }
+  .flow-box.source { border-color: #2563eb; }
+  .flow-box.agent { border-color: #059669; background: #ecfdf5; }
+  .flow-box.dest { border-color: #f59e0b; }
+  .flow-box .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+  .flow-box .label { font-weight: 600; font-size: 1rem; }
+  .flow-box .desc { color: #64748b; font-size: 0.85rem; margin-top: 0.25rem; }
+  .flow-arrow { font-size: 1.5rem; color: #94a3b8; }
+  .privacy-badge { display: inline-block; background: #ecfdf5; color: #059669; padding: 0.5rem 1.25rem; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-top: 2rem; border: 1px solid #a7f3d0; }
+
+  /* Features */
+  .features { padding: 5rem 3rem; max-width: 1100px; margin: 0 auto; }
+  .features h2 { text-align: center; font-size: 2rem; margin-bottom: 3rem; }
+  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+  .feature { padding: 2rem; border: 1px solid #e2e8f0; border-radius: 12px; }
+  .feature .icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+  .feature h3 { margin-bottom: 0.5rem; }
+  .feature p { color: #64748b; line-height: 1.6; font-size: 0.95rem; }
+
+  /* Threats */
+  .threats { background: #0f172a; color: #fff; padding: 5rem 3rem; }
+  .threats h2 { text-align: center; font-size: 2rem; margin-bottom: 1rem; }
+  .threats .sub { text-align: center; color: #94a3b8; margin-bottom: 3rem; font-size: 1.05rem; }
+  .threat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; max-width: 1000px; margin: 0 auto; }
+  .threat-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; text-align: center; }
+  .threat-card .icon { font-size: 2rem; margin-bottom: 0.75rem; }
+  .threat-card h3 { font-size: 1rem; margin-bottom: 0.5rem; color: #f1f5f9; }
+  .threat-card p { color: #94a3b8; font-size: 0.85rem; line-height: 1.5; }
+  .threat-card .protection { color: #4ade80; font-size: 0.8rem; margin-top: 0.75rem; font-weight: 600; }
+
+  /* Pricing */
+  .pricing { padding: 5rem 3rem; background: #f8fafc; }
+  .pricing h2 { text-align: center; font-size: 2rem; margin-bottom: 0.75rem; }
+  .pricing .sub { text-align: center; color: #64748b; margin-bottom: 3rem; font-size: 1.05rem; }
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1000px; margin: 0 auto; }
+  .plan { background: #fff; border: 2px solid #e2e8f0; border-radius: 16px; padding: 2.5rem 2rem; text-align: center; position: relative; }
+  .plan.featured { border-color: #2563eb; box-shadow: 0 8px 32px rgba(37,99,235,0.15); }
+  .plan-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #2563eb; color: #fff; padding: 0.25rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+  .plan h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+  .plan .price { font-size: 2.5rem; font-weight: 700; margin: 1rem 0 0.25rem; }
+  .plan .price span { font-size: 1rem; font-weight: 400; color: #64748b; }
+  .plan .annual { font-size: 0.85rem; color: #64748b; margin-bottom: 1.5rem; }
+  .plan ul { list-style: none; text-align: left; margin-bottom: 2rem; }
+  .plan li { padding: 0.5rem 0; font-size: 0.95rem; color: #475569; border-bottom: 1px solid #f1f5f9; }
+  .plan li::before { content: "✓ "; color: #059669; font-weight: 700; }
+  .plan-btn { display: block; padding: 0.75rem; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 1rem; }
+  .plan-btn.primary { background: #2563eb; color: #fff; }
+  .plan-btn.secondary { background: #f1f5f9; color: #1e293b; }
+
+  /* CTA */
+  .cta { padding: 5rem 3rem; text-align: center; background: linear-gradient(135deg, #1e3a5f, #0f172a); color: #fff; }
+  .cta h2 { font-size: 2.2rem; margin-bottom: 1rem; }
+  .cta p { color: #94a3b8; margin-bottom: 2rem; font-size: 1.1rem; }
+  .cta a { display: inline-block; background: #2563eb; color: #fff; padding: 1rem 2.5rem; border-radius: 10px; text-decoration: none; font-size: 1.1rem; font-weight: 600; }
+
+  /* Footer */
+  footer { background: #0f172a; color: #64748b; padding: 2rem 3rem; text-align: center; font-size: 0.85rem; border-top: 1px solid #1e293b; }
+
+  /* Mockup banner */
+  .mockup-banner { background: #fef3c7; color: #92400e; text-align: center; padding: 0.5rem; font-size: 0.85rem; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<div class="mockup-banner">📐 MOCKUP — This is a design wireframe, not a live page</div>
+
+<nav>
+  <div class="logo">Vintage<span>Vault</span></div>
+  <ul>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#" class="nav-cta">Get Started Free</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <h1>Your cloud's <em>backup plan</em></h1>
+  <p>What if you lost everything in OneDrive tomorrow? VintageVault automatically copies your files to Google Drive as a safety backup. Set it once. Sleep easier.</p>
+  <a href="#" class="hero-cta">Start Free Backup →</a>
+  <a href="#how" class="hero-secondary">See How It Works</a>
+  <div class="hero-note">Free forever for 1 backup pair · No credit card required</div>
+</section>
+
+<section class="flow" id="how">
+  <h2>How It Works</h2>
+  <p class="sub">Three steps. Five minutes. Done forever.</p>
+  <div class="flow-diagram">
+    <div class="flow-box source">
+      <div class="icon">☁️</div>
+      <div class="label">Source Cloud</div>
+      <div class="desc">OneDrive, Google Drive</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box agent">
+      <div class="icon">🖥️</div>
+      <div class="label">Your Computer</div>
+      <div class="desc">VintageVault agent</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box dest">
+      <div class="icon">🔒</div>
+      <div class="label">Backup Cloud</div>
+      <div class="desc">Google Drive, OneDrive</div>
+    </div>
+  </div>
+  <div class="privacy-badge">🛡️ Your data never touches our servers</div>
+</section>
+
+<section class="threats">
+  <h2>What Are You Protecting Against?</h2>
+  <p class="sub">Real threats that happen to real people every day</p>
+  <div class="threat-grid">
+    <div class="threat-card">
+      <div class="icon">🔐</div>
+      <h3>Ransomware</h3>
+      <p>Encrypts your files and syncs the damage to your cloud drive instantly</p>
+      <div class="protection">✓ Backup on separate provider stays clean</div>
+    </div>
+    <div class="threat-card">
+      <div class="icon">🗑️</div>
+      <h3>Accidental Deletion</h3>
+      <p>One misclick can wipe a folder. Trash empties automatically in 30 days</p>
+      <div class="protection">✓ Restore from any point in the last 30-365 days</div>
+    </div>
+    <div class="threat-card">
+      <div class="icon">👤</div>
+      <h3>Account Compromise</h3>
+      <p>A phished password gives attackers full access to delete everything</p>
+      <div class="protection">✓ Backup on a different provider is untouched</div>
+    </div>
+    <div class="threat-card">
+      <div class="icon">⚡</div>
+      <h3>Provider Outage</h3>
+      <p>Even Google and Microsoft have multi-hour outages</p>
+      <div class="protection">✓ Access your files from the backup provider</div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <h2>Built for Peace of Mind</h2>
+  <div class="features-grid">
+    <div class="feature">
+      <div class="icon">⏰</div>
+      <h3>Set It and Forget It</h3>
+      <p>After a 5-minute setup, VintageVault runs silently in the background. You'll only hear from us when something needs attention.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🔍</div>
+      <h3>Ransomware Detection</h3>
+      <p>If we detect mass file changes that look like ransomware, we pause the backup to protect your clean copies.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">📧</div>
+      <h3>Monthly Health Reports</h3>
+      <p>"12,847 files protected. Last backup: 2 hours ago. Everything is healthy." Peace of mind in your inbox.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🔒</div>
+      <h3>Privacy First</h3>
+      <p>Your files flow directly between your cloud accounts through your own computer. Our servers never see your data.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">⏪</div>
+      <h3>Time Travel Restore</h3>
+      <p>Browse your backup like a timeline. Find any file as it existed days, weeks, or months ago.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">👨‍👩‍👧‍👦</div>
+      <h3>Family Dashboard</h3>
+      <p>One view for the whole family's backup status. Set it up once and know everyone is protected.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <h2>Simple, Honest Pricing</h2>
+  <p class="sub">Start free. Upgrade when you're ready. Cancel anytime.</p>
+  <div class="pricing-grid">
+    <div class="plan">
+      <h3>Free</h3>
+      <div class="price">$0<span>/forever</span></div>
+      <div class="annual">No credit card required</div>
+      <ul>
+        <li>1 backup pair</li>
+        <li>Weekly backup schedule</li>
+        <li>30-day file history</li>
+        <li>Email status alerts</li>
+        <li>Basic backup status</li>
+      </ul>
+      <a href="#" class="plan-btn secondary">Get Started Free</a>
+    </div>
+    <div class="plan featured">
+      <div class="plan-badge">Most Popular</div>
+      <h3>Pro</h3>
+      <div class="price">$3.99<span>/mo</span></div>
+      <div class="annual">$39/year (save 18%)</div>
+      <ul>
+        <li>Unlimited backup pairs</li>
+        <li>Daily or hourly schedule</li>
+        <li>90-day file history</li>
+        <li>Push notifications</li>
+        <li>Ransomware detection</li>
+        <li>Backup encryption</li>
+        <li>Priority support</li>
+      </ul>
+      <a href="#" class="plan-btn primary">Start 14-Day Free Trial</a>
+    </div>
+    <div class="plan">
+      <h3>Family</h3>
+      <div class="price">$7.99<span>/mo</span></div>
+      <div class="annual">$79/year (save 18%)</div>
+      <ul>
+        <li>Everything in Pro</li>
+        <li>Up to 5 family members</li>
+        <li>Family status dashboard</li>
+        <li>365-day file history</li>
+        <li>Shared management</li>
+        <li>Priority support</li>
+      </ul>
+      <a href="#" class="plan-btn secondary">Start 14-Day Free Trial</a>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Your files deserve a backup plan.</h2>
+  <p>Join thousands of families who sleep easier knowing their cloud is protected.</p>
+  <a href="#">Start Free Backup →</a>
+</section>
+
+<footer>
+  VintageVault &mdash; Your cloud's backup plan &mdash; <em>Mockup / wireframe — not a live page</em>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VintageVault — Setup Wizard Mockup</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; color: #1e293b; min-height: 100vh; }
+
+  .mockup-banner { background: #fef3c7; color: #92400e; text-align: center; padding: 0.5rem; font-size: 0.85rem; font-weight: 500; }
+  .tab-bar { display: flex; background: #fff; border-bottom: 1px solid #e2e8f0; overflow-x: auto; }
+  .tab { padding: 0.75rem 1.5rem; cursor: pointer; font-size: 0.9rem; color: #64748b; border-bottom: 2px solid transparent; white-space: nowrap; font-weight: 500; }
+  .tab.active { color: #2563eb; border-bottom-color: #2563eb; background: #eff6ff; }
+  .tab:hover:not(.active) { background: #f8fafc; }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* Shared layout */
+  .wizard { max-width: 640px; margin: 3rem auto; padding: 0 1.5rem; }
+  .wizard-header { text-align: center; margin-bottom: 2.5rem; }
+  .wizard-header .logo { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; }
+  .wizard-header .logo span { color: #2563eb; }
+  .wizard-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+  .wizard-header p { color: #64748b; font-size: 1rem; }
+
+  /* Progress */
+  .progress { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 3rem; }
+  .step-indicator { display: flex; flex-direction: column; align-items: center; position: relative; }
+  .step-circle { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.95rem; border: 2px solid #e2e8f0; background: #fff; color: #94a3b8; }
+  .step-circle.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+  .step-circle.done { background: #059669; color: #fff; border-color: #059669; }
+  .step-label { margin-top: 0.5rem; font-size: 0.8rem; color: #94a3b8; font-weight: 500; }
+  .step-label.active { color: #2563eb; }
+  .step-label.done { color: #059669; }
+  .step-line { width: 80px; height: 2px; background: #e2e8f0; margin: 0 0.5rem; margin-bottom: 1.5rem; }
+  .step-line.done { background: #059669; }
+
+  /* Cards */
+  .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; }
+  .card h2 { font-size: 1.25rem; margin-bottom: 0.75rem; }
+  .card p { color: #64748b; margin-bottom: 1.5rem; line-height: 1.6; }
+
+  /* Provider selection */
+  .provider-options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .provider { border: 2px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; text-align: center; cursor: pointer; transition: all 0.15s; }
+  .provider:hover { border-color: #93c5fd; background: #eff6ff; }
+  .provider.selected { border-color: #2563eb; background: #eff6ff; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+  .provider .p-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+  .provider .p-name { font-weight: 600; font-size: 1rem; }
+  .provider .p-desc { font-size: 0.8rem; color: #64748b; margin-top: 0.25rem; }
+  .provider.disabled { opacity: 0.4; cursor: not-allowed; }
+  .provider.disabled:hover { border-color: #e2e8f0; background: #fff; }
+  .coming-soon { font-size: 0.7rem; color: #f59e0b; font-weight: 600; margin-top: 0.25rem; }
+
+  /* Buttons */
+  .actions { display: flex; justify-content: space-between; margin-top: 2rem; }
+  .btn { padding: 0.75rem 2rem; border-radius: 10px; font-size: 1rem; font-weight: 600; border: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
+  .btn-primary { background: #2563eb; color: #fff; }
+  .btn-primary:hover { background: #1d4ed8; }
+  .btn-secondary { background: #f1f5f9; color: #475569; }
+  .btn-secondary:hover { background: #e2e8f0; }
+  .btn-success { background: #059669; color: #fff; }
+
+  /* OAuth mockup */
+  .oauth-btn { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; border: 2px solid #e2e8f0; border-radius: 12px; background: #fff; cursor: pointer; font-size: 1rem; font-weight: 500; width: 100%; margin-bottom: 1rem; transition: all 0.15s; }
+  .oauth-btn:hover { border-color: #2563eb; background: #eff6ff; }
+  .oauth-btn .o-icon { font-size: 1.5rem; }
+  .oauth-btn .o-check { margin-left: auto; color: #059669; font-size: 1.25rem; }
+  .oauth-btn.connected { border-color: #059669; background: #ecfdf5; }
+
+  /* Summary */
+  .summary-row { display: flex; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #f1f5f9; }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-label { color: #64748b; font-size: 0.95rem; }
+  .summary-value { font-weight: 600; }
+  .summary-flow { text-align: center; padding: 2rem; background: #f8fafc; border-radius: 12px; margin: 1.5rem 0; }
+  .summary-flow .flow-visual { font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 0.75rem; flex-wrap: wrap; }
+  .summary-flow .flow-item { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.5rem 1rem; }
+
+  /* Success */
+  .success-icon { font-size: 4rem; text-align: center; margin-bottom: 1.5rem; }
+  .success-title { font-size: 1.5rem; text-align: center; margin-bottom: 0.75rem; color: #059669; }
+  .success-desc { text-align: center; color: #64748b; line-height: 1.6; margin-bottom: 2rem; }
+  .success-stat { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: #f8fafc; border-radius: 10px; margin-bottom: 0.75rem; }
+  .success-stat .s-icon { font-size: 1.25rem; }
+  .success-stat .s-text { font-size: 0.95rem; }
+  .success-stat .s-text strong { display: block; margin-bottom: 0.15rem; }
+  .success-stat .s-text span { color: #64748b; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+
+<div class="mockup-banner">📐 MOCKUP — Setup wizard wireframe · Click tabs to see each step</div>
+
+<div class="tab-bar">
+  <div class="tab active" onclick="showScreen('step1')">Step 1: Source</div>
+  <div class="tab" onclick="showScreen('step2')">Step 2: Destination</div>
+  <div class="tab" onclick="showScreen('step3')">Step 3: Confirm</div>
+  <div class="tab" onclick="showScreen('step4')">✓ Success</div>
+</div>
+
+<!-- STEP 1: Choose source -->
+<div id="step1" class="screen active">
+  <div class="wizard">
+    <div class="wizard-header">
+      <div class="logo">Vintage<span>Vault</span></div>
+      <h1>Where are your files?</h1>
+      <p>Choose the cloud account you want to protect</p>
+    </div>
+
+    <div class="progress">
+      <div class="step-indicator">
+        <div class="step-circle active">1</div>
+        <div class="step-label active">Source</div>
+      </div>
+      <div class="step-line"></div>
+      <div class="step-indicator">
+        <div class="step-circle">2</div>
+        <div class="step-label">Destination</div>
+      </div>
+      <div class="step-line"></div>
+      <div class="step-indicator">
+        <div class="step-circle">3</div>
+        <div class="step-label">Confirm</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Select your source cloud</h2>
+      <p>This is the cloud account with files you want to back up.</p>
+      <div class="provider-options">
+        <div class="provider selected" onclick="selectProvider(this)">
+          <div class="p-icon">📁</div>
+          <div class="p-name">OneDrive</div>
+          <div class="p-desc">Microsoft account</div>
+        </div>
+        <div class="provider" onclick="selectProvider(this)">
+          <div class="p-icon">📂</div>
+          <div class="p-name">Google Drive</div>
+          <div class="p-desc">Google account</div>
+        </div>
+        <div class="provider disabled">
+          <div class="p-icon">📦</div>
+          <div class="p-name">Dropbox</div>
+          <div class="coming-soon">Coming soon</div>
+        </div>
+        <div class="provider disabled">
+          <div class="p-icon">☁️</div>
+          <div class="p-name">iCloud</div>
+          <div class="coming-soon">Coming soon</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Connect your OneDrive</h2>
+      <p>Click below to sign in with Microsoft. We'll only request read access to your files.</p>
+      <button class="oauth-btn connected">
+        <span class="o-icon">📁</span>
+        <span>Connected as richard@example.com</span>
+        <span class="o-check">✓</span>
+      </button>
+    </div>
+
+    <div class="actions">
+      <div></div>
+      <button class="btn btn-primary" onclick="showScreen('step2')">Next: Choose Destination →</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2: Choose destination -->
+<div id="step2" class="screen">
+  <div class="wizard">
+    <div class="wizard-header">
+      <div class="logo">Vintage<span>Vault</span></div>
+      <h1>Where should we back up to?</h1>
+      <p>Choose a different cloud as your safety backup</p>
+    </div>
+
+    <div class="progress">
+      <div class="step-indicator">
+        <div class="step-circle done">✓</div>
+        <div class="step-label done">Source</div>
+      </div>
+      <div class="step-line done"></div>
+      <div class="step-indicator">
+        <div class="step-circle active">2</div>
+        <div class="step-label active">Destination</div>
+      </div>
+      <div class="step-line"></div>
+      <div class="step-indicator">
+        <div class="step-circle">3</div>
+        <div class="step-label">Confirm</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Select your backup destination</h2>
+      <p>Your files will be copied here. We recommend using a different provider than your source for maximum protection.</p>
+      <div class="provider-options">
+        <div class="provider" style="opacity: 0.4; cursor: not-allowed;">
+          <div class="p-icon">📁</div>
+          <div class="p-name">OneDrive</div>
+          <div class="p-desc" style="color: #ef4444;">Already your source</div>
+        </div>
+        <div class="provider selected">
+          <div class="p-icon">📂</div>
+          <div class="p-name">Google Drive</div>
+          <div class="p-desc">Different provider ✓</div>
+        </div>
+        <div class="provider disabled">
+          <div class="p-icon">📦</div>
+          <div class="p-name">Dropbox</div>
+          <div class="coming-soon">Coming soon</div>
+        </div>
+        <div class="provider disabled">
+          <div class="p-icon">☁️</div>
+          <div class="p-name">iCloud</div>
+          <div class="coming-soon">Coming soon</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Connect your Google Drive</h2>
+      <p>Click below to sign in with Google. We'll request write access to create a VintageVault backup folder.</p>
+      <button class="oauth-btn connected">
+        <span class="o-icon">📂</span>
+        <span>Connected as richard.family@gmail.com</span>
+        <span class="o-check">✓</span>
+      </button>
+      <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0;">Backups will be stored in: <strong>Google Drive / VintageVault / OneDrive /</strong></p>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-secondary" onclick="showScreen('step1')">← Back</button>
+      <button class="btn btn-primary" onclick="showScreen('step3')">Next: Review & Confirm →</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3: Confirm -->
+<div id="step3" class="screen">
+  <div class="wizard">
+    <div class="wizard-header">
+      <div class="logo">Vintage<span>Vault</span></div>
+      <h1>Review your backup plan</h1>
+      <p>Everything look right? You can change these settings anytime.</p>
+    </div>
+
+    <div class="progress">
+      <div class="step-indicator">
+        <div class="step-circle done">✓</div>
+        <div class="step-label done">Source</div>
+      </div>
+      <div class="step-line done"></div>
+      <div class="step-indicator">
+        <div class="step-circle done">✓</div>
+        <div class="step-label done">Destination</div>
+      </div>
+      <div class="step-line done"></div>
+      <div class="step-indicator">
+        <div class="step-circle active">3</div>
+        <div class="step-label active">Confirm</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Your backup configuration</h2>
+
+      <div class="summary-flow">
+        <div class="flow-visual">
+          <span class="flow-item">📁 OneDrive</span>
+          <span>→</span>
+          <span class="flow-item">🖥️ Your PC</span>
+          <span>→</span>
+          <span class="flow-item">📂 Google Drive</span>
+        </div>
+      </div>
+
+      <div class="summary-row">
+        <span class="summary-label">Source</span>
+        <span class="summary-value">OneDrive (richard@example.com)</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Destination</span>
+        <span class="summary-value">Google Drive (richard.family@gmail.com)</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">What to back up</span>
+        <span class="summary-value">Everything</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Schedule</span>
+        <span class="summary-value">Weekly (Free plan)</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">File history</span>
+        <span class="summary-value">30 days (Free plan)</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Estimated first backup</span>
+        <span class="summary-value">~4,200 files · ~12 GB · ~3 hours</span>
+      </div>
+    </div>
+
+    <div class="card" style="background: #eff6ff; border-color: #bfdbfe;">
+      <p style="margin-bottom: 0; color: #1e40af; font-size: 0.95rem;">
+        💡 <strong>Tip:</strong> Your first backup may take a few hours depending on your internet speed. After that, only changed files are backed up — usually taking just minutes.
+      </p>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-secondary" onclick="showScreen('step2')">← Back</button>
+      <button class="btn btn-success" onclick="showScreen('step4')">✓ Start My Backup</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 4: Success -->
+<div id="step4" class="screen">
+  <div class="wizard">
+    <div class="wizard-header">
+      <div class="logo">Vintage<span>Vault</span></div>
+    </div>
+
+    <div class="card" style="text-align: center;">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">You're protected!</div>
+      <p class="success-desc">Your first backup is running now. VintageVault will quietly keep your files safe in the background. We'll email you when the first backup completes.</p>
+
+      <div class="success-stat">
+        <span class="s-icon">📊</span>
+        <span class="s-text"><strong>Backup in progress</strong><span>4,200 files · 0% complete · Estimated: 3 hours</span></span>
+      </div>
+      <div class="success-stat">
+        <span class="s-icon">🔔</span>
+        <span class="s-text"><strong>Notifications on</strong><span>We'll email you at richard@example.com when complete</span></span>
+      </div>
+      <div class="success-stat">
+        <span class="s-icon">🖥️</span>
+        <span class="s-text"><strong>System tray active</strong><span>VintageVault is running in your system tray — look for the 🔒 icon</span></span>
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <button class="btn btn-primary">Open Dashboard →</button>
+      </div>
+
+      <p style="margin-top: 1.5rem; font-size: 0.85rem; color: #64748b;">
+        You can close this window. VintageVault continues running in the background.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const tabs = document.querySelectorAll('.tab');
+  const index = ['step1','step2','step3','step4'].indexOf(id);
+  if (index >= 0) tabs[index].classList.add('active');
+}
+function selectProvider(el) {
+  if (el.classList.contains('disabled')) return;
+  el.parentElement.querySelectorAll('.provider').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+}
+</script>
+
+</body>
+</html>

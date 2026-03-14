@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VintageVault — Dashboard Mockup</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f1f5f9; color: #1e293b; }
+
+  .mockup-banner { background: #fef3c7; color: #92400e; text-align: center; padding: 0.5rem; font-size: 0.85rem; font-weight: 500; }
+
+  /* Sidebar */
+  .layout { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; background: #0f172a; color: #e2e8f0; padding: 1.5rem 0; flex-shrink: 0; }
+  .sidebar-logo { padding: 0 1.5rem; font-size: 1.3rem; font-weight: 700; margin-bottom: 2rem; }
+  .sidebar-logo span { color: #60a5fa; }
+  .sidebar-nav a { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; color: #94a3b8; text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: all 0.15s; }
+  .sidebar-nav a:hover { background: #1e293b; color: #e2e8f0; }
+  .sidebar-nav a.active { background: #1e293b; color: #60a5fa; border-left: 3px solid #60a5fa; }
+  .sidebar-nav .icon { font-size: 1.1rem; width: 24px; text-align: center; }
+  .sidebar-section { padding: 1.5rem 1.5rem 0.5rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: #475569; }
+  .sidebar-bottom { margin-top: auto; padding: 1rem 1.5rem; border-top: 1px solid #1e293b; }
+  .sidebar-user { display: flex; align-items: center; gap: 0.75rem; }
+  .sidebar-avatar { width: 32px; height: 32px; border-radius: 50%; background: #334155; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+  .sidebar-name { font-size: 0.85rem; color: #94a3b8; }
+
+  /* Main content */
+  .main { flex: 1; padding: 2rem; overflow-y: auto; }
+  .main-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+  .main-header h1 { font-size: 1.75rem; }
+  .header-actions { display: flex; gap: 0.75rem; }
+  .btn { padding: 0.6rem 1.25rem; border-radius: 8px; font-size: 0.9rem; font-weight: 600; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; }
+  .btn-primary { background: #2563eb; color: #fff; }
+  .btn-outline { background: #fff; color: #475569; border: 1px solid #e2e8f0; }
+
+  /* Health score */
+  .health-banner { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border: 1px solid #a7f3d0; border-radius: 16px; padding: 2rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 2rem; }
+  .health-score { width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(#059669 0deg 342deg, #e2e8f0 342deg 360deg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .health-inner { width: 80px; height: 80px; border-radius: 50%; background: #ecfdf5; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .health-num { font-size: 1.75rem; font-weight: 700; color: #059669; }
+  .health-label { font-size: 0.65rem; color: #059669; text-transform: uppercase; letter-spacing: 0.05em; }
+  .health-details h2 { font-size: 1.25rem; color: #065f46; margin-bottom: 0.5rem; }
+  .health-details p { color: #047857; font-size: 0.95rem; line-height: 1.6; }
+  .health-stats { display: flex; gap: 2rem; margin-top: 0.75rem; }
+  .health-stat { font-size: 0.85rem; color: #065f46; }
+  .health-stat strong { display: block; font-size: 1.1rem; }
+
+  /* Stats grid */
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  .stat-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; }
+  .stat-card .label { font-size: 0.8rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+  .stat-card .value { font-size: 1.5rem; font-weight: 700; }
+  .stat-card .change { font-size: 0.8rem; color: #059669; margin-top: 0.25rem; }
+  .stat-card .change.warn { color: #f59e0b; }
+
+  /* Two-column layout */
+  .two-col { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+
+  /* Backup pairs */
+  .section-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; }
+  .section-header { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; }
+  .section-header h3 { font-size: 1rem; }
+  .section-header a { color: #2563eb; text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+
+  .backup-pair { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; border-bottom: 1px solid #f8fafc; }
+  .backup-pair:last-child { border-bottom: none; }
+  .bp-status { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .bp-status.healthy { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,0.4); }
+  .bp-status.running { background: #3b82f6; box-shadow: 0 0 6px rgba(59,130,246,0.4); animation: pulse 2s infinite; }
+  .bp-status.warning { background: #f59e0b; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+  .bp-flow { flex: 1; }
+  .bp-flow .route { font-weight: 600; font-size: 0.95rem; }
+  .bp-flow .meta { font-size: 0.8rem; color: #64748b; margin-top: 0.15rem; }
+  .bp-badge { padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+  .bp-badge.success { background: #ecfdf5; color: #059669; }
+  .bp-badge.active { background: #eff6ff; color: #2563eb; }
+  .bp-badge.warn { background: #fffbeb; color: #d97706; }
+
+  /* Activity feed */
+  .activity-item { display: flex; gap: 0.75rem; padding: 0.85rem 1.5rem; border-bottom: 1px solid #f8fafc; }
+  .activity-item:last-child { border-bottom: none; }
+  .activity-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; flex-shrink: 0; }
+  .activity-icon.success { background: #ecfdf5; }
+  .activity-icon.info { background: #eff6ff; }
+  .activity-icon.warn { background: #fffbeb; }
+  .activity-text { font-size: 0.85rem; line-height: 1.5; }
+  .activity-text strong { font-weight: 600; }
+  .activity-time { font-size: 0.75rem; color: #94a3b8; margin-top: 0.15rem; }
+
+  /* Schedule */
+  .schedule-item { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.5rem; border-bottom: 1px solid #f8fafc; }
+  .schedule-item:last-child { border-bottom: none; }
+  .schedule-day { font-weight: 600; font-size: 0.9rem; }
+  .schedule-time { font-size: 0.85rem; color: #64748b; }
+  .schedule-badge { font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 4px; background: #eff6ff; color: #2563eb; font-weight: 600; }
+
+  /* Tray icon preview */
+  .tray-preview { background: #0f172a; border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem; }
+  .tray-title { color: #94a3b8; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; }
+  .tray-mockup { background: #1e293b; border-radius: 8px; padding: 1rem; }
+  .tray-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.4rem 0; color: #e2e8f0; font-size: 0.85rem; }
+  .tray-item .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .tray-item .dot.green { background: #22c55e; }
+  .tray-divider { border-top: 1px solid #334155; margin: 0.5rem 0; }
+  .tray-item.dim { color: #64748b; }
+</style>
+</head>
+<body>
+
+<div class="mockup-banner">📐 MOCKUP — Backup dashboard wireframe (web dashboard view)</div>
+
+<div class="layout">
+  <aside class="sidebar" style="display: flex; flex-direction: column;">
+    <div class="sidebar-logo">Vintage<span>Vault</span></div>
+    <nav class="sidebar-nav">
+      <a href="#" class="active"><span class="icon">📊</span> Dashboard</a>
+      <a href="#"><span class="icon">🔄</span> Backup Pairs</a>
+      <a href="04-restore.html"><span class="icon">⏪</span> Restore</a>
+      <a href="#"><span class="icon">📋</span> Activity Log</a>
+      <div class="sidebar-section">Settings</div>
+      <a href="#"><span class="icon">⚙️</span> Preferences</a>
+      <a href="#"><span class="icon">👤</span> Account</a>
+      <a href="#"><span class="icon">👨‍👩‍👧‍👦</span> Family</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">R</div>
+        <div>
+          <div style="font-size: 0.85rem;">Richard</div>
+          <div class="sidebar-name">Free Plan</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="main-header">
+      <h1>Dashboard</h1>
+      <div class="header-actions">
+        <button class="btn btn-outline">⚙️ Settings</button>
+        <button class="btn btn-primary">+ New Backup Pair</button>
+      </div>
+    </div>
+
+    <!-- Health banner -->
+    <div class="health-banner">
+      <div class="health-score">
+        <div class="health-inner">
+          <div class="health-num">95</div>
+          <div class="health-label">Health</div>
+        </div>
+      </div>
+      <div class="health-details">
+        <h2>Everything looks great! 🎉</h2>
+        <p>Your files are protected. Last backup completed successfully 2 hours ago.</p>
+        <div class="health-stats">
+          <div class="health-stat"><strong>12,847</strong> files protected</div>
+          <div class="health-stat"><strong>38.4 GB</strong> backed up</div>
+          <div class="health-stat"><strong>99.8%</strong> success rate</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="label">Files Protected</div>
+        <div class="value">12,847</div>
+        <div class="change">↑ 124 since last backup</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Total Backed Up</div>
+        <div class="value">38.4 GB</div>
+        <div class="change">↑ 0.8 GB this week</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Last Backup</div>
+        <div class="value">2h ago</div>
+        <div class="change">Completed successfully</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Next Backup</div>
+        <div class="value">Sun 3am</div>
+        <div class="change warn">Weekly schedule (Free)</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <!-- Backup pairs -->
+        <div class="section-card" style="margin-bottom: 1.5rem;">
+          <div class="section-header">
+            <h3>Backup Pairs</h3>
+            <a href="#">Manage →</a>
+          </div>
+          <div class="backup-pair">
+            <div class="bp-status healthy"></div>
+            <div class="bp-flow">
+              <div class="route">📁 OneDrive → 📂 Google Drive</div>
+              <div class="meta">richard@example.com → richard.family@gmail.com</div>
+            </div>
+            <div class="bp-badge success">✓ Healthy</div>
+          </div>
+          <div class="backup-pair" style="opacity: 0.5;">
+            <div class="bp-status" style="background: #e2e8f0;"></div>
+            <div class="bp-flow">
+              <div class="route" style="color: #94a3b8;">+ Add another backup pair</div>
+              <div class="meta">Upgrade to Pro for unlimited pairs</div>
+            </div>
+            <div class="bp-badge" style="background: #f1f5f9; color: #94a3b8;">Pro</div>
+          </div>
+        </div>
+
+        <!-- Activity feed -->
+        <div class="section-card">
+          <div class="section-header">
+            <h3>Recent Activity</h3>
+            <a href="#">View all →</a>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon success">✅</div>
+            <div>
+              <div class="activity-text"><strong>Backup completed</strong> — 124 files updated, 3 new files</div>
+              <div class="activity-time">Today, 6:00 AM · 12 minutes</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon info">📋</div>
+            <div>
+              <div class="activity-text"><strong>Verification passed</strong> — Spot-checked 500 files, all checksums match</div>
+              <div class="activity-time">Today, 6:12 AM</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon success">✅</div>
+            <div>
+              <div class="activity-text"><strong>Backup completed</strong> — 89 files updated, 12 new files, 2 deleted</div>
+              <div class="activity-time">Mar 9, 6:00 AM · 8 minutes</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon info">📧</div>
+            <div>
+              <div class="activity-text"><strong>Monthly health report sent</strong> — "12,723 files protected"</div>
+              <div class="activity-time">Mar 1, 9:00 AM</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon warn">⚠️</div>
+            <div>
+              <div class="activity-text"><strong>Backup paused</strong> — PC went to sleep during backup. Resumed next cycle.</div>
+              <div class="activity-time">Feb 23, 3:15 AM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <!-- Schedule -->
+        <div class="section-card" style="margin-bottom: 1.5rem;">
+          <div class="section-header">
+            <h3>Schedule</h3>
+            <a href="#">Edit →</a>
+          </div>
+          <div class="schedule-item">
+            <div>
+              <div class="schedule-day">Every Sunday</div>
+              <div class="schedule-time">3:00 AM (when PC is on)</div>
+            </div>
+            <div class="schedule-badge">Weekly</div>
+          </div>
+          <div style="padding: 1rem 1.5rem; background: #fffbeb; border-top: 1px solid #fef3c7; font-size: 0.85rem; color: #92400e;">
+            💡 Upgrade to Pro for daily or hourly backups
+          </div>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="section-card" style="margin-bottom: 1.5rem;">
+          <div class="section-header">
+            <h3>Quick Actions</h3>
+          </div>
+          <div style="padding: 1rem 1.5rem;">
+            <button class="btn btn-outline" style="width: 100%; margin-bottom: 0.5rem; justify-content: center;">🔄 Run Backup Now</button>
+            <button class="btn btn-outline" style="width: 100%; margin-bottom: 0.5rem; justify-content: center;">⏪ Restore Files</button>
+            <button class="btn btn-outline" style="width: 100%; justify-content: center;">📋 View Full Log</button>
+          </div>
+        </div>
+
+        <!-- System tray preview -->
+        <div class="tray-preview">
+          <div class="tray-title">System Tray Preview</div>
+          <div class="tray-mockup">
+            <div class="tray-item"><div class="dot green"></div> 🔒 VintageVault — Protected</div>
+            <div class="tray-divider"></div>
+            <div class="tray-item dim">Last backup: 2 hours ago</div>
+            <div class="tray-item dim">Next backup: Sun 3:00 AM</div>
+            <div class="tray-item dim">12,847 files protected</div>
+            <div class="tray-divider"></div>
+            <div class="tray-item dim">Run Backup Now</div>
+            <div class="tray-item dim">Open Dashboard</div>
+            <div class="tray-item dim">Pause Backups</div>
+            <div class="tray-item dim">Quit</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>

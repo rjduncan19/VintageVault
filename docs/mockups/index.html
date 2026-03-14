@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VintageVault — UX Mockups</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; }
+  h1 { font-size: 2.5rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, #60a5fa, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .subtitle { color: #94a3b8; margin-bottom: 3rem; font-size: 1.1rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1200px; width: 100%; }
+  .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 2rem; transition: all 0.2s; text-decoration: none; color: inherit; }
+  .card:hover { border-color: #60a5fa; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(96,165,250,0.15); }
+  .card-num { font-size: 0.85rem; color: #60a5fa; font-weight: 600; margin-bottom: 0.5rem; }
+  .card h2 { font-size: 1.25rem; margin-bottom: 0.75rem; color: #f1f5f9; }
+  .card p { color: #94a3b8; line-height: 1.6; font-size: 0.95rem; }
+  .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-top: 1rem; }
+  .badge-marketing { background: #1e3a5f; color: #60a5fa; }
+  .badge-app { background: #14532d; color: #4ade80; }
+  .badge-flow { background: #713f12; color: #fbbf24; }
+  footer { margin-top: 3rem; color: #475569; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+  <h1>VintageVault</h1>
+  <p class="subtitle">UX Mockups &amp; Wireframes — Open each to explore</p>
+  <div class="grid">
+    <a class="card" href="01-landing-page.html">
+      <div class="card-num">01</div>
+      <h2>Landing Page</h2>
+      <p>Marketing homepage — the first thing potential users see. Communicates the value proposition, shows how it works, and drives sign-up.</p>
+      <span class="badge badge-marketing">Marketing</span>
+    </a>
+    <a class="card" href="02-setup-wizard.html">
+      <div class="card-num">02</div>
+      <h2>Setup Wizard</h2>
+      <p>3-step onboarding flow — connect source, connect destination, confirm. Designed to take under 5 minutes for a non-technical user.</p>
+      <span class="badge badge-flow">User Flow</span>
+    </a>
+    <a class="card" href="03-dashboard.html">
+      <div class="card-num">03</div>
+      <h2>Backup Dashboard</h2>
+      <p>Main application view — backup status at a glance, recent activity, health score, and quick actions. The screen users see most often.</p>
+      <span class="badge badge-app">Application</span>
+    </a>
+    <a class="card" href="04-restore.html">
+      <div class="card-num">04</div>
+      <h2>Restore Flow</h2>
+      <p>File recovery experience — browse backup history, find deleted or corrupted files, and restore them. Inspired by Apple Time Machine.</p>
+      <span class="badge badge-flow">User Flow</span>
+    </a>
+  </div>
+  <footer>VintageVault &mdash; Planning Phase Mockups &mdash; Not final designs</footer>
+</body>
+</html>
