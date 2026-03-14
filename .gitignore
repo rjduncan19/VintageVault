@@ -1,0 +1,8 @@
+
+# VS Code workspace-local files (user-specific, not committed)
+.vscode/launch.json
+.vscode/tasks.json
+.vscode/*.code-workspace
+
+# Devcontainer cache
+.devcontainer/.dockerignore
