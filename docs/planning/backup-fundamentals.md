@@ -164,11 +164,17 @@ Retention answers: "How far back can I recover?"
 
 **VintageVault's model:**
 
-For v1, "keep N days" is the simplest and most intuitive for consumers:
-- Free: 30-day retention (aligns with most cloud recycle bin windows, but extends to a second provider)
-- Pro: 90-day or 365-day retention
+> **⚠️ Updated 2026-03-15:** The original "keep N days" recommendation below has been superseded. Research shows consumers are overwhelmingly accumulators — most people never delete files intentionally. The "keep N days" model was designed for enterprise environments with high churn. For our consumer audience, it creates a false sense of security against patient ransomware.
+>
+> **Current POR (ADR-004):** Keep all snapshots indefinitely by default. Storage is on the user's cloud quota, not ours. User can opt into cleanup via a "Manage Storage" UI. No artificial tier-based retention limits.
+>
+> GFS rotation (weekly/monthly/yearly promotion) is available as an opt-in space-saving strategy, not a default. See [ADR-004](../architecture/004-retention-and-detection.md).
 
-GFS is more storage-efficient but harder to explain to non-technical users. Consider it for v2 if storage costs become a concern.
+~~For v1, "keep N days" is the simplest and most intuitive for consumers:~~
+~~- Free: 30-day retention~~
+~~- Pro: 90-day or 365-day retention~~
+
+~~GFS is more storage-efficient but harder to explain to non-technical users. Consider it for v2 if storage costs become a concern.~~
 
 **Critical retention rule for ransomware protection:** When the backup engine detects that a source file has been deleted or modified, it must NOT immediately delete or overwrite the backed-up version. Instead, it should mark the destination copy for retention-policy-governed expiry. This is the fundamental protection against ransomware: the encrypted/deleted source files don't immediately propagate to destroy the backup.
 
