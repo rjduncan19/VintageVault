@@ -102,46 +102,51 @@ How should VintageVault make money, given that:
 
 ### Pricing Tiers
 
+> **⚠️ Updated 2026-03-15 for ADR-004 alignment.** Retention is no longer a tier differentiator. All tiers keep snapshots indefinitely — storage is on the user's cloud quota, not ours. Restricting retention contradicts the mission (patient ransomware outlasts any fixed window) and creates a false sense of security.
+
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                                                                     │
 │   FREE                    PRO                    FAMILY             │
 │   $0/forever              $4.99/mo ($49/yr)      $9.99/mo ($99/yr) │
 │                                                                     │
-│   ✓ 1 backup pair         ✓ Unlimited pairs      ✓ Everything in   │
-│   ✓ Weekly schedule       ✓ Daily schedule          Pro             │
-│   ✓ 30-day retention      ✓ 90-day retention     ✓ Up to 5 family  │
-│   ✓ Basic status          ✓ Hourly available        members         │
-│   ✓ Email alerts          ✓ Push notifications   ✓ Family dashboard │
-│                           ✓ Priority support     ✓ Shared status    │
-│                           ✓ Anomaly detection       view            │
-│                           ✓ Backup encryption    ✓ 365-day          │
-│                                                     retention       │
-│                                                  ✓ Priority support │
+│   ✓ Same-account          ✓ Everything in Free   ✓ Everything in   │
+│     snapshots             ✓ Daily/hourly            Pro             │
+│   ✓ Weekly schedule         schedule             ✓ Up to 5 family  │
+│   ✓ Keep all snapshots    ✓ Cross-account           members         │
+│     indefinitely            backup (ransomware   ✓ Family dashboard │
+│   ✓ Metadata anomaly        isolation)           ✓ Shared status    │
+│     detection             ✓ Content-based           view            │
+│   ✓ Email alerts            anomaly detection    ✓ Priority support │
+│                           ✓ Push notifications                     │
+│                           ✓ Backup encryption                      │
+│                           ✓ Priority support                       │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Why These Tiers
 
-**Free tier is generous enough to be genuinely useful:**
-- 1 backup pair (e.g., OneDrive → Google Drive) covers the primary use case
-- Weekly schedule is "good enough" for most families
-- 30-day retention protects against accidental deletion
-- Users experience real value before seeing any paywall
+**Free tier is genuinely protective — not a crippled teaser:**
+- Same-account snapshots protect against accidental deletion and overwrite
+- All snapshots kept indefinitely (storage is user's quota, costs us nothing)
+- Metadata anomaly detection catches most ransomware patterns — free for all
+- Weekly schedule is sufficient for most families
 
-**Pro tier unlocks power and peace of mind:**
-- Multiple backup pairs for users with several cloud accounts
-- Daily/hourly schedule for freelancers and small businesses
-- 90-day retention for deeper protection
-- Anomaly detection (ransomware) — the highest-value differentiator
+**Pro tier adds speed, depth, and isolation:**
+- Daily/hourly snapshots reduce the gap between "oops" and last snapshot
+- Cross-account backup provides true ransomware isolation (separate account)
+- Content-based detection (entropy, magic numbers) catches slow-burn ransomware
 - Encryption for privacy-conscious users
 
 **Family tier is the growth engine:**
 - Parents set it up for the whole family
 - Shared dashboard ("Dad, is my Google Drive backed up?" → "Let me check the family dashboard")
-- 365-day retention for irreplaceable family memories
 - At $9.99/mo for 5 users, it's $2.00/person/month — cheaper than any competitor
+
+**What we DON'T use to differentiate tiers:**
+- ~~Retention limits~~ — All tiers keep everything. Patient ransomware outlasts any fixed window.
+- ~~Number of backup pairs~~ — Free supports one same-account pair; Pro adds cross-account (a genuinely different capability, not an arbitrary limit).
 
 ### Why Not $1.99? Why Not $9.99?
 
@@ -229,3 +234,4 @@ Beyond core subscription, these could supplement revenue in Phase 3+:
 3. Family tier creates natural viral growth (one setup → 5 users)
 4. ~95% gross margin enables reinvestment in product
 5. Competitive pricing significantly undercuts all alternatives
+6. Tier differentiation is based on genuine capability differences (speed, scope, depth of detection) — not artificial limits on retention that undermine the mission

@@ -146,9 +146,9 @@ This **800× cost advantage** enables:
 |------|----------------|-------------------|
 | 1 OneDrive snapshot | Everything in Free | Everything in Pro |
 | Weekly schedule | Daily/hourly snapshots | Up to 5 family members |
-| 30-day retention | Cross-account backup (ransomware-safe) | 365-day retention |
-| Basic alerts | Anomaly detection | Family dashboard |
-| | 90-day retention | Shared management |
+| All snapshots kept indefinitely | Cross-account backup (ransomware-safe) | Family dashboard |
+| Metadata anomaly detection | Content-based detection | Shared management |
+| | 90-day retention | |
 
 ### Revenue model
 
@@ -197,7 +197,8 @@ At **100,000 free users** with **8% paid conversion** (SaaS median):
 ### Phase 1 — MVP (Same-Account OneDrive Snapshots)
 - Web signup + OneDrive OAuth
 - Same-account immutable incremental snapshots via Graph API
-- Weekly schedule, 30-day retention
+- Weekly schedule, all snapshots kept indefinitely
+- Metadata anomaly detection (mass change, extension swap, size patterns)
 - Browsable backup (plain folders in user's OneDrive)
 - Email status notifications
 - Open source engine on GitHub
@@ -205,9 +206,8 @@ At **100,000 free users** with **8% paid conversion** (SaaS median):
 ### Phase 2 — Pro Tier + Cross-Account
 - Cross-account backup (separate OneDrive or Google Drive) for ransomware protection
 - Daily/hourly schedules
-- Anomaly detection
+- Content-based anomaly detection (entropy, file headers)
 - Stripe billing
-- 90-day retention
 
 ### Phase 3 — Growth
 - Google Drive support (pending OAuth assessment)

@@ -88,7 +88,7 @@ Two outcomes:
 
 ## Storage Math
 
-**50 GB source, 2% weekly change rate, 30-day retention:**
+**50 GB source, 2% weekly change rate (storage grows indefinitely — user controls cleanup):**
 
 | Component | Size | Notes |
 |-----------|------|-------|
@@ -156,9 +156,10 @@ Everything is still plain folders and files:
 Over time, restoring from the initial full + many incrementals becomes complex. Periodically create a new full snapshot:
 
 ```
-Free:    New full baseline every 30 days (matches retention window)
-Pro:     New full baseline every 90 days
-Family:  New full baseline every 90 days (365-day retention)
+Free:    New full baseline every 6-12 months (performance optimization)
+Pro:     New full baseline every 6-12 months
+Family:  New full baseline every 6-12 months
+All tiers: Old snapshots kept indefinitely unless user opts into cleanup.
 ```
 
 After a new baseline, older full snapshots + their incrementals can be pruned.
