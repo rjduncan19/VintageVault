@@ -526,6 +526,99 @@ A running record of all user prompts across sessions and machines. This helps tr
 
 ---
 
+### Prompt 35: Consumer Retention & GFS
+**Time:** 2026-03-15T17:54:44Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> I see that the backup-fundamentals seems to recommend "keep N days" as simple. However, that doesn't really protect against ransomeware, particularly if the attack is patient. GFS seems more appropriate, but perhaps move all timeframes out. Evaluate consumer usage trends, do we know when consumers actually delete stuff? Maybe we need an explicit "clean up old deleted stuff" UX flow?
+
+**Response artifacts:**
+- `docs/planning/backup-fundamentals.md` — Marked "keep N days" as superseded
+- `docs/architecture/004-retention-and-detection.md` — Added consumer behavior research, "Manage Storage" cleanup UX wireframe, opt-in GFS consolidation
+
+---
+
+### Prompt 36: Prompt Logging Catch-Up
+**Time:** 2026-03-15T17:57:50Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> also, it looks like you have not been tracking all prompts! I asked you to do this consistently for this project
+
+**Response artifacts:**
+- `docs/prompts/README.md` — Recovered prompts 12-34 from session store
+- `docs/DEVELOPMENT_PROCESS.md` — Added Prompt Logging Enforcement section
+
+---
+
+### Prompt 37: Monetization Retention Conflict
+**Time:** 2026-03-15T18:29:51Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> The monetization strategy is not consistent with the mission and current plans. 30-90 days of backups is useless against ransomeware.
+
+**Response artifacts:**
+- `docs/planning/monetization-strategy.md` — Removed 30/90/365-day retention tiers. All tiers keep everything indefinitely. Differentiation based on speed, scope, detection depth.
+- `docs/planning/pitch.md` — Updated pricing table and roadmap
+- `docs/architecture/003-backup-storage-format.md` — Updated storage math and re-baseline policy
+
+---
+
+### Prompt 38: Infrastructure Cost Reduction
+**Time:** 2026-03-15T18:42:37Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> How can we push down the infrastructure costs?
+
+**Response artifacts:**
+- `docs/planning/monetization-strategy.md` — Rewrote cost structure: split fixed vs. variable. Azure free tiers cover everything pre-revenue. Break-even at 5 subscribers, not 50.
+
+---
+
+### Prompt 39: Cross-Account Free Tier Strategy
+**Time:** 2026-03-15T18:54:44Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> I really want to get people to the more robust protection, which in my initial thinking requires multiple accounts. There still exists a tension, though... Are there other novel solutions? How could we make the client option more reliable? Split out Google vs OneDrive.
+
+**Response artifacts:**
+- `docs/planning/cross-account-strategy.md` — Two provider-specific approaches: Google share-then-copy (server-side, free, instant), OneDrive browser-based resumable transfer (novel, free, per-file checkpoint). Ransomware protection moves to free tier.
+- `docs/mockups/05-cross-account.html` — Interactive 6-screen UX walkthrough
+
+---
+
+### Prompt 40: Browser Auth Security
+**Time:** 2026-03-15T19:13:45Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> this is a scenario that relies on auth. User has to auth to their cloud storage. Can all this be reasonably stored in a browser session? Is that safe? Would an app experience be superior?
+
+**Response artifacts:** Analysis only (not saved to doc) — compared sessionStorage/localStorage/cookies/OS keychain. Recommended phased approach: CLI (most secure) → SPA (most accessible) → PWA (best of both).
+
+---
+
+### Prompt 41: Capture Auth as Open Decision
+**Time:** 2026-03-15T19:22:49Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> Capture this as an open question that needs a decision in planning or architecture.
+
+**Response artifacts:**
+- `docs/planning/cross-account-strategy.md` — Added "Open Decision: Auth Model for Cross-Account Transfer" section with 4 options, trade-off tables, and decision criteria
+
+---
+
+### Prompt 42: Save Work and Push
+**Time:** 2026-03-15T19:25:00Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> make sure to save all your work and prompts, and push changes
+
+**Response artifacts:**
+- `docs/prompts/README.md` — Logged prompts 35-42
+- All changes committed and pushed to GitHub
+
+---
+
 ## How to Use This Log
 
 Each session is documented with:

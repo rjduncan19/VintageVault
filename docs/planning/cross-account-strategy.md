@@ -322,6 +322,70 @@ Given that cross-account backup CAN be free (Google) or near-free (OneDrive brow
 
 ---
 
+---
+
+## Open Decision: Auth Model for Cross-Account Transfer
+
+**Status:** Needs decision before Phase 2 implementation
+
+Cross-account backup requires the user to authenticate with TWO accounts simultaneously. How we handle this affects security, UX, and architecture. The options have real trade-offs:
+
+### Option 1: CLI Tool (Most Secure)
+
+The CLI we already built uses MSAL + OS keychain (DPAPI/Keychain/libsecret). Adding dual-account support is straightforward — MSAL natively supports `getAllAccounts()`. Tokens are encrypted at the OS level, zero XSS risk.
+
+| Pro | Con |
+|-----|-----|
+| OS-encrypted token storage | Requires install (CLI binary) |
+| No web attack surface | Less accessible for non-technical users |
+| Already built (Phase 1 POC) | No web-based resume UX |
+| Supports resumable transfers natively | |
+
+### Option 2: Browser SPA (Most Accessible)
+
+MSAL.js in a web app — the approach described in the browser transfer UX above. Standard for Microsoft 365 web apps. Dual-account works via separate `PublicClientApplication` instances.
+
+| Pro | Con |
+|-----|-----|
+| No install — just a URL | `sessionStorage`: re-auth every tab close |
+| Works on any device | `localStorage`: persists but XSS-vulnerable |
+| Best for non-technical users | Dual-account flow is awkward (two popups) |
+| Resume UX is natural ("reopen this page") | Requires strict CSP to mitigate XSS |
+
+**The token storage dilemma:**
+- `sessionStorage` (safer) = user must re-authenticate every time they reopen the tab. Terrible for resumable transfers.
+- `localStorage` (convenient) = tokens persist across sessions but any JS on the page can read them. Requires zero third-party scripts and strict Content Security Policy.
+
+### Option 3: PWA — Progressive Web App (Best of Both)
+
+Install from the browser → gets OS-level storage and background capabilities. Bridges the gap between web accessibility and native security.
+
+| Pro | Con |
+|-----|-----|
+| Installable from browser (no app store) | PWA storage APIs still evolving |
+| OS-level credential storage on some platforms | Background execution limited on iOS/some browsers |
+| Works offline | Adds complexity to build/test |
+| "Install" feels lighter than "download .exe" | |
+
+### Option 4: Phased Approach (Recommended?)
+
+1. **Phase 1 (now):** CLI tool with OS keychain — already built, most secure
+2. **Phase 2:** Web SPA with `localStorage` + strict CSP — for the browser transfer UX
+3. **Phase 3:** PWA wrapper — adds install prompt, OS storage, background capabilities
+
+This lets us ship cross-account backup securely (CLI) while building toward the browser experience. No single decision blocks progress.
+
+### Decision Criteria
+
+- How important is "no install" for the cross-account flow specifically?
+- Is `localStorage` + strict CSP acceptable risk for a first-party SPA?
+- Do we expect users to do cross-account setup once (tolerate friction) or repeatedly (need smooth UX)?
+- Should the Phase 1 CLI get a `--cross-account` flag before we build any web transfer UI?
+
+**This decision should be made before Phase 2 implementation begins.**
+
+---
+
 ## Impact on Mission & Brand
 
 ```
