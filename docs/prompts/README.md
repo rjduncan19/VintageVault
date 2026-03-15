@@ -267,6 +267,265 @@ A running record of all user prompts across sessions and machines. This helps tr
 
 ---
 
+### Prompt 12: Provider Advocacy & "If We Succeed, We Disappear"
+**Time:** 2026-03-14T04:59:23Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> bummer on the shareWithMe API deprecation. If anything, though, that reinforces the fragility of this as a big money idea, as it is super obvious the big providers could squash us quickly. However, if we start out as mission based, we can encourage these big providers to fix this gap for their users, which would ultimately fulfill our mission probably better than we could as 3P code. Let's be explicit about this in analysis of the plan, and say we would be ok to go out of business if the providers started solving this for us all to make the world a better place.
+
+**Response artifacts:**
+- `MISSION.md` — Added "If We Succeed, We Disappear" section: advocate for providers to build this natively, celebrate if they do
+- `docs/planning/devils-advocate.md` — Added mission-driven rebuttal to platform risk concern
+
+---
+
+### Prompt 13: Consistency Audit
+**Time:** 2026-03-14T05:06:48Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> This works - are the mockups still current? anything else need to update? also, for branding, put everything except the winning option into an "alternates" folder to reduce noise.
+
+**Response artifacts:**
+- Moved 7 alternate logos to `docs/branding/alternates/`
+- Updated all 4 mockups for same-account pivot, pricing, terminology
+
+---
+
+### Prompt 14: Backup Storage Format Analysis
+**Time:** 2026-03-14T05:14:47Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> while there is an advantage of simplicity and transparency with folders...there are downsides. Please do a decision analysis about backing up with folders vs. zip files. If we just back up with folders, won't we absolutely explode in disk size? Won't we lose all incremental/differential backup best practices?
+
+**Response artifacts:**
+- `docs/architecture/003-backup-storage-format.md` — ADR-003: Evaluated 5 storage options (full copies, ZIPs, incremental ZIPs, living mirror, mirror-only). Initially recommended living mirror.
+
+---
+
+### Prompt 15: Mirror Corruption Flaw
+**Time:** 2026-03-14T05:21:12Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> a living mirror would be extremely susceptible to corruption, though. This was our initial goal...
+
+**Response artifacts:**
+- `docs/architecture/003-backup-storage-format.md` — ADR-003 rev2: Fixed fatal flaw. Replaced living mirror with immutable incremental snapshots. Snapshot folders are NEVER modified after creation.
+
+---
+
+### Prompt 16: Full Consistency Sweep
+**Time:** 2026-03-14T05:29:17Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> OK, we identified that the plan completely lost sight of the initial goal for a minute (losing ability to fight ransomeware). While we have evolved and refined, I want to ensure we didn't lose anything else critical. Go back and review, and look at all collateral to update. I want this project repo to be consistent.
+
+**Response artifacts:**
+- 9 files updated: ADR-001 marked superseded, ADR-002 context note, all pricing fixed ($3.99→$4.99, $7.99→$9.99), pitch/biz plan/wireframes/contributing updated for same-account pivot
+
+---
+
+### Prompt 17: Mockup Generalization
+**Time:** 2026-03-14T05:40:28Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> On the mockups - they still seem desktop app focused. Also, can they be generalized to not be just for onedrive, but also google? I'm also concerned Apple may sue us for the term time travel.
+
+**Response artifacts:**
+- "Time Travel" → "Rewind" everywhere (Apple trademark risk)
+- OneDrive-specific → "Your Cloud" in mockup UIs
+- Added browser chrome bars to all 4 mockups (web app, not desktop)
+
+---
+
+### Prompt 18: Retention & Ransomware Detection
+**Time:** 2026-03-14T05:46:50Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> I'm concerned with the 90 day limitation, particularly for a paid tier. Honestly a 90 day limit just means we aren't taking this seriously. Ransomeware is growing ever more sophisticated and patient. People have years or even decades worth of data, it needs to be protected. That is our mission.
+
+**Response artifacts:**
+- `docs/architecture/004-retention-and-detection.md` — ADR-004: GFS retention for all tiers, metadata-based anomaly detection (4 rules), content detection for Pro tier
+
+---
+
+### Prompt 19: Storage Costs Are User's Problem
+**Time:** 2026-03-14T05:48:54Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> Why do we even care about storage costs? that is on the cloud providers balance sheet, not ours.
+
+**Response artifacts:**
+- `docs/architecture/004-retention-and-detection.md` — ADR-004 revised: keep everything by default, never auto-delete, no artificial retention tiers. Storage is user's quota, not ours.
+
+---
+
+### Prompt 20: POC Architecture Review
+**Time:** 2026-03-14T06:09:02Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> ok, enough iterating on the biz plan. I think we have enough for you to build the initial POC. Before we do that, review the architecture again, so we can pick a language and get started.
+
+**Response artifacts:** Architecture review summary, TypeScript initially recommended (later changed to .NET per Prompt 22)
+
+---
+
+### Prompt 21: POC Spec & Mockups
+**Time:** 2026-03-14T06:15:12Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> Save the requirements and high level design for this initial POC to a markdown file along with UX mockups for me to review in detail before we get started.
+
+**Response artifacts:**
+- `docs/poc-spec.md` — Complete POC spec: 6 requirements (R1-R6), tech stack, project structure, backup flow, CLI mockups
+- `docs/mockups/poc/cli-mockup.html` — Interactive terminal mockup for all CLI commands
+
+---
+
+### Prompt 22: Language Decision & Checksums
+**Time:** 2026-03-14T06:26:16Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> since we are starting with a command line, wouldn't .NET be more appropriate? I am almost certainly biased here, so convince me if typescript is really more appropriate. Also, review the backup fundamentals and state of the art. Would some sort of checksum be useful?
+
+**Response artifacts:**
+- `docs/poc-spec.md` — Language switched to C#/.NET 8. Added R7 (Checksum Integrity Verification using OneDrive's SHA-1/QuickXorHash metadata).
+
+---
+
+### Prompt 23: File Filtering & Dev Flow
+**Time:** 2026-03-14T06:36:36Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> I know I have some very very large files in my onedrive, so it seems that some minimal ux or even CLI affordance to specify (or exclude) files to monitor is key. Also, talk through the dev and validation flow.
+
+**Response artifacts:**
+- `docs/poc-spec.md` — Added R8 (Include/Exclude File Filtering), development & validation flow with test account setup, 7-phase validation checklist, logo added to key docs
+
+---
+
+### Prompt 24: Security Audit (Tokens/SDL)
+**Time:** 2026-03-14T06:45:28Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> I see mention of tokens. Will this be following best practices for security and the microsoft SDL? are we storing any secrets?
+
+**Response artifacts:**
+- `docs/poc-spec.md` — Fixed SDL violation: removed plaintext token storage. Added full Security Model section with MSAL encrypted cache, error handling policy, SDL checklist.
+
+---
+
+### Prompt 25: Restore Flow Clarification
+**Time:** 2026-03-14T06:48:13Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> please clarify (but don't change anything yet). Is there a restore flow at all in this first POC? It seems reasonable to postpone that to a second POC
+
+**Response artifacts:** None (clarification only — confirmed restore is deferred to POC 2)
+
+---
+
+### Prompt 26: Security Triple-Check
+**Time:** 2026-03-14T06:49:45Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> ok, triple check that our plan even for this POC has a strong security posture. Trust is critical for this to succeed.
+
+**Response artifacts:**
+- `docs/poc-spec.md` — Expanded security section: metadata privacy policy (no PII in OneDrive manifests), input validation spec, error handling policy table, SDL checklist with 11 POC items + 6 production backlog items
+
+---
+
+### Prompt 27: Build the POC
+**Time:** 2026-03-14T06:55:23Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> in the words of emperor palpatine - do it!
+
+**Response artifacts:**
+- Installed .NET 8 SDK
+- Scaffolded VintageVault.sln with CLI + test projects
+- Built 13 C# source files (2,344 lines) implementing R1-R8
+- All builds clean (0 warnings, 0 errors)
+
+---
+
+### Prompt 28: Don't Test on Personal OneDrive
+**Time:** 2026-03-14T07:51:45Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> note - DO NOT TEST ON MY PERSONAL ONEDRIVE, I have lots of important data I do not want to risk. This is the whole mission of this project.
+
+**Response artifacts:** None (acknowledged — no tests run against any live account)
+
+---
+
+### Prompt 29: Unit Tests
+**Time:** 2026-03-14T08:00:14Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> I see unit tests are blank - is there anything useful to unit test in this POC? If so, add them
+
+**Response artifacts:**
+- 53 unit tests across 4 test files: FilterEngineTests (25), AnomalyDetectorTests (12), ManifestManagerTests (10), ConfigStoreTests (6). All passing.
+
+---
+
+### Prompt 30: Test Environment Next Steps
+**Time:** 2026-03-14T08:04:12Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> I'm going to bed - please make sure you leave next steps for setting up a "test environment", which includes a test MSA account, in an easy place to find it. I will also want you to generate enough data in this OneDrive account to make a good test of the script.
+
+**Response artifacts:**
+- `NEXT-STEPS.md` — 6-step test environment setup guide at repo root
+
+---
+
+### Prompt 31: Reviewer Guide for Wife
+**Time:** 2026-03-14T08:07:23Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> oh - please give me something I can easily send my wife to review so she can see the biz plan/etc. What is the best way to share this with her?
+
+**Response artifacts:**
+- `REVIEWER-GUIDE.md` — Curated reading order for senior PMM reviewer (~40 min), pushed to GitHub
+
+---
+
+### Prompt 32: Sharing Private Repo
+**Time:** 2026-03-14T08:10:19Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> the repo is private, how can she see it?
+
+**Response artifacts:** None (instructions to add collaborator via GitHub settings)
+
+---
+
+### Prompt 33: Retention & Consumer Behavior Research
+**Time:** 2026-03-15T17:54:44Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> I see that the backup-fundamentals seems to recommend "keep N days" as simple. However, that doesn't really protect against ransomware, particularly if the attack is patient. GFS seems more appropriate. Evaluate consumer usage trends, do we know when consumers actually delete stuff?
+
+**Response artifacts:**
+- `docs/planning/backup-fundamentals.md` — Marked "keep N days" recommendation as superseded
+- `docs/architecture/004-retention-and-detection.md` — Added consumer behavior research, "Manage Storage" cleanup UX wireframe, opt-in GFS consolidation
+
+---
+
+### Prompt 34: Prompt Logging Catch-Up
+**Time:** 2026-03-15T17:57:50Z  
+**Model:** Claude Opus 4.6 (1M context)
+
+> also, it looks like you have not been tracking all prompts! I asked you to do this consistently for this project. Go back and find all prompts I've given you since you forgot to stop tracking, and also figure out a way to make sure you don't forget this again.
+
+**Response artifacts:**
+- `docs/prompts/README.md` — Caught up prompts 12-34 (23 missing entries recovered from session store)
+- Added "Prompt Logging Enforcement" section to DEVELOPMENT_PROCESS.md
+
+---
+
 ## How to Use This Log
 
 Each session is documented with:

@@ -77,6 +77,30 @@ This table lives in the **session database** (the per-session SQLite that doesn'
 
 ---
 
+## Prompt Logging Enforcement
+
+**Problem (2026-03-15):** Prompts 12-34 were missed during an intense development session. The agent stopped logging when focus shifted from planning to building.
+
+**Root cause:** Prompt logging was done ad-hoc during commits rather than systematically after every user message.
+
+**Prevention rules:**
+
+1. **Every git commit that changes planning/architecture docs MUST include updated prompts.** If you're committing work, the prompt that caused that work must be logged.
+
+2. **Before ending any session,** the agent must verify: "How many user messages have I received? How many are logged in docs/prompts/README.md?" If the counts don't match, catch up before the session ends.
+
+3. **The session store is the safety net.** All turns are automatically captured in the Copilot CLI session store database. If prompts are missed, they can be recovered via:
+   ```sql
+   SELECT turn_index, substr(user_message, 1, 300), timestamp 
+   FROM turns t JOIN sessions s ON t.session_id = s.id 
+   WHERE s.cwd LIKE '%VintageVault%' 
+   ORDER BY t.timestamp ASC
+   ```
+
+4. **Batch logging is acceptable.** It's OK to log 5-10 prompts at once during a natural break rather than after every single message — as long as they're logged before the session ends.
+
+---
+
 ## Session Workflow Checklist
 
 ### Beginning of Session
