@@ -162,7 +162,7 @@ How should VintageVault make money, given that:
 
 ### Assumptions
 - 100,000 free users (achievable with good product + word-of-mouth)
-- 4% conversion to paid (industry average for consumer freemium)
+- 8% conversion to paid (SaaS median — see architecture-reassessment.md)
 - 70/30 split between Pro and Family among paid users
 
 ### Revenue Projection
@@ -170,32 +170,70 @@ How should VintageVault make money, given that:
 | Metric | Value |
 |--------|-------|
 | Free users | 100,000 |
-| Paid users | 4,000 |
-| Pro users (70%) | 2,800 × $49/yr = $137,200/yr |
-| Family users (30%) | 1,200 × $99/yr = $118,800/yr |
-| **Total ARR** | **$204,000/yr** |
+| Paid users | 8,000 |
+| Pro users (70%) | 5,600 × $49/yr = $274,400/yr |
+| Family users (30%) | 2,400 × $99/yr = $237,600/yr |
+| **Total ARR** | **$512,000/yr** |
 
 ### Cost Structure
 
+> **⚠️ Updated 2026-03-15 for same-account pivot.** Previous estimates ($800/month) were based on the desktop agent + web dashboard architecture. The same-account model using Azure Functions and OneDrive server-side APIs is dramatically cheaper.
+
+**Fixed costs (incurred even with zero users):**
+
 | Cost | Monthly | Annual | Notes |
 |------|---------|--------|-------|
-| Web dashboard hosting | $50-200 | $600-2,400 | Config/status only, no data |
-| Payment processing (Stripe ~3%) | ~$510 | ~$6,120 | On paid revenue |
-| Cloud API costs | ~$0 | ~$0 | APIs are free; agent runs on user's device |
-| Domain, email, DNS | $20 | $240 | |
-| Apple/Microsoft store fees | Variable | Variable | If distributed through stores |
-| **Total infrastructure** | **~$800** | **~$9,360** | |
-| **Gross margin** | | **~95%** | |
+| Domain + DNS | $1-5 | $12-60 | vintagevault.com or similar |
+| GitHub Copilot | $19 | $228 | Development tool |
+| **Total fixed** | **~$20-24** | **~$240-288** | |
 
-### Path to Revenue
+**Variable costs (scale with users/revenue):**
+
+| Cost | Per Unit | At 1K paid | At 8K paid | Notes |
+|------|----------|-----------|-----------|-------|
+| Azure Functions | $0/mo | $0 | $0 | Free tier: 1M executions/month. Weekly backup of 100K users = ~400K executions/month — **within free tier** |
+| Azure Static Web App (dashboard) | $0/mo | $0 | $0 | Free tier: 100 GB bandwidth, SSL, CDN |
+| Database (user configs) | $0/mo | $0 | $0-10 | Azure Table Storage: $0.045/GB. 100K users × 1 KB config = 100 MB ≈ $0.005/month |
+| Stripe payment processing | 2.9% + $0.30/txn | ~$175/mo | ~$1,400/mo | Only on paid transactions |
+| SendGrid (emails) | $0/mo | $0 | $0-20 | Free tier: 100 emails/day = 3,000/month. Sufficient until ~12K users |
+| Cross-account relay (Pro tier bandwidth) | ~$0.50/user/mo | ~$350/mo | ~$2,800/mo | Only for Pro/Family users doing cross-account backup. Phase 2+. |
+| **Total variable** | | **~$525/mo** | **~$4,220/mo** | |
+
+**Key insight: Nearly all infrastructure is free until we have paying users.** The only real cost is Stripe's cut when money comes in — which is revenue-proportional. We can't lose money on infrastructure.
+
+### Cost Summary by Phase
+
+| Phase | Users | Monthly Cost | Monthly Revenue | Net |
+|-------|-------|-------------|-----------------|-----|
+| **Phase 1 (MVP)** | 0-1,000 free | ~$20 (domain + Copilot) | $0 | -$20 |
+| **Break-even** | ~100 free, ~5 paid | ~$25 | ~$25 | $0 |
+| **Early growth** | 5,000 free, 400 paid | ~$85 | ~$2,000 | +$1,915 |
+| **Established** | 50,000 free, 4,000 paid | ~$2,200 | ~$21,000 | +$18,800 |
+| **At scale** | 100,000 free, 8,000 paid | ~$4,250 | ~$42,000 | +$37,750 |
+
+**Break-even is at ~5 paid subscribers.** Not 50. The same-account pivot made the economics absurdly favorable.
+
+### Why Infrastructure Is Nearly Free
 
 ```
-Phase 1 (MVP):     Free only. Build user base. Validate product-market fit.
-Phase 2 (Dashboard): Introduce Pro tier via web dashboard.
-Phase 3 (Growth):   Introduce Family tier. Begin marketing.
-Phase 4 (Scale):    Optimize conversion. Add annual billing discounts.
-                    Consider App Store distribution (accepting margin hit).
+OLD MODEL (desktop agent + web dashboard):
+  Web dashboard VM:        $50-200/month
+  Database (Cosmos/SQL):   $20-50/month
+  Relay bandwidth:         $200-500/month (for all users)
+  Total:                   $270-750/month BEFORE any revenue
+
+CURRENT MODEL (Azure Functions + OneDrive APIs):
+  Azure Functions:         $0 (within 1M free executions/month)
+  Azure Static Web App:    $0 (free tier)
+  Azure Table Storage:     $0.005/month (100K users)
+  Total:                   ~$0/month BEFORE any revenue
+  
+  The only costs that matter are:
+  1. Stripe (2.9% + $0.30) — only when we make money
+  2. Cross-account relay bandwidth — only for Pro/Family, Phase 2+
 ```
+
+The same-account backup model using server-side `driveItem: copy` is the architectural gift that keeps giving: the compute happens on Microsoft's infrastructure, the storage is on the user's quota, and the orchestration fits within Azure's free tier.
 
 ---
 
