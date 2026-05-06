@@ -4,7 +4,7 @@
   <img src="../branding/logo.svg" alt="VintageVault" width="120">
 </p>
 
-_Prepared: March 2026 | For internal review_
+_Prepared: March 2026 | Draft_
 
 ---
 

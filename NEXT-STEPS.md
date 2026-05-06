@@ -75,8 +75,8 @@ This gives us enough variety to exercise all code paths.
 
 ```powershell
 # Set up .NET SDK path (if not in your system PATH yet)
-$env:PATH = "C:\Users\richardd\.dotnet;$env:PATH"
-cd C:\Users\richardd\source-rjduncan19\VintageVault
+$env:PATH = "$HOME\.dotnet;$env:PATH"
+cd <path-to>\VintageVault
 
 # 1. Authenticate with your TEST account
 dotnet run --project src\VintageVault.Cli -- auth
