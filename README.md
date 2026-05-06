@@ -15,7 +15,12 @@
 
 ---
 
-Ransomware attacks are up 34% year over year. Families lose every photo they've ever taken. Small businesses close permanently. Enterprise IT has backup solutions — everyone else has nothing.
+> **Status: Pre-MVP — planning & architecture phase.**
+> This repo currently contains mission, strategy, architecture docs, UX mockups, and an early CLI scaffold. No production-ready backup engine yet. Code, docs, and decisions are evolving in the open. Feedback welcome; production use is not.
+
+---
+
+Ransomware attacks are up 34% year over year.Families lose every photo they've ever taken. Small businesses close permanently. Enterprise IT has backup solutions — everyone else has nothing.
 
 **VintageVault exists to change that.**
 
