@@ -1,0 +1,15 @@
+# rclone exploration — secret hygiene
+# NEVER commit rclone configs: they contain OAuth refresh tokens.
+rclone.conf
+*.rclone.conf
+prototype/config/rclone.conf
+prototype/config/*.conf
+!prototype/config/*.template
+
+# Captured run output may contain account names / paths — keep evidence local
+# (delete this block if you intentionally want to track sanitized results)
+findings/results/*.log
+findings/results/*.raw.txt
+
+# rclone state
+*.rclonecache

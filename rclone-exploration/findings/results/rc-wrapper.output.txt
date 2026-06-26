@@ -1,0 +1,15 @@
+No remotes supplied -> using local sandbox C:\Users\richardd\AppData\Local\Temp\rclone-rc-demo
+Starting rclone rcd daemon on http://127.0.0.1:5572 ...
+Daemon ready.
+Started copy job id=2 (maps to VintageVault 'backup')
+  status: finished=True success=True duration=0.02s
+Job complete. Destination contents:
+
+FullName
+--------
+C:\Users\richardd\AppData\Local\Temp\rclone-rc-demo\dst\demo.txt
+C:\Users\richardd\AppData\Local\Temp\rclone-rc-demo\dst\notes.md
+Stopping daemon...
+(local sandbox left in place for inspection)
+
+

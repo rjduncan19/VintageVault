@@ -1,0 +1,35 @@
+# rclone configuration TEMPLATE — redacted, safe to commit.
+#
+# Copy this to rclone.conf and populate via `rclone config` (interactive OAuth).
+# The real rclone.conf is git-ignored because [token] holds OAuth refresh tokens.
+#
+# Generate the real config with, e.g.:
+#   rclone config create onedrive_src   onedrive
+#   rclone config create gdrive_dest     drive
+#   rclone config create gdrive_src      drive
+#
+# Targeted provider pairs for this spike:
+#   - OneDrive -> Google Drive  (cross-provider; download+upload, no server-side)
+#   - Google  -> Google         (same-provider; server-side copy possible)
+
+[onedrive_src]
+type = onedrive
+# token = {"access_token":"REDACTED","refresh_token":"REDACTED",...}
+drive_type = personal
+
+[gdrive_dest]
+type = drive
+# token = {"access_token":"REDACTED","refresh_token":"REDACTED",...}
+scope = drive
+
+[gdrive_src]
+type = drive
+# token = {"access_token":"REDACTED","refresh_token":"REDACTED",...}
+scope = drive
+
+# Optional: client-side encryption layered on top of a destination remote.
+# [gdrive_dest_crypt]
+# type = crypt
+# remote = gdrive_dest:VintageVault
+# password = REDACTED
+# password2 = REDACTED
