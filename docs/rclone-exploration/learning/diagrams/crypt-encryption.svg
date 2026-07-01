@@ -1,0 +1,105 @@
+<svg viewBox="0 0 800 480" xmlns="http://www.w3.org/2000/svg" font-family="monospace, sans-serif">
+  <!-- Background -->
+  <rect width="800" height="480" fill="#0f172a" rx="12"/>
+
+  <!-- Title -->
+  <text x="400" y="35" fill="#f8fafc" font-size="17" font-weight="bold" text-anchor="middle">rclone crypt: Zero-Knowledge Encryption</text>
+  <text x="400" y="54" fill="#94a3b8" font-size="12" text-anchor="middle">Your data encrypted before it ever leaves your machine</text>
+
+  <!-- ══ Left side: Your view ══ -->
+  <rect x="30" y="70" width="230" height="360" fill="#1e293b" stroke="#6366f1" stroke-width="2" rx="8"/>
+  <text x="145" y="93" fill="#a5b4fc" font-size="12" font-weight="bold" text-anchor="middle">Your view (via crypt)</text>
+  <text x="145" y="108" fill="#64748b" font-size="10" text-anchor="middle">onedrive-backup-encrypted:</text>
+
+  <rect x="45" y="118" width="200" height="28" fill="#0f172a" stroke="#334155" stroke-width="1" rx="3"/>
+  <text x="55" y="137" fill="#f8fafc" font-size="10">📁 Documents/</text>
+
+  <rect x="45" y="150" width="200" height="24" fill="#0f172a" stroke="#334155" stroke-width="1" rx="3"/>
+  <text x="65" y="167" fill="#94a3b8" font-size="10">📄 Budget.xlsx</text>
+
+  <rect x="45" y="177" width="200" height="24" fill="#0f172a" stroke="#334155" stroke-width="1" rx="3"/>
+  <text x="65" y="194" fill="#94a3b8" font-size="10">📄 Resume.docx</text>
+
+  <rect x="45" y="204" width="200" height="28" fill="#0f172a" stroke="#334155" stroke-width="1" rx="3"/>
+  <text x="55" y="223" fill="#f8fafc" font-size="10">📁 Photos/</text>
+
+  <rect x="45" y="235" width="200" height="24" fill="#0f172a" stroke="#334155" stroke-width="1" rx="3"/>
+  <text x="65" y="252" fill="#94a3b8" font-size="10">📷 IMG_4521.jpg</text>
+
+  <rect x="45" y="262" width="200" height="24" fill="#0f172a" stroke="#334155" stroke-width="1" rx="3"/>
+  <text x="65" y="279" fill="#94a3b8" font-size="10">📷 vacation.jpg</text>
+
+  <text x="145" y="320" fill="#22c55e" font-size="11" font-weight="bold" text-anchor="middle">✅ You see real names</text>
+  <text x="145" y="338" fill="#22c55e" font-size="11" text-anchor="middle">✅ You can open files</text>
+  <text x="145" y="356" fill="#22c55e" font-size="11" text-anchor="middle">✅ Full browsing access</text>
+
+  <!-- ══ Middle: crypt engine ══ -->
+  <rect x="300" y="130" width="200" height="270" fill="#1e293b" stroke="#a855f7" stroke-width="2" rx="8"/>
+  <text x="400" y="153" fill="#d8b4fe" font-size="12" font-weight="bold" text-anchor="middle">🔐 rclone crypt</text>
+
+  <!-- Algorithm boxes -->
+  <rect x="315" y="163" width="170" height="48" fill="#0f172a" stroke="#6d28d9" stroke-width="1" rx="4"/>
+  <text x="400" y="180" fill="#c4b5fd" font-size="10" text-anchor="middle">Content Encryption</text>
+  <text x="400" y="193" fill="#64748b" font-size="9" text-anchor="middle">XSalsa20 + Poly1305 MAC</text>
+  <text x="400" y="206" fill="#64748b" font-size="9" text-anchor="middle">(NaCl secretbox)</text>
+
+  <rect x="315" y="218" width="170" height="48" fill="#0f172a" stroke="#6d28d9" stroke-width="1" rx="4"/>
+  <text x="400" y="235" fill="#c4b5fd" font-size="10" text-anchor="middle">Filename Encryption</text>
+  <text x="400" y="248" fill="#64748b" font-size="9" text-anchor="middle">EME with AES-265</text>
+  <text x="400" y="261" fill="#64748b" font-size="9" text-anchor="middle">+ random padding</text>
+
+  <rect x="315" y="273" width="170" height="48" fill="#0f172a" stroke="#6d28d9" stroke-width="1" rx="4"/>
+  <text x="400" y="290" fill="#c4b5fd" font-size="10" text-anchor="middle">Key Derivation</text>
+  <text x="400" y="303" fill="#64748b" font-size="9" text-anchor="middle">scrypt(password + salt)</text>
+  <text x="400" y="316" fill="#64748b" font-size="9" text-anchor="middle">→ 256-bit key</text>
+
+  <!-- Password input -->
+  <rect x="315" y="328" width="170" height="36" fill="#1a1a2e" stroke="#7c3aed" stroke-width="1" rx="4"/>
+  <text x="400" y="343" fill="#a78bfa" font-size="10" text-anchor="middle">🔑 Your Password</text>
+  <text x="400" y="357" fill="#64748b" font-size="9" text-anchor="middle">(only you know this)</text>
+
+  <!-- Arrows: crypt transforms -->
+  <line x1="260" y1="200" x2="298" y2="200" stroke="#a855f7" stroke-width="2" marker-end="url(#crypt-arrow)"/>
+  <line x1="502" y1="200" x2="540" y2="200" stroke="#a855f7" stroke-width="2" marker-end="url(#crypt-arrow)"/>
+
+  <!-- ══ Right side: What OneDrive sees ══ -->
+  <rect x="540" y="70" width="230" height="360" fill="#1e293b" stroke="#ef4444" stroke-width="2" rx="8"/>
+  <text x="655" y="93" fill="#fca5a5" font-size="12" font-weight="bold" text-anchor="middle">OneDrive sees (encrypted)</text>
+  <text x="655" y="108" fill="#64748b" font-size="10" text-anchor="middle">onedrive-backup:VaultBackup/</text>
+
+  <rect x="555" y="118" width="200" height="28" fill="#0f172a" stroke="#334155" stroke-width="1" rx="3"/>
+  <text x="565" y="137" fill="#ef4444" font-size="10">📁 k4qv3j8m9ckdn2wp/</text>
+
+  <rect x="555" y="150" width="200" height="24" fill="#0f172a" stroke="#334155" stroke-width="1" rx="3"/>
+  <text x="575" y="167" fill="#64748b" font-size="10">🔒 l4qv3j8mckdn.bin</text>
+
+  <rect x="555" y="177" width="200" height="24" fill="#0f172a" stroke="#334155" stroke-width="1" rx="3"/>
+  <text x="575" y="194" fill="#64748b" font-size="10">🔒 m8xz9j2nkrqv.bin</text>
+
+  <rect x="555" y="204" width="200" height="28" fill="#0f172a" stroke="#334155" stroke-width="1" rx="3"/>
+  <text x="565" y="223" fill="#ef4444" font-size="10">📁 p9rq8mn2jkx4vz6w/</text>
+
+  <rect x="555" y="235" width="200" height="24" fill="#0f172a" stroke="#334155" stroke-width="1" rx="3"/>
+  <text x="575" y="252" fill="#64748b" font-size="10">🔒 q0zy1lk3mnbv.bin</text>
+
+  <rect x="555" y="262" width="200" height="24" fill="#0f172a" stroke="#334155" stroke-width="1" rx="3"/>
+  <text x="575" y="279" fill="#64748b" font-size="10">🔒 r1ab2cd3ef4g.bin</text>
+
+  <text x="655" y="320" fill="#ef4444" font-size="11" font-weight="bold" text-anchor="middle">❌ Can't read filenames</text>
+  <text x="655" y="338" fill="#ef4444" font-size="11" text-anchor="middle">❌ Can't read contents</text>
+  <text x="655" y="356" fill="#ef4444" font-size="11" text-anchor="middle">❌ Can't know file types</text>
+  <text x="655" y="374" fill="#f59e0b" font-size="10" text-anchor="middle">(even Microsoft employees)</text>
+
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="crypt-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a855f7"/>
+    </marker>
+  </defs>
+
+  <!-- Bottom info bar -->
+  <rect x="30" y="445" width="740" height="24" fill="#1e293b" stroke="#334155" stroke-width="1" rx="4"/>
+  <text x="400" y="461" fill="#94a3b8" font-size="10" text-anchor="middle">
+    rclone config: type=crypt | remote=onedrive-backup:VaultBackup/encrypted | filename_encryption=standard | directory_name_encryption=true
+  </text>
+</svg>
