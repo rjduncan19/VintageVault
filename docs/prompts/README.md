@@ -619,6 +619,29 @@ A running record of all user prompts across sessions and machines. This helps tr
 
 ---
 
+## Session 3: 2026-09-30 to 2026-11-11 (claude.ai design chat + Claude Code) — Design Chat Reconciliation
+
+**Context:** A long voice design conversation with Claude on claude.ai, held without access to this repo, so much of it assumed PC-to-cloud backup. Its outcomes were written up as a handoff doc and reconciled with the repo in a Claude Code session on 2026-11-11.
+
+**Model:** Claude Opus 5.5 (Claude Code session); design chat model not recorded
+
+**Source:** [docs/planning/2026-11-design-chat-handoff.md](../planning/2026-11-design-chat-handoff.md). Its section 1 holds the kick-off prompt used for the Claude Code session.
+
+**Decisions made (Rick, 2026-11-11):**
+1. Local-PC backup is future scope, built on rclone and VV's own snapshot layout (not Restic/Kopia)
+2. Every backup run gated by a user gesture, in every tier (**hard decision**)
+3. v1 isolation is an external drive air gap; control plane post-v1 if usage grows (**hard decision**)
+4. Two cadences inside the existing ladder, not new tiers
+5. Freemium vs. donation model left open
+
+**Response artifacts:**
+- `docs/architecture/005-credential-gating-and-isolation.md` (Proposed)
+- `docs/planning/credential-gating.md`, `nonprofit-segment.md`, `rag-add-on.md`, `adoption-and-trust.md`
+- Edits: ADR-001 threat model, `product-strategy.md`, `competitive-analysis.md`, `same-account-pivot.md`, rclone tutorial 07, `MISSION.md`
+- `CLAUDE.md` at the repo root
+
+---
+
 ## How to Use This Log
 
 Each session is documented with:

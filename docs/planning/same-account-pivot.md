@@ -2,6 +2,8 @@
 
 _Created: 2026-03-14 | Model: Claude Opus 4.6_
 
+> **⚠️ Update 2026-11-11:** [ADR-005](../architecture/005-credential-gating-and-isolation.md) (Proposed) requires a user gesture for **every** backup run, so no VintageVault process holds usable credentials between runs. The unattended Azure Function timer design below therefore no longer works as written: Phase 1 runs become user-initiated, and VV's server doesn't hold user refresh tokens. The same-account `driveItem: copy` approach itself is unaffected.
+
 ## The Idea
 
 Instead of copying files to a *different* account, copy them to a backup folder *within the same account*. Like an enhanced recycle bin / point-in-time snapshot.

@@ -76,7 +76,7 @@ VintageVault says: **"We're in business to protect everyone's digital life."**
 As revenue allows, VintageVault will contribute to the broader mission of digital safety:
 
 1. **1% of revenue** to organizations fighting ransomware and promoting digital literacy (inspired by Patagonia's 1% for the Planet)
-2. **Free backup for nonprofits** — schools, community organizations, charities
+2. **Free backup for nonprofits** — schools, community organizations, churches, charities, paired with plain-language security education for their staff, volunteers and members, and referrals to and from groups already doing this work (see [nonprofit segment](docs/planning/nonprofit-segment.md))
 3. **Open-source contributions** — improvements to rclone, cloud API documentation, security research
 4. **Educational content** — free guides on protecting your digital life, aimed at non-technical audiences
 5. **Advocacy** — actively encourage Google, Microsoft, and other providers to build native backup features for their users (see below)
