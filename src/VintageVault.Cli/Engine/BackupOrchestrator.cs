@@ -29,22 +29,25 @@ public sealed class BackupResult
 /// </summary>
 public sealed class BackupOrchestrator
 {
-    private readonly DriveOperations _driveOps;
+    private readonly IDriveOperations _driveOps;
+    private readonly TimeProvider _time;
     private readonly ConfigStore _configStore;
     private readonly ManifestManager _manifestManager;
     private readonly AnomalyDetector _anomalyDetector;
     private const int MaxConcurrentCopies = 8;
 
     public BackupOrchestrator(
-        DriveOperations driveOps,
+        IDriveOperations driveOps,
         ConfigStore configStore,
         ManifestManager manifestManager,
-        AnomalyDetector anomalyDetector)
+        AnomalyDetector anomalyDetector,
+        TimeProvider? timeProvider = null)
     {
         _driveOps = driveOps;
         _configStore = configStore;
         _manifestManager = manifestManager;
         _anomalyDetector = anomalyDetector;
+        _time = timeProvider ?? TimeProvider.System;
     }
 
     /// <summary>
@@ -59,7 +62,7 @@ public sealed class BackupOrchestrator
 
     public async Task<BackupResult> RunAsync(CancellationToken ct = default)
     {
-        var startTime = DateTime.UtcNow;
+        var startTime = _time.GetUtcNow().UtcDateTime;
         var config = _configStore.Load();
 
         if (string.IsNullOrEmpty(config.DriveId))
@@ -87,8 +90,8 @@ public sealed class BackupOrchestrator
         bool isFull = string.IsNullOrEmpty(config.LastDeltaToken);
         string snapshotType = isFull ? "full" : "incremental";
         string snapshotId = isFull
-            ? $"{DateTime.UtcNow:yyyy-MM-dd}-full"
-            : $"{DateTime.UtcNow:yyyy-MM-dd}";
+            ? $"{_time.GetUtcNow().UtcDateTime:yyyy-MM-dd}-full"
+            : $"{_time.GetUtcNow().UtcDateTime:yyyy-MM-dd}";
 
         // Avoid duplicate snapshot IDs
         if (existingManifest?.Snapshots.Any(s => s.Id == snapshotId) == true)
@@ -180,7 +183,10 @@ public sealed class BackupOrchestrator
             return new BackupResult { Success = false, ErrorMessage = "Failed to create snapshot folder." };
 
         // Step 7: Copy files with concurrency control
+        // Copy tasks run in parallel and append concurrently (deletions are also appended
+        // while copies are in flight), so every Add must hold changesLock.
         var snapshotChanges = new List<SnapshotChange>();
+        var changesLock = new object();
         int copiedCount = 0;
         long totalBytesCopied = 0;
         var semaphore = new SemaphoreSlim(MaxConcurrentCopies);
@@ -196,12 +202,15 @@ public sealed class BackupOrchestrator
         {
             if (action == "deleted")
             {
-                snapshotChanges.Add(new SnapshotChange
+                lock (changesLock)
                 {
-                    Path = path,
-                    Action = "deleted",
-                    PreviousItemId = item.Id
-                });
+                    snapshotChanges.Add(new SnapshotChange
+                    {
+                        Path = path,
+                        Action = "deleted",
+                        PreviousItemId = item.Id
+                    });
+                }
                 continue;
             }
 
@@ -237,7 +246,7 @@ public sealed class BackupOrchestrator
                     Interlocked.Add(ref totalBytesCopied, fileSize);
                     var copied = Interlocked.Increment(ref copiedCount);
 
-                    snapshotChanges.Add(new SnapshotChange
+                    var change = new SnapshotChange
                     {
                         Path = capturedPath,
                         Action = capturedAction,
@@ -246,7 +255,9 @@ public sealed class BackupOrchestrator
                         LastModified = capturedItem.LastModifiedDateTime?.ToString("o"),
                         Hashes = sourceHashes,
                         CopyVerified = true // In POC, trust server-side copy integrity
-                    });
+                    };
+                    lock (changesLock)
+                        snapshotChanges.Add(change);
 
                     OnProgress?.Invoke(copied, filesToCopy, Interlocked.Read(ref totalBytesCopied));
                 }
@@ -281,7 +292,7 @@ public sealed class BackupOrchestrator
             SnapshotId = snapshotId,
             Type = snapshotType,
             PreviousSnapshot = isFull ? null : previousSnapshot,
-            Timestamp = DateTime.UtcNow.ToString("o"),
+            Timestamp = _time.GetUtcNow().UtcDateTime.ToString("o"),
             Summary = new SnapshotSummary
             {
                 FilesChanged = filesModified,
@@ -303,7 +314,7 @@ public sealed class BackupOrchestrator
         {
             var warning = new AnomalyWarning
             {
-                Timestamp = DateTime.UtcNow.ToString("o"),
+                Timestamp = _time.GetUtcNow().UtcDateTime.ToString("o"),
                 SnapshotId = snapshotId,
                 Warnings = anomalyResult.Warnings,
                 Details = anomalyResult.Details
@@ -334,12 +345,12 @@ public sealed class BackupOrchestrator
 
         // Step 11: Update config
         config.LastDeltaToken = newDeltaToken;
-        config.LastBackupTimestamp = DateTime.UtcNow.ToString("o");
+        config.LastBackupTimestamp = _time.GetUtcNow().UtcDateTime.ToString("o");
         config.DetectionBaseline.AvgChangesPerCycle = newAvgChanges;
         config.DetectionBaseline.AvgDeletionsPerCycle = newAvgDeletions;
         _configStore.Save(config);
 
-        var duration = DateTime.UtcNow - startTime;
+        var duration = _time.GetUtcNow().UtcDateTime - startTime;
 
         return new BackupResult
         {

@@ -11,7 +11,7 @@ namespace VintageVault.Cli.Graph;
 /// All methods handle 429 (throttling) with exponential backoff + jitter.
 /// NEVER logs tokens or raw exception messages.
 /// </summary>
-public sealed class DriveOperations
+public sealed class DriveOperations : IDriveOperations
 {
     private readonly GraphServiceClient _client;
     private const int MaxRetries = 5;
@@ -362,7 +362,7 @@ public sealed class DriveOperations
         return items;
     }
 
-    private static string? ExtractDeltaToken(string link)
+    internal static string? ExtractDeltaToken(string link)
     {
         // Parse the token query parameter from a delta or next link URL
         if (Uri.TryCreate(link, UriKind.Absolute, out var uri))
@@ -384,8 +384,11 @@ public sealed class DriveOperations
     /// <summary>
     /// Retry on 429 with exponential backoff + jitter.
     /// </summary>
-    private static async Task RetryOnThrottleAsync(Func<Task> action, CancellationToken ct)
+    /// <param name="delay">Waits between attempts; defaults to Task.Delay. Tests pass a no-op.</param>
+    internal static async Task RetryOnThrottleAsync(
+        Func<Task> action, CancellationToken ct, Func<TimeSpan, CancellationToken, Task>? delay = null)
     {
+        delay ??= Task.Delay;
         for (int attempt = 0; attempt <= MaxRetries; attempt++)
         {
             try
@@ -396,13 +399,12 @@ public sealed class DriveOperations
             catch (Microsoft.Graph.Models.ODataErrors.ODataError ex)
                 when (ex.ResponseStatusCode == 429 && attempt < MaxRetries)
             {
-                var delay = CalculateBackoff(attempt);
-                await Task.Delay(delay, ct).ConfigureAwait(false);
+                await delay(CalculateBackoff(attempt), ct).ConfigureAwait(false);
             }
         }
     }
 
-    private static TimeSpan CalculateBackoff(int attempt)
+    internal static TimeSpan CalculateBackoff(int attempt)
     {
         var baseDelay = BaseDelayMs * Math.Pow(2, attempt);
         var jitter = s_jitter.Next(0, (int)(baseDelay * 0.5));
