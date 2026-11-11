@@ -20,6 +20,17 @@ Common backup failures:
 
 Verification is a separate, independent step that catches these failures. **Don't trust a backup you haven't verified.**
 
+### A real example: don't trust the green tick
+
+During the Nov 2026 design work, the OneDrive desktop client **crashed more than six times** while syncing 300+ GB of photos and video, on a strong PC (Windows 11 26H2, 64 GB RAM) over a ~10 Mbps upload link. A sync client showing a green tick tells you it *thinks* it's done, not that every file arrived intact.
+
+rclone held up better because it talks to the API directly: it retries with backoff, uploads in chunks, and skips files already completed when you rerun it. Its weakness is that an **interrupted large file restarts from zero**.
+
+Practical notes from that experience:
+- **Do the math first.** 300 GB at 10 Mbps is about 67 hours of continuous upload.
+- **Keep concurrency modest** (`--transfers`, `--checkers`; see [tutorial 10](10-performance-tuning.md)). Microsoft throttles bulk transfers.
+- **Verify afterwards with `rclone check`** (hash comparison, below), whatever tool did the copy. This is also the motivation for a future VintageVault "verify" feature.
+
 ---
 
 ## rclone's Verification Commands

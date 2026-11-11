@@ -119,6 +119,25 @@ These back up your device, not your cloud. Users may confuse them with what Vint
 
 ---
 
+## Gaps Noted in the Nov 2026 Design Chat
+
+_Added 2026-11-11 from the [design chat handoff](2026-11-design-chat-handoff.md) (section 3.7; observations from Sept 2026). Prices and features are unverified._
+
+Two products the chat raised aren't in the tables above:
+
+| Product | Segment | Note |
+|---|---|---|
+| **Carbonite** | Consumer device backup | Same model as Backblaze and IDrive: simple, and the provider holds the credentials |
+| **Veeam Community, Retrospect, Duplicati** | Pro-sumer | Offer real object lock / immutable storage, but are too complex for non-specialists |
+
+The chat also put Acronis forward as the heaviest ransomware marketer, inside a heavy suite.
+
+**The gaps:**
+1. **People who need immutable backups can't operate the tools that provide them.** Consumer tools are simple but give the provider custody and no immutability. Pro-sumer tools have object lock but need real expertise. VintageVault's gated runs and external-drive air gap ([ADR-005](../architecture/005-credential-gating-and-isolation.md)) aim at this gap.
+2. **Nobody offers local semantic search over backups.** See the optional [RAG add-on](rag-add-on.md).
+
+---
+
 ## Cloud Storage Family Plans (Not Competitors, But Context)
 
 Users already pay for storage. VintageVault uses their **existing** second cloud account as the destination.

@@ -19,6 +19,7 @@ The target audience — families, individuals, and very small businesses — is 
 | **Families** | Photos, videos, kids' schoolwork, shared family docs | Extreme (irreplaceable memories) | Low-moderate ($3-5/mo) |
 | **Individuals / Freelancers** | Portfolio, client deliverables, personal projects, tax docs | High (livelihood at risk) | Moderate ($5-10/mo) |
 | **Very Small Businesses (1-10 people)** | Client files, invoices, contracts, bookkeeping | High (business continuity) | Moderate-high ($10-20/mo) |
+| **Churches, Nonprofits & Charities** | Books, donor records, member lists, meeting minutes | High (often run by part-time staff and volunteers on personal devices) | Low; free or donated per [MISSION.md](../../MISSION.md#giving-back). See [nonprofit-segment.md](nonprofit-segment.md) |
 
 ### Who This Is NOT For
 

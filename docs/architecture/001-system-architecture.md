@@ -35,6 +35,7 @@ Our users are **families, individuals, and very small businesses** who:
 | **Accidental file deletion or corruption** | Point-in-time backup allows recovery of previous versions. |
 | **Source account compromised / taken over** | Cross-provider backup means attacker can't reach destination account. |
 | **Destination account compromised** | Source is the primary copy; user re-authorizes a new destination. |
+| **VV agent or user's machine compromised** _(added 2026-11-11)_ | Cross-provider isolation does **not** hold if the compromised machine has tokens for both accounts. v1 response: no usable credentials between runs (every run gated by a user gesture), plus an external-drive copy that's disconnected between runs. See [ADR-005](005-credential-gating-and-isolation.md#threat-model-additions) for how each cadence handles it. |
 
 ### Critical Design Implications from Threat Model
 
