@@ -440,5 +440,8 @@ You've completed the rclone learning series. Here's what you've covered:
 | 08 | rclone crypt — zero-knowledge encrypted backup |
 | 09 | Windows Task Scheduler — automated, unattended backups |
 | 10 | Performance tuning — make it fast without breaking things |
+| 11 | Supply chain security — the engine holds the keys, so verify it |
+
+Continue to → [11 — Supply Chain Security](11-supply-chain-security.md)
 
 Return to → [rclone Exploration README](../README.md)

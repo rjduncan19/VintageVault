@@ -81,6 +81,8 @@ in `rc-wrapper.ps1`). **Do not** embed rclone as a Go library (unstable internal
 | Destructive sync/bisync data loss | Default to one-way `copy` + `--backup-dir`; gate `sync` behind guardrails. |
 | Secret handling (OAuth tokens in `rclone.conf`) | Keep config out of git (done via `.gitignore`); encrypt at rest; never log tokens. |
 | License attribution | Add rclone (MIT) to `NOTICE` on bundling/distribution. |
+| Supply-chain compromise of rclone (added 2026-11-11) | Open, no mitigation chosen. See [supply-chain-risk.md](../../docs/planning/supply-chain-risk.md). |
+| OneNote notebooks skipped by default (added 2026-11-11) | Open, must fix before launch. See [backup-coverage-gaps.md](../../docs/planning/backup-coverage-gaps.md). |
 
 ## Open questions / next steps
 1. **Live validation with test accounts** (the one human step): run

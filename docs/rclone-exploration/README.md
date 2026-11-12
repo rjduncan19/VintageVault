@@ -40,6 +40,7 @@ Work through these in order if you're new to rclone:
 | 08 | [Encryption with rclone crypt](learning/08-encryption-with-crypt.md) | Zero-knowledge encrypted backup overlay |
 | 09 | [Automation on Windows](learning/09-automation-windows-task-scheduler.md) | Scheduled backups, logging, alerting |
 | 10 | [Performance Tuning](learning/10-performance-tuning.md) | Bandwidth limits, parallelism, chunk size optimization |
+| 11 | [Supply Chain Security](learning/11-supply-chain-security.md) | Trusting rclone and its dependencies, the XZ case study, verifying releases |
 
 ## Quick Reference
 
