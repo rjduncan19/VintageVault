@@ -642,6 +642,19 @@ A running record of all user prompts across sessions and machines. This helps tr
 
 ---
 
+## Session 4: 2026-11-11 (Claude Code) — First Real Backup
+
+**Context:** Rick ran his first real backup of the family OneDrive (about 1 TB) to a BitLocker-encrypted external SSD with rclone, following tutorial 03, before starting malware research work.
+
+**Model:** Claude Opus 5.5
+
+**Findings captured:**
+1. rclone skips OneNote notebooks by default, and the family has a lot in OneNote. Must fix: [backup-coverage-gaps.md](../planning/backup-coverage-gaps.md). Personal Vault is also unreachable.
+2. The rclone supply chain is a possibly existential risk: backup users single themselves out as holders of valuable data. Raised by a family member. Open, no solution yet: [supply-chain-risk.md](../planning/supply-chain-risk.md).
+3. Use read-only OneDrive scopes for backup, revoke the grant afterward, and remember that filters skip files silently.
+
+---
+
 ## How to Use This Log
 
 Each session is documented with:
