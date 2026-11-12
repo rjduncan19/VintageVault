@@ -8,6 +8,8 @@ VintageVault's engine is rclone ([draft ADR](../../rclone-exploration/findings/r
 
 This may be **existential** for VintageVault. The product promises to be the last line of defense, and the backup tool sits exactly where an attacker would most want to be.
 
+A hands-on version for the learning series is [tutorial 11](../rclone-exploration/learning/11-supply-chain-security.md).
+
 ## Why our users make us a target
 
 Installing a backup tool **tells an attacker that this person has data they value** and would pay to get back. That makes a compromise of rclone or VV more targeted and more profitable than a compromise of a generic library.
